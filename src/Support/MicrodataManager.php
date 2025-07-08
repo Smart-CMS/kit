@@ -20,6 +20,7 @@ class MicrodataManager
     public function add(array $microdata): self
     {
         $this->microdata[] = $microdata;
+
         return $this;
     }
 

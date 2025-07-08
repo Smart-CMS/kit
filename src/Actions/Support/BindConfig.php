@@ -2,8 +2,6 @@
 
 namespace SmartCms\Kit\Actions\Support;
 
-use Filament\Support\Assets\AssetManager;
-use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -11,9 +9,10 @@ use Lorisleiva\Actions\Concerns\AsAction;
 class BindConfig
 {
     use AsAction;
+
     public function handle()
     {
-        if (!Schema::hasTable(config('settings.database_table_name', 'settings'))) {
+        if (! Schema::hasTable(config('settings.database_table_name', 'settings'))) {
             return;
         }
         $this->bindMailer();

@@ -3,11 +3,9 @@
 namespace SmartCms\Kit\Commands;
 
 use Illuminate\Console\Command;
-use SmartCms\Core\Traits\HasHooks;
 
 class Update extends Command
 {
-
     protected $signature = 'scms:update';
 
     protected $description = 'Update Smart CMS';

@@ -2,8 +2,8 @@
 
 namespace SmartCms\Kit\Admin\Resources\Admins\Pages;
 
-use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 use Filament\Resources\Pages\CreateRecord;
+use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 use SmartCms\Support\Admin\Components\Actions\SaveAction;
 use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 

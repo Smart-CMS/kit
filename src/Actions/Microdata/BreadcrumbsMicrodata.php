@@ -30,6 +30,7 @@ class BreadcrumbsMicrodata
                 'item' => $breadcrumb['link'] ?? url('/'),
             ];
         }
+
         return $microdata;
     }
 }

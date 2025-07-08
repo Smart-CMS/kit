@@ -28,23 +28,18 @@ use SmartCms\TemplateBuilder\Traits\HasTemplate;
  * @property array|null $image The image path for the page.
  * @property array|null $banner The banner path for the page.
  * @property int $views The number of page views.
- *
  * @property int $depth The depth of the page.
  * @property int|null $parent_id The parent page identifier.
  * @property int|null $root_id The root page identifier.
- *
  * @property array|null $settings Settings for the page.
- *
  * @property int|null $layout_id The layout identifier.
  * @property array|null $layout_settings Layout-specific settings.
  * @property array|null $settings Settings for the page.
  * @property bool $is_system Is system page.
  * @property bool $is_root Is hidden page.
- *
  * @property \DateTime $created_at The date and time when the model was created.
  * @property \DateTime $updated_at The date and time when the model was last updated.
  * @property \DateTime $published_at The date and time when the model was published.
- *
  * @property-read \SmartCms\TemplateBuilder\Models\Layout|null $layout The layout used by this page.
  * @property-read \SmartCms\Kit\Models\Page|null $parent The parent page.
  * @property-read \SmartCms\Kit\Models\Page|null $root The root page.
@@ -52,15 +47,16 @@ use SmartCms\TemplateBuilder\Traits\HasTemplate;
  */
 class Page extends Model
 {
-    use HasFactory;
-    use HasSlug;
     use HasBreadcrumbs;
-    use HasRoute;
-    use HasStatus;
+    use HasFactory;
     use HasLayout;
     use HasParent;
+    use HasRoute;
+
     // use HasSorting;
     use HasSeo;
+    use HasSlug;
+    use HasStatus;
     use HasTemplate;
     use HasTranslate;
 
@@ -136,7 +132,7 @@ class Page extends Model
             $template = app('s')->get('static_page_template', []);
             if ($page->root_id) {
                 $root = Page::find($page->root_id);
-                if (!$root) {
+                if (! $root) {
                     return;
                 }
                 $isCategory = false;

@@ -2,11 +2,6 @@
 
 namespace SmartCms\Kit\Admin\Pages;
 
-
-use SmartCms\Kit\Admin\Settings\GeneralForm;
-use SmartCms\Kit\Admin\Settings\NotificationForm;
-use SmartCms\Kit\Admin\Settings\SystemForm;
-use SmartCms\Kit\Admin\Settings\ThemeForm;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Schemas\Components\Tabs;
@@ -16,7 +11,11 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use SmartCms\Kit\Admin\Settings\BrandingForm;
 use SmartCms\Kit\Admin\Settings\CompanyInfoForm;
+use SmartCms\Kit\Admin\Settings\GeneralForm;
+use SmartCms\Kit\Admin\Settings\NotificationForm;
 use SmartCms\Kit\Admin\Settings\SeoForm;
+use SmartCms\Kit\Admin\Settings\SystemForm;
+use SmartCms\Kit\Admin\Settings\ThemeForm;
 use SmartCms\Lang\Models\Language;
 use SmartCms\PanelSettings\SettingsPage;
 use SmartCms\Support\Admin\Components\Actions\HelpAction;
@@ -80,7 +79,7 @@ class Settings extends SettingsPage
             Action::make('cancel')
                 ->color('gray')
                 ->label(__('kit::admin.cancel'))
-                ->url(fn() => self::getUrl()),
+                ->url(fn () => self::getUrl()),
         ];
     }
 
@@ -92,13 +91,13 @@ class Settings extends SettingsPage
             ->update([
                 'is_default' => true,
                 'is_admin_active' => true,
-                'is_frontend_active' => true
+                'is_frontend_active' => true,
             ]);
-        if (!isset($data['additional_languages']) || empty($data['additional_languages'])) {
+        if (! isset($data['additional_languages']) || empty($data['additional_languages'])) {
             Language::query()->where('is_default', false)
                 ->update([
                     'is_admin_active' => false,
-                    'is_frontend_active' => false
+                    'is_frontend_active' => false,
                 ]);
         } else {
             Language::query()->whereIn('id', $data['additional_languages'] ?? [])
@@ -106,10 +105,10 @@ class Settings extends SettingsPage
                     'is_admin_active' => true,
                 ]);
         }
-        if (!isset($data['frontend_languages']) || empty($data['frontend_languages'])) {
+        if (! isset($data['frontend_languages']) || empty($data['frontend_languages'])) {
             Language::query()->where('is_frontend_active', false)
                 ->update([
-                    'is_frontend_active' => false
+                    'is_frontend_active' => false,
                 ]);
         } else {
             Language::query()->whereIn('id', $data['frontend_languages'] ?? [])

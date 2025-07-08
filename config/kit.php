@@ -8,5 +8,5 @@ return [
     'notifications' => [
         'update' => 'kit::admin.update',
         'new_contact_form' => 'kit::admin.new_contact_form',
-    ]
+    ],
 ];

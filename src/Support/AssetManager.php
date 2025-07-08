@@ -5,6 +5,7 @@ namespace SmartCms\Kit\Support;
 class AssetManager
 {
     protected array $css = [];
+
     protected array $js = [];
 
     public function __construct()

@@ -53,7 +53,7 @@ class SystemForm
             Flex::make([
                 Select::make('header')->options(Layout::query()->where('path', 'like', '%header%')->pluck('name', 'id'))->searchable(),
                 Select::make('footer')->options(Layout::query()->where('path', 'like', '%footer%')->pluck('name', 'id'))->searchable(),
-            ])
+            ]),
         ]);
     }
 }

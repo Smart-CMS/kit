@@ -8,7 +8,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DetachAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -16,6 +15,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 class SetupMacro
 {
     use AsAction;
+
     public function handle(): void
     {
         Table::configureUsing(function (Table $table): void {

@@ -15,7 +15,7 @@ class Gtm extends Component
         $this->gtm = app('s')->get('gtm', null);
     }
 
-    public function render(): View|Closure|string
+    public function render(): View | Closure | string
     {
         return <<<'blade'
             @if ($gtm)

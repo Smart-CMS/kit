@@ -7,7 +7,9 @@ use Illuminate\View\Component;
 class Heading extends Component
 {
     public string $title;
+
     public string $tag;
+
     public function __construct(?object $options = null, ?string $tag = 'h2', ?string $title = null)
     {
         $this->title = $options->title ?? $title ?? '';

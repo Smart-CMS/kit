@@ -1,16 +1,17 @@
 <?php
 
 if (! function_exists('validateImage')) {
-    function validateImage(mixed $image = null): string|array
+    function validateImage(mixed $image = null): string | array
     {
         $source = $image;
         if (is_array($image)) {
             $source = $image['source'] ?? null;
         }
-        if (!$source) {
+        if (! $source) {
             if (is_string($image)) {
                 return no_image()['source'];
             }
+
             return no_image();
         }
         if (! str_contains($source, 'storage')) {
@@ -21,8 +22,10 @@ if (! function_exists('validateImage')) {
         }
         if (is_array($image)) {
             $image['source'] = $source;
+
             return $image;
         }
+
         return $source;
     }
 }
@@ -36,6 +39,7 @@ if (! function_exists('no_image')) {
                 $no_image['source'] = '/no-image.webp';
             }
             $no_image['source'] = validateImage($no_image['source']);
+
             return $no_image;
         });
     }
@@ -44,6 +48,7 @@ if (! function_exists('logo')) {
     function logo(): array
     {
         $logo = app('s')->get('branding.logo', no_image());
+
         return validateImage($logo);
     }
 }

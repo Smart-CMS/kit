@@ -2,12 +2,12 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 use SmartCms\Kit\Models\Page;
 use SmartCms\ModelTranslate\Admin\TranslateAction;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
@@ -17,14 +17,13 @@ use SmartCms\Support\Admin\Components\Layout\Aside;
 use SmartCms\Support\Admin\Components\Layout\FormGrid;
 use SmartCms\Support\Admin\Components\Layout\LeftGrid;
 use SmartCms\Support\Admin\Components\Layout\RightGrid;
-use Illuminate\Support\Str;
-use SmartCms\Support\Admin\Components\Forms\StatusField;
 
 class PageForm
 {
     public static function configure(Schema $schema): Schema
     {
         $imagePath = '';
+        return $schema;
         /**
          * @var Page $record
          */
@@ -32,6 +31,7 @@ class PageForm
         if ($record?->slug) {
             $imagePath = 'pages/' . $record->slug;
         }
+
         return $schema
             ->components(
                 [
@@ -50,17 +50,16 @@ class PageForm
                                         }
                                     }),
                                 SlugField::make()->hidden(fn($record) => $record?->id == 1),
-                                // DateTimePicker::make('published_at')->seconds(false)->weekStartsOnMonday()->closeOnDateSelection()
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
                                 ImageUpload::make('banner', $imagePath, __('kit::admin.banner')),
-                            ])->columnSpan(2)->columns(2)
+                            ])->columnSpan(2)->columns(2),
                         ]),
                         RightGrid::make()->schema([
                             Aside::make(true),
                         ]),
-                    ])
+                    ]),
                 ]
             )->columns(1);
     }

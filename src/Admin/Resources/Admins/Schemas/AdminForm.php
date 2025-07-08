@@ -24,10 +24,10 @@ class AdminForm
                     TextInput::make('password')
                         ->label(__('kit::admin.password'))
                         ->password()
-                        ->required()
+                        ->required(),
                 ])
                     // ->compact()
-                    ->columnSpan(2),]),
+                    ->columnSpan(2), ]),
             ])->columns(1);
     }
 }

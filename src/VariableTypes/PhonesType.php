@@ -29,7 +29,6 @@ class PhonesType implements VariableTypeInterface
         return Select::make($name)->options(collect(app('s')->get('company_info.phones', []))->pluck('value'))->multiple();
     }
 
-
     public function getValue(mixed $value): mixed
     {
         return collect(app('s')->get('company_info.phones', []))->mapWithKeys(function ($item, $key) {

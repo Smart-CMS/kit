@@ -2,12 +2,10 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
-use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use Filament\Actions\DeleteAction;
-use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Contracts\Support\Htmlable;
 use SmartCms\Kit\Actions\Admin\GetPageListUrl;
+use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Support\Admin\Components\Actions\SaveAction;
 use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 use SmartCms\Support\Admin\Components\Actions\ViewRecord;

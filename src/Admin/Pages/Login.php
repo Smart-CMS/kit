@@ -61,6 +61,7 @@ class Login extends PagesLogin
 
         return app(LoginResponse::class);
     }
+
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -76,6 +77,7 @@ class Login extends PagesLogin
     protected function checkVersion()
     {
         $url = 'https://api.github.com/repos/SmartCms/kit/releases/latest';
+
         try {
             $response = Http::timeout(5)->get($url);
         } catch (\Exception $e) {

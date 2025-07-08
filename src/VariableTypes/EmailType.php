@@ -24,7 +24,7 @@ class EmailType implements VariableTypeInterface
         return 'example@example.com';
     }
 
-    public function getSchema(string $name): Field |Component
+    public function getSchema(string $name): Field | Component
     {
         return Select::make($name)->options(collect(app('s')->get('company_info.emails', []))->pluck('value'));
     }
@@ -36,6 +36,7 @@ class EmailType implements VariableTypeInterface
                 return $item['value'] ?? $this->getDefaultValue();
             }
         }
+
         return $this->getDefaultValue();
     }
 }

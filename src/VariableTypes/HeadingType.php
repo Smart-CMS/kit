@@ -3,7 +3,6 @@
 namespace SmartCms\Kit\VariableTypes;
 
 use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
@@ -24,7 +23,7 @@ class HeadingType implements VariableTypeInterface
 
     public function getDefaultValue(): mixed
     {
-        return (object)[
+        return (object) [
             'tag' => 'h2',
             'title' => 'Default heading title',
         ];
@@ -56,7 +55,7 @@ class HeadingType implements VariableTypeInterface
 
     public function getValue(mixed $value): mixed
     {
-        return (object)[
+        return (object) [
             'tag' => $value['heading_type'] ?? 'h2',
             'title' => $value['title'] ?? 'Default title',
         ];

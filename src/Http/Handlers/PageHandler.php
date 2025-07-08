@@ -3,9 +3,7 @@
 namespace SmartCms\Kit\Http\Handlers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Blade;
 use SmartCms\Kit\Models\Front\FrontPage;
-use SmartCms\Kit\Models\Page;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 
 class PageHandler
@@ -25,6 +23,7 @@ class PageHandler
             return abort(404);
         }
         $page = $this->findPage($segments);
+
         return $page?->render() ?? abort(404);
     }
 
