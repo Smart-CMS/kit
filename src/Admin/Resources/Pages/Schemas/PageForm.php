@@ -2,7 +2,6 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -48,7 +47,7 @@ class PageForm
                                             $set('slug', $slug);
                                         }
                                     }),
-                                SlugField::make()->hidden(fn($record) => $record?->id == 1),
+                                SlugField::make()->hidden(fn ($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
