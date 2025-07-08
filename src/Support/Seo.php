@@ -16,7 +16,7 @@ class Seo
 
     public array $microdata = [];
 
-    public function title(?string $value = null): string|static
+    public function title(?string $value = null): string | static
     {
         if ($value === null) {
             return $this->title ?? config('app.name');
@@ -26,7 +26,7 @@ class Seo
         return $this;
     }
 
-    public function description(?string $value = null): string|static
+    public function description(?string $value = null): string | static
     {
         if ($value === null) {
             return $this->description ?? '';
@@ -36,7 +36,7 @@ class Seo
         return $this;
     }
 
-    public function keywords(?string $value = null): string|static
+    public function keywords(?string $value = null): string | static
     {
         if ($value === null) {
             return $this->keywords ?? '';
@@ -46,7 +46,7 @@ class Seo
         return $this;
     }
 
-    public function image(?string $value = null): string|static
+    public function image(?string $value = null): string | static
     {
         if ($value === null) {
             return $this->image ?? '';

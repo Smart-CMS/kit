@@ -2,11 +2,9 @@
 
 namespace SmartCms\Kit\Http\Handlers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Context;
 use Lorisleiva\Actions\Concerns\AsAction;
 use SmartCms\Kit\Models\Page;
-use SmartCms\Lang\Languages;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 
 class SitemapHandler
@@ -21,6 +19,7 @@ class SitemapHandler
         "/\s+/" => ' ', // remove spaces
         '/> +</' => '><',
     ];
+
     use AsAction;
 
     #[Cache(public: true, maxage: 3600, mustRevalidate: true)]

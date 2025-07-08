@@ -2,8 +2,8 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
-use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use Filament\Resources\Pages\CreateRecord;
+use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 
 class CreatePage extends CreateRecord
 {

@@ -10,7 +10,7 @@ class RobotsHandler
 
     public function handle()
     {
-        $robots =  "User-agent: *\nDisallow: /";
+        $robots = "User-agent: *\nDisallow: /";
         if (app('s')->get('indexation', false)) {
             $robots = "User-agent: *\nDisallow: /admin\nDisallow: /cart\nDisallow: /checkout\nDisallow: /search\nDisallow: /register\nDisallow: /reset-password\nDisallow: /*page*\nSitemap: " . route('sitemap') . "\nHost: " . request()->getHost();
         }

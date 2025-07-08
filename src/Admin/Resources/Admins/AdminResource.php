@@ -2,11 +2,6 @@
 
 namespace SmartCms\Kit\Admin\Resources\Admins;
 
-use SmartCms\Kit\Admin\Resources\Admins\Pages\CreateAdmin;
-use SmartCms\Kit\Admin\Resources\Admins\Pages\EditAdmin;
-use SmartCms\Kit\Admin\Resources\Admins\Pages\ListAdmins;
-use SmartCms\Kit\Admin\Resources\Admins\Schemas\AdminForm;
-use SmartCms\Kit\Admin\Resources\Admins\Tables\AdminsTable;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -14,13 +9,18 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use SmartCms\Kit\Admin\Resources\Admins\Pages\CreateAdmin;
+use SmartCms\Kit\Admin\Resources\Admins\Pages\EditAdmin;
+use SmartCms\Kit\Admin\Resources\Admins\Pages\ListAdmins;
+use SmartCms\Kit\Admin\Resources\Admins\Schemas\AdminForm;
+use SmartCms\Kit\Admin\Resources\Admins\Tables\AdminsTable;
 use SmartCms\Kit\Models\Admin;
 
 class AdminResource extends Resource
 {
     protected static ?string $model = Admin::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function getNavigationGroup(): ?string
     {
@@ -68,9 +68,10 @@ class AdminResource extends Resource
          * @var Admin|null $user
          */
         $user = Auth::user();
-        if (!$user || $user->id == 1 || $record->id == 1) {
+        if (! $user || $user->id == 1 || $record->id == 1) {
             return false;
         }
+
         return true;
     }
 

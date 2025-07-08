@@ -36,6 +36,7 @@ class PhoneType implements VariableTypeInterface
                 return $item['value'] ?? $this->getDefaultValue();
             }
         }
+
         return $this->getDefaultValue();
     }
 }

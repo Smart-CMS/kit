@@ -71,6 +71,7 @@ class NewContactFormNotification extends Notification
         $title = $this->form->prefix . ' ' . __('kit::admin.was_sent');
         $notification = NotificationsNotification::make()->title($title)->success()->toDatabase();
         $notifiable->notifyNow($notification);
+
         return [];
     }
 }

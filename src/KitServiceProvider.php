@@ -25,24 +25,24 @@ use SmartCms\Kit\Components\Gtm;
 use SmartCms\Kit\Components\Header;
 use SmartCms\Kit\Components\Heading;
 use SmartCms\Kit\Components\Image;
-use SmartCms\Kit\Components\Link;
 use SmartCms\Kit\Components\Layout;
+use SmartCms\Kit\Components\Link;
 use SmartCms\Kit\Components\PageComponent;
 use SmartCms\Kit\Components\Theme;
-use SmartCms\Kit\Support\Seo;
 use SmartCms\Kit\Http\Middlewares\HtmlMinifier;
 use SmartCms\Kit\Http\Middlewares\Maintenance;
 use SmartCms\Kit\Http\Middlewares\UserIdentifierMiddleware;
 use SmartCms\Kit\MenuTypes\PageMenuType;
 use SmartCms\Kit\Observers\ContactFormObserver;
 use SmartCms\Kit\Support\AssetManager;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\LaravelPackageTools\Package;
-use SmartCms\Kit\Testing\TestsKit;
 use SmartCms\Kit\Support\MicrodataManager;
+use SmartCms\Kit\Support\Seo;
+use SmartCms\Kit\Testing\TestsKit;
 use SmartCms\Lang\Middlewares\Lang;
 use SmartCms\Menu\MenuRegistry;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class KitServiceProvider extends PackageServiceProvider
 {
@@ -72,29 +72,29 @@ class KitServiceProvider extends PackageServiceProvider
                 $command
                     ->publish('images')
                     ->startWith(function (InstallCommand $command) {
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "settings-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'settings-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "lang-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'lang-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "seo-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'seo-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "menu-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'menu-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "forms-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'forms-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "template-builder-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'template-builder-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "model-translate-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'model-translate-migrations',
                         ]);
-                        $command->callSilently("vendor:publish", [
-                            '--tag' => "notifications-migrations",
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'notifications-migrations',
                         ]);
                         $command->callSilently('notifications:table');
                     })
@@ -113,8 +113,7 @@ class KitServiceProvider extends PackageServiceProvider
                         }
                         $command->call('filament:assets');
                     });
-            })
-        ;
+            });
     }
 
     public function packageRegistered(): void
@@ -126,7 +125,6 @@ class KitServiceProvider extends PackageServiceProvider
         if (! Route::hasMacro('multilingual')) {
             Route::macro('multilingual', function () {
                 /** @var \Illuminate\Routing\Route $this */
-
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
                 FacadesRoute::addRoute(
@@ -135,7 +133,7 @@ class KitServiceProvider extends PackageServiceProvider
                     $this->getAction()
                 )->where('lang', '[a-z]{2}')->name('.lang')->middleware('lang');
 
-                return $this;;
+                return $this;
             });
         }
     }
@@ -147,14 +145,14 @@ class KitServiceProvider extends PackageServiceProvider
         $this->mergeAuthConfigFrom(__DIR__ . '/../config/auth.php');
         RegisterVariableTypes::run();
         $this->app->singleton('seo', function () {
-            return new Seo();
+            return new Seo;
         });
         $this->app->singleton(MicrodataManager::class, function () {
-            return new MicrodataManager();
+            return new MicrodataManager;
         });
         $this->app->alias(MicrodataManager::class, 'microdata');
         $this->app->singleton(AssetManager::class, function () {
-            return new AssetManager();
+            return new AssetManager;
         });
         $this->app->alias(AssetManager::class, 'assets');
         ContactForm::observe(ContactFormObserver::class);

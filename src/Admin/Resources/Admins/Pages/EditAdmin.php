@@ -2,12 +2,10 @@
 
 namespace SmartCms\Kit\Admin\Resources\Admins\Pages;
 
-use Filament\Actions\Action;
-use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Icons\Heroicon;
-use SmartCms\Kit\Admin\Components\Actions\SaveAndClose;
+use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 
 class EditAdmin extends EditRecord
 {
@@ -32,7 +30,7 @@ class EditAdmin extends EditRecord
                     $this->save();
                     $this->record->touch();
                 })
-                ->formId('form')
+                ->formId('form'),
         ];
     }
 }

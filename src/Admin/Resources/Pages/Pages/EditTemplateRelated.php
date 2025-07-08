@@ -2,18 +2,11 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRelatedRecords;
-use Filament\Schemas\Components\Form;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -25,7 +18,6 @@ use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Actions\SaveAction;
 use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 use SmartCms\Support\Admin\Components\Actions\ViewRecord;
-use SmartCms\Support\Admin\Components\Tables\NameColumn;
 use SmartCms\Support\Admin\Components\Tables\SortingColumn;
 use SmartCms\Support\Admin\Components\Tables\StatusColumn;
 use SmartCms\Support\Admin\Components\Tables\UpdatedAtColumn;
@@ -42,7 +34,7 @@ class EditTemplateRelated extends ManageRelatedRecords
         return __('kit::admin.template');
     }
 
-    public static function getNavigationIcon(): string|Htmlable|null
+    public static function getNavigationIcon(): string | Htmlable | null
     {
         return 'heroicon-m-light-bulb';
     }
@@ -50,6 +42,7 @@ class EditTemplateRelated extends ManageRelatedRecords
     public static function getNavigationBadge(): ?string
     {
         $pageId = request()->route('record', 0);
+
         return Page::query()->find($pageId)?->template()->count() ?? 0;
     }
 
@@ -115,10 +108,11 @@ class EditTemplateRelated extends ManageRelatedRecords
                             return [];
                         }
                         $isUsed = $record->section->templates()->count() > 1;
-                        if (!$isUsed) {
+                        if (! $isUsed) {
                             $record->section->update([
                                 'value' => $data['value'],
                             ]);
+
                             return [];
                         }
                         $newSection = $record->section->replicate();
@@ -132,6 +126,7 @@ class EditTemplateRelated extends ManageRelatedRecords
                         $newSection->save();
                         $record->section_id = $newSection->id;
                         $record->save();
+
                         return [];
 
                         return [];

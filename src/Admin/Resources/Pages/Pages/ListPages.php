@@ -69,7 +69,7 @@ class ListPages extends ListRecords
                                 ->hiddenLabel()
                                 ->schema([
                                     Select::make('section_id')->options(Section::query()->pluck('name', 'id'))->label(__('kit::admin.section'))->required(),
-                                ])
+                                ]),
                         ]);
                 }),
             Action::make('create_menu_section')

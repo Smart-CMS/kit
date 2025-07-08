@@ -46,7 +46,7 @@ class Layout extends Component
         ];
     }
 
-    public function render(): View|Closure|string
+    public function render(): View | Closure | string
     {
         return view('kit::layout');
     }

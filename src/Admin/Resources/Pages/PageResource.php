@@ -2,11 +2,9 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages;
 
-use BackedEnum;
 use Filament\Resources\Pages\Page as PagesPage;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Admin\Resources\Pages\Pages\CreatePage;
@@ -25,7 +23,6 @@ use SmartCms\Kit\Models\Page;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
-
 
     public static function form(Schema $schema): Schema
     {
@@ -75,11 +72,10 @@ class PageResource extends Resource
     }
 
     /**
-     * @param Page $record
-     * @return bool
+     * @param  Page  $record
      */
     public static function canDelete(Model $record): bool
     {
-        return !$record->is_system;
+        return ! $record->is_system;
     }
 }

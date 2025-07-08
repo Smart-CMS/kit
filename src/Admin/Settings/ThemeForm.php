@@ -22,6 +22,7 @@ class ThemeForm
                         })
                         ->default($value);
                 }
+
                 return $schema;
             })->columns(3);
     }

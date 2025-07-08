@@ -5,10 +5,10 @@ namespace SmartCms\Kit\Admin\Settings;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Tabs\Tab;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
 
 class SeoForm

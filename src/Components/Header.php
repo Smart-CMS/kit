@@ -13,6 +13,7 @@ class Header extends Component
     {
         $this->layout = app(Layout::class)->where('id', app('s')->get('header', null))->first();
     }
+
     public function render()
     {
         return view($this->layout->viewPath, $this->layout->variables);

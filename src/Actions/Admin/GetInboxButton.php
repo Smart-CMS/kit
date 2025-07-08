@@ -23,7 +23,7 @@ class GetInboxButton
                     ->outlined()
                     ->size('sm')
                     ->color('gray')
-                    ->url(ContactFormResource::getUrl())
+                    ->url(ContactFormResource::getUrl()),
             ]);
         };
     }

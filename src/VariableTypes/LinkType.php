@@ -31,11 +31,11 @@ class LinkType implements VariableTypeInterface
             'title' => 'Default link',
             'type' => 'link',
             'is_external' => false,
-            'url' => url('/')
+            'url' => url('/'),
         ];
     }
 
-    public function getSchema(string $name): Field |Component
+    public function getSchema(string $name): Field | Component
     {
         return Group::make([
             TextInput::make($name . '.title')->label(__('kit::admin.title')),
@@ -59,6 +59,7 @@ class LinkType implements VariableTypeInterface
                     return [];
                 }
                 $component = app(MenuRegistry::class)->getSchemaByType($type);
+
                 return [$component->statePath($name . '.' . $component->getName())];
             }),
             Toggle::make($name . '.is_external')->label(__('kit::admin.open_url_in_new_tab'))->inline(false),
@@ -67,10 +68,11 @@ class LinkType implements VariableTypeInterface
 
     public function getValue(mixed $value): mixed
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return $this->getDefaultValue();
         }
         $value['url'] = app(MenuRegistry::class)->getLinkByType($value);
+
         return $value;
     }
 }

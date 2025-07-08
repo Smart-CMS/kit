@@ -11,8 +11,8 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
-use SmartCms\Kit\Models\Admin;
 use NotificationChannels\Telegram\TelegramUpdates;
+use SmartCms\Kit\Models\Admin;
 
 class Profile extends EditProfile
 {
@@ -66,6 +66,7 @@ class Profile extends EditProfile
                                                 if ($text == '/start ' . $token) {
                                                     $chatId = $message['message']['chat']['id'];
                                                     $set('telegram_id', $chatId);
+
                                                     break;
                                                 }
                                             }
@@ -81,7 +82,7 @@ class Profile extends EditProfile
                     TextInput::make('old_password')
                         ->label('Current Password')
                         ->password()
-                        ->required(fn($get) => filled($get('password')))
+                        ->required(fn ($get) => filled($get('password')))
                         ->dehydrated(false) // Do not save to DB
                         ->rule(function () {
                             return function ($attribute, $value, $fail) {

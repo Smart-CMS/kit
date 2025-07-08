@@ -3,7 +3,6 @@
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
 use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Table;
@@ -26,7 +25,7 @@ class ListItems extends ListRecords
         $this->rootPage = Page::find(request('record'));
     }
 
-    public function getTitle(): string|Htmlable
+    public function getTitle(): string | Htmlable
     {
         return $this->rootPage->name . ' ' . __('kit::admin.items');
     }
@@ -39,7 +38,7 @@ class ListItems extends ListRecords
                 ->schema([
                     NameField::make(),
                     SlugField::make(),
-                    Select::make('parent_id')->hidden(!$this->rootPage->settings['is_categories'])
+                    Select::make('parent_id')->hidden(! $this->rootPage->settings['is_categories'])
                         ->options(Page::query()->where('parent_id', $this->rootPage->id)->pluck('name', 'id')->toArray())->required(),
                 ])->action(function (array $data) {
                     Page::query()->create([

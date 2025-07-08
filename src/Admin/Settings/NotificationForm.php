@@ -9,8 +9,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs\Tab;
-use SmartCms\Kit\Notifications\TestNotification;
 use SmartCms\Kit\Models\Admin;
+use SmartCms\Kit\Notifications\TestNotification;
 
 class NotificationForm
 {
@@ -94,7 +94,7 @@ class NotificationForm
                 TextInput::make('telegram.token')
                     ->label(__('kit::admin.bot_token'))
                     ->password()
-                    ->revealable(false)->readOnly(fn($get, $state) => ! $get('is_token_deleted') || $state)->suffixAction(Action::make('delete_token')->icon('heroicon-o-trash')->action(function ($set) {
+                    ->revealable(false)->readOnly(fn ($get, $state) => ! $get('is_token_deleted') || $state)->suffixAction(Action::make('delete_token')->icon('heroicon-o-trash')->action(function ($set) {
                         $set('is_token_deleted', true);
                         $set('telegram.token', null);
                     })),
@@ -120,6 +120,7 @@ class NotificationForm
 
                             return;
                         }
+
                         try {
                             $user->notifyNow(new TestNotification('telegram'));
                             Notification::make()

@@ -30,21 +30,22 @@ class RandomItems implements VariableTypeInterface
         return FrontPage::query()->limit(self::DEFAULT_LIMIT)->get();
     }
 
-    public function getSchema(string $name): Field |Component
+    public function getSchema(string $name): Field | Component
     {
         return Group::make([
             Select::make($name . '.root_id')->options(Page::query()->where('parent_id', null)->where('is_root', true)->pluck('name', 'id'))->required(),
             TextInput::make($name . '.limit')->default(self::DEFAULT_LIMIT)->numeric()->formatStateUsing(function ($state) {
                 return $state ?? self::DEFAULT_LIMIT;
-            })
+            }),
         ]);
     }
 
     public function getValue(mixed $value): mixed
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return $this->getDefaultValue();
         }
+
         return FrontPage::query()->where('root_id', $value['root_id'] ?? 0)->limit($value['limit'] ?? 3)->inRandomOrder()->get();
     }
 }

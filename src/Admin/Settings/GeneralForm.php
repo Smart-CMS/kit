@@ -49,7 +49,7 @@ class GeneralForm
                     ->image()
                     ->imagePreviewHeight('150')
                     ->maxSize(1024)
-                    ->getUploadedFileNameForStorageUsing(fn($file) => 'favicon.ico'),
+                    ->getUploadedFileNameForStorageUsing(fn ($file) => 'favicon.ico'),
                 ImageUpload::make('no_image', 'no_image', __('kit::admin.no_image')),
             ])->columns(2),
         ]);

@@ -21,7 +21,7 @@ class GetViewButton
                     ->size('sm')
                     ->color('gray')
                     ->url(url('/'))
-                    ->openUrlInNewTab()
+                    ->openUrlInNewTab(),
             ]);
         };
     }

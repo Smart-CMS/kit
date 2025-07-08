@@ -2,7 +2,6 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
-use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
@@ -12,6 +11,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Actions\Admin\GetPageListUrl;
+use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Support\Admin\Components\Actions\SaveAction;
 use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 use SmartCms\Support\Admin\Components\Actions\ViewRecord;
@@ -39,23 +39,24 @@ class EditLayoutSettings extends EditRecord
                         Select::make('layout_id')
                             ->options(Layout::all()->pluck('name', 'id'))
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn(Model $record) => $record->root_id !== null)
-                            ->required(fn(Model $record) => $record->root_id === null)
+                            ->disabled(fn (Model $record) => $record->root_id !== null)
+                            ->required(fn (Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
                                 $set('value', $layout?->value ?? []);
-                            })
+                            }),
                     ]),
                     Section::make()->schema(function (Get $get) {
                         $layout = Layout::find($get('layout_id'));
+
                         return $layout?->schema ?? [];
                     }),
                 ]),
                 RightGrid::make()->schema([
                     Aside::make(false),
                 ]),
-            ])
+            ]),
         ]);
     }
 
@@ -72,11 +73,11 @@ class EditLayoutSettings extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $layout_id = $data['layout_id'] ?? $record->layout_id ?? null;
-        if (!$layout_id) {
+        if (! $layout_id) {
             return $record;
         }
         $layout = Layout::find($layout_id);
-        if (!$layout) {
+        if (! $layout) {
             return $record;
         }
         $toUpdate = [

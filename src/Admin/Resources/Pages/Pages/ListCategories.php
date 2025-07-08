@@ -9,12 +9,12 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Forms\NameField;
 use SmartCms\Support\Admin\Components\Forms\SlugField;
-use Illuminate\Support\Str;
 
 class ListCategories extends ListRecords
 {
@@ -28,7 +28,7 @@ class ListCategories extends ListRecords
         parent::mount();
     }
 
-    public function getTitle(): string|Htmlable
+    public function getTitle(): string | Htmlable
     {
         return $this->rootPage->name . ' ' . __('kit::admin.categories');
     }

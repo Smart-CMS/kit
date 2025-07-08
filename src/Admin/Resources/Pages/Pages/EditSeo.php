@@ -25,7 +25,7 @@ class EditSeo extends EditRecord
         return __('kit::admin.seo');
     }
 
-    public static function getNavigationIcon(): string|Htmlable|null
+    public static function getNavigationIcon(): string | Htmlable | null
     {
         return 'heroicon-o-globe-alt';
     }
@@ -75,7 +75,7 @@ class EditSeo extends EditRecord
         return array_merge($data, $this->record->seo()->where('language_id', main_lang_id())->first()?->toArray() ?? []);
     }
 
-    public function getHeading(): string|Htmlable
+    public function getHeading(): string | Htmlable
     {
         return parent::getHeading() . ' ' . __('kit::admin.seo');
     }
