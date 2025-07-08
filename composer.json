@@ -1,58 +1,71 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "smart-cms/kit",
+    "description": "This is my package kit",
     "keywords": [
-        ":vendor_name",
+        "SmartCms",
         "laravel",
-        ":package_slug"
+        "kit"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/smart-cms/kit",
     "support": {
-        "issues": "https://github.com/:vendor_slug/:package_slug/issues",
-        "source": "https://github.com/:vendor_slug/:package_slug"
+        "issues": "https://github.com/smart-cms/kit/issues",
+        "source": "https://github.com/smart-cms/kit"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "maxboyko",
+            "email": "maxboiko@divotek.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.1",
-        "filament/filament": "^3.0",
-        "filament/forms": "^3.0",
-        "filament/tables": "^3.0",
-        "spatie/laravel-package-tools": "^1.15.0"
+        "php": "^8.3",
+        "filament/filament": "^4.0",
+        "laravel-notification-channels/telegram": "^6.0",
+        "lorisleiva/laravel-actions": "^2.8",
+        "smart-cms/lang": "^1.0",
+        "smart-cms/menu": "^1.0",
+        "smart-cms/model-translate": "^1.0",
+        "smart-cms/panel-settings": "^1.0",
+        "smart-cms/panel-translate": "^1.0",
+        "smart-cms/seo": "^1.0",
+        "smart-cms/support": "^1.0",
+        "smart-cms/template-builder": "^1.0",
+        "smart-cms/theme": "^1.0",
+        "spatie/laravel-package-tools": "^1.15.0",
+        "smart-cms/forms": "^1.0"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.9",
-        "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^8.0",
-        "pestphp/pest": "^2.1",
-        "pestphp/pest-plugin-arch": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-arch": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
+        "pestphp/pest-plugin-livewire": "^3.0",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
-        }
+            "SmartCms\\Kit\\": "src/",
+            "SmartCms\\Kit\\Database\\Factories\\": "database/factories/"
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/"
+            "SmartCms\\Kit\\Tests\\": "tests/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "phpstan analyse --memory-limit 1G -c phpstan.neon.dist ",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
         "format": "vendor/bin/pint"
@@ -67,11 +80,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
-            }
+                "SmartCms\\Kit\\KitServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

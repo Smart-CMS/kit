@@ -1,0 +1,102 @@
+<?php
+
+namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
+
+use SmartCms\Kit\Admin\Resources\Pages\PageResource;
+use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\Select;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Model;
+use SmartCms\Kit\Actions\Admin\GetPageListUrl;
+use SmartCms\Support\Admin\Components\Actions\SaveAction;
+use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
+use SmartCms\Support\Admin\Components\Actions\ViewRecord;
+use SmartCms\Support\Admin\Components\Layout\Aside;
+use SmartCms\Support\Admin\Components\Layout\FormGrid;
+use SmartCms\Support\Admin\Components\Layout\LeftGrid;
+use SmartCms\Support\Admin\Components\Layout\RightGrid;
+use SmartCms\TemplateBuilder\Models\Layout;
+
+class EditLayoutSettings extends EditRecord
+{
+    protected static string $resource = PageResource::class;
+
+    public function getTitle(): string
+    {
+        return __('kit::admin.layout_settings');
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema->schema([
+            FormGrid::make()->schema([
+                LeftGrid::make()->schema([
+                    Section::make()->schema([
+                        Select::make('layout_id')
+                            ->options(Layout::all()->pluck('name', 'id'))
+                            ->label(__('kit::admin.layout'))
+                            ->disabled(fn(Model $record) => $record->root_id !== null)
+                            ->required(fn(Model $record) => $record->root_id === null)
+                            ->reactive()
+                            ->afterStateUpdated(function (Set $set, $state) {
+                                $layout = Layout::find($state);
+                                $set('value', $layout?->value ?? []);
+                            })
+                    ]),
+                    Section::make()->schema(function (Get $get) {
+                        $layout = Layout::find($get('layout_id'));
+                        return $layout?->schema ?? [];
+                    }),
+                ]),
+                RightGrid::make()->schema([
+                    Aside::make(false),
+                ]),
+            ])
+        ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            DeleteAction::make(),
+            ViewRecord::make(),
+            SaveAndClose::make($this, GetPageListUrl::run($this->getRecord())),
+            SaveAction::make($this),
+        ];
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        $layout_id = $data['layout_id'] ?? $record->layout_id ?? null;
+        if (!$layout_id) {
+            return $record;
+        }
+        $layout = Layout::find($layout_id);
+        if (!$layout) {
+            return $record;
+        }
+        $toUpdate = [
+            'layout_id' => $layout_id,
+        ];
+        if ($layout->value != $data['value']) {
+            $toUpdate['layout_settings'] = $data['value'];
+        }
+        $this->record->update($toUpdate);
+
+        return $record;
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['value'] = $this->record?->layout_settings ?? [];
+        if ($this->record?->layout && empty($data['value'])) {
+            $data['value'] = $this->record->layout?->value ?? [];
+        }
+
+        return $data;
+    }
+}
