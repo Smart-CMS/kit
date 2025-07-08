@@ -23,7 +23,6 @@ class PageForm
     public static function configure(Schema $schema): Schema
     {
         $imagePath = '';
-        return $schema;
         /**
          * @var Page $record
          */
