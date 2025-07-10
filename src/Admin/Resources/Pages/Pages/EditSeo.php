@@ -63,16 +63,14 @@ class EditSeo extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $this->record->seo()->updateOrCreate([
-            'language_id' => main_lang_id(),
-        ], $this->form->getState());
+        $this->record->seo()->updateOrCreate([], $data);
 
         return $record;
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        return array_merge($data, $this->record->seo()->where('language_id', main_lang_id())->first()?->toArray() ?? []);
+        return array_merge($data, $this->record->seo?->toArray() ?? []);
     }
 
     public function getHeading(): string | Htmlable

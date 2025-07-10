@@ -14,9 +14,13 @@ class MakeHomePage extends Command
 
     public function handle()
     {
+        $slug = app('lang')->default()->slug ?? 'en';
         $page = Page::query()->updateOrCreate([
-            'name' => 'Home',
+            'id' => 1,
         ], [
+            'name' => [
+                $slug => 'Home',
+            ],
             'slug' => '',
             'status' => true,
             'is_system' => true,
@@ -24,5 +28,6 @@ class MakeHomePage extends Command
         DB::table($page->getTable())->where('id', $page->id)->update([
             'slug' => '',
         ]);
+        $this->info('Home page created successfully');
     }
 }

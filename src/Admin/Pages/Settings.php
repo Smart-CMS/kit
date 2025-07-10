@@ -79,7 +79,7 @@ class Settings extends SettingsPage
             Action::make('cancel')
                 ->color('gray')
                 ->label(__('kit::admin.cancel'))
-                ->url(fn () => self::getUrl()),
+                ->url(fn() => self::getUrl()),
         ];
     }
 
@@ -105,13 +105,13 @@ class Settings extends SettingsPage
                     'is_admin_active' => true,
                 ]);
         }
-        if (! isset($data['frontend_languages']) || empty($data['frontend_languages'])) {
+        if (! isset($data['front_languages']) || empty($data['front_languages'])) {
             Language::query()->where('is_frontend_active', false)
                 ->update([
                     'is_frontend_active' => false,
                 ]);
         } else {
-            Language::query()->whereIn('id', $data['frontend_languages'] ?? [])
+            Language::query()->whereIn('id', $data['front_languages'] ?? [])
                 ->update([
                     'is_admin_active' => true,
                     'is_frontend_active' => true,

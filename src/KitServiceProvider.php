@@ -127,13 +127,14 @@ class KitServiceProvider extends PackageServiceProvider
                 /** @var \Illuminate\Routing\Route $this */
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
+                $actions = array_filter($this->getAction(), fn($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
                 FacadesRoute::addRoute(
                     $this->methods(),
                     '{lang}/' . $cleanUri,
-                    $this->getAction()
-                )->where('lang', '[a-z]{2}')->name('.lang')->middleware('lang');
+                    $actions
+                )->where('lang', '[a-z]{2}')->name($this->getName() . '.lang')->middleware('lang');
 
-                return $this;
+                return $this->middleware('lang');
             });
         }
     }
@@ -142,7 +143,6 @@ class KitServiceProvider extends PackageServiceProvider
     {
         Testable::mixin(new TestsKit);
         $this->configureDefaults();
-        $this->mergeAuthConfigFrom(__DIR__ . '/../config/auth.php');
         RegisterVariableTypes::run();
         $this->app->singleton('seo', function () {
             return new Seo;
@@ -155,9 +155,12 @@ class KitServiceProvider extends PackageServiceProvider
             return new AssetManager;
         });
         $this->app->alias(AssetManager::class, 'assets');
-        ContactForm::observe(ContactFormObserver::class);
         app(MenuRegistry::class)->register(PageMenuType::class);
-        BindConfig::run();
+        ContactForm::observe(ContactFormObserver::class);
+        $this->app->booted(function () {
+            BindConfig::run();
+            $this->mergeAuthConfigFrom(__DIR__ . '/../config/auth.php');
+        });
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

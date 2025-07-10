@@ -11,6 +11,8 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
+use SmartCms\Kit\Admin\Forms\PageNameField;
+use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Forms\NameField;
@@ -39,17 +41,8 @@ class ListCategories extends ListRecords
             Action::make('_create')
                 ->label(__('kit::admin.create_category'))
                 ->schema([
-                    NameField::make()->live(onBlur: true)->afterStateUpdated(function (string $state, string $operation, Set $set, Get $get) {
-                        if ($operation == 'edit') {
-                            return;
-                        }
-                        $slug = Str::slug($state);
-                        $currentslug = $get('slug') ?? $slug;
-                        if (str_contains($slug, $currentslug)) {
-                            $set('slug', $slug);
-                        }
-                    }),
-                    SlugField::make(),
+                    PageNameField::make(),
+                    PageSlugField::make(),
                 ])->action(function (array $data) {
                     Page::query()->create([
                         'name' => $data['name'],

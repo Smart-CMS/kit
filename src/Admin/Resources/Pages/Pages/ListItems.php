@@ -9,6 +9,8 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
+use SmartCms\Kit\Admin\Forms\PageNameField;
+use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Forms\NameField;
@@ -36,8 +38,8 @@ class ListItems extends ListRecords
             Action::make('_create')
                 ->label(__('kit::admin.create_item'))
                 ->schema([
-                    NameField::make(),
-                    SlugField::make(),
+                    PageNameField::make(),
+                    PageSlugField::make(),
                     Select::make('parent_id')->hidden(! $this->rootPage->settings['is_categories'])
                         ->options(Page::query()->where('parent_id', $this->rootPage->id)->pluck('name', 'id')->toArray())->required(),
                 ])->action(function (array $data) {

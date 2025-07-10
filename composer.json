@@ -24,6 +24,7 @@
         "filament/filament": "^4.0",
         "laravel-notification-channels/telegram": "^6.0",
         "lorisleiva/laravel-actions": "^2.8",
+        "smart-cms/forms": "^1.0",
         "smart-cms/lang": "^1.0",
         "smart-cms/menu": "^1.0",
         "smart-cms/model-translate": "^1.0",
@@ -34,7 +35,7 @@
         "smart-cms/template-builder": "^1.0",
         "smart-cms/theme": "^1.0",
         "spatie/laravel-package-tools": "^1.15.0",
-        "smart-cms/forms": "^1.0"
+        "spatie/laravel-translatable": "^6.11"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",

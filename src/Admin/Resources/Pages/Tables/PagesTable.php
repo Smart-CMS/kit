@@ -4,6 +4,7 @@ namespace SmartCms\Kit\Admin\Resources\Pages\Tables;
 
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use SmartCms\Support\Admin\Components\Actions\ViewRecord;
 use SmartCms\Support\Admin\Components\Filters\StatusFilter;
@@ -21,7 +22,11 @@ class PagesTable
         return $table
             ->columns([
                 NameColumn::make(),
-                // DefImageColumn::make(),
+                ImageColumn::make('image.source')
+                    ->circular()
+                    ->defaultImageUrl(no_image()['source'] ?? '')
+
+                    ->default(no_image()['source']),
                 StatusColumn::make(),
                 SortingColumn::make(),
                 ViewsColumn::make(),

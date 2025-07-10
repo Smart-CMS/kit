@@ -7,6 +7,8 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use SmartCms\Kit\Admin\Forms\PageNameField;
+use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Models\Page;
 use SmartCms\ModelTranslate\Admin\TranslateAction;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
@@ -36,18 +38,8 @@ class PageForm
                     FormGrid::make()->schema([
                         LeftGrid::make()->schema([
                             Section::make([
-                                NameField::make()->live(onBlur: true)
-                                    ->suffixAction(TranslateAction::make())->afterStateUpdated(function (string $state, string $operation, Set $set, Get $get) {
-                                        if ($operation == 'edit') {
-                                            return;
-                                        }
-                                        $slug = Str::slug($state);
-                                        $currentslug = $get('slug') ?? $slug;
-                                        if (str_contains($slug, $currentslug)) {
-                                            $set('slug', $slug);
-                                        }
-                                    }),
-                                SlugField::make()->hidden(fn ($record) => $record?->id == 1),
+                                PageNameField::make(),
+                                PageSlugField::make()->hidden(fn($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),

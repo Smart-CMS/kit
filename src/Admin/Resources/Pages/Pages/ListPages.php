@@ -81,7 +81,7 @@ class ListPages extends ListRecords
                         NameField::make(),
                         SlugField::make()->required(false)->unique(config('kit.pages_table_name'), 'slug', modifyRuleUsing: function ($rule, $get, $set) {
                             if (blank($get('slug'))) {
-                                $set('slug', \Illuminate\Support\Str::slug($get('name')));
+                                $set('slug', \Illuminate\Support\Str::slug($get('name')[main_lang()]));
                             }
 
                             return $rule;
@@ -90,7 +90,7 @@ class ListPages extends ListRecords
                     ]);
                 })->action(function ($data) {
                     if (! isset($data['slug'])) {
-                        $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
+                        $data['slug'] = \Illuminate\Support\Str::slug($data['name'][main_lang()]);
                     }
                     $page = Page::query()->create([
                         'name' => $data['name'],

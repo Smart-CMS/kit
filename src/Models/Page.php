@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use SmartCms\Kit\Components\PageComponent;
-use SmartCms\ModelTranslate\HasTranslate;
 use SmartCms\Seo\Traits\HasSeo;
 use SmartCms\Support\Traits\HasBreadcrumbs;
 use SmartCms\Support\Traits\HasParent;
@@ -16,6 +15,7 @@ use SmartCms\Support\Traits\HasSorting;
 use SmartCms\Support\Traits\HasStatus;
 use SmartCms\TemplateBuilder\Traits\HasLayout;
 use SmartCms\TemplateBuilder\Traits\HasTemplate;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * Class Page
@@ -52,15 +52,16 @@ class Page extends Model
     use HasLayout;
     use HasParent;
     use HasRoute;
-
     // use HasSorting;
     use HasSeo;
     use HasSlug;
     use HasStatus;
     use HasTemplate;
-    use HasTranslate;
+    use HasTranslations;
 
     protected $guarded = [];
+
+    public array $translatable = ['name'];
 
     protected $casts = [
         'status' => 'boolean',
@@ -75,7 +76,7 @@ class Page extends Model
         return once(function () {
             $breadcrumbs = [
                 [
-                    'name' => $this->translate() ?? '',
+                    'name' => $this->name,
                     'link' => $this->route(),
                 ],
             ];
@@ -151,16 +152,17 @@ class Page extends Model
                     'sorting' => $key + 1,
                 ]);
             }
+            if ($page->sorting == 0) {
+                $maxSorting = 0;
+                if ($page->parent_id) {
+                    $maxSorting = Page::query()->where('parent_id', $page->parent_id)->max('sorting');
+                } else {
+                    $maxSorting = Page::query()->max('sorting');
+                }
+                $page->sorting = $maxSorting + 1;
+                $page->save();
+            }
         });
-        //     if ($page->parent_id) {
-        //         $parent = Page::find($page->parent_id);
-        //         $page->depth = $parent->depth + 1;
-        //         $page->root_id = $parent->root_id;
-        //     } else {
-        //         $page->depth = 0;
-        //         $page->root_id = $page->id ?? null;
-        //     }
-        // });
     }
 
     public function getTable(): string
@@ -171,5 +173,10 @@ class Page extends Model
     public function render(): string
     {
         return Blade::renderComponent(new PageComponent($this));
+    }
+
+    public function getFallbackLocale(): string
+    {
+        return main_lang();
     }
 }
