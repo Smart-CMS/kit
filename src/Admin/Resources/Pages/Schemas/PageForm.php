@@ -3,17 +3,11 @@
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 use SmartCms\Kit\Admin\Forms\PageNameField;
 use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Models\Page;
-use SmartCms\ModelTranslate\Admin\TranslateAction;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
-use SmartCms\Support\Admin\Components\Forms\NameField;
-use SmartCms\Support\Admin\Components\Forms\SlugField;
 use SmartCms\Support\Admin\Components\Layout\Aside;
 use SmartCms\Support\Admin\Components\Layout\FormGrid;
 use SmartCms\Support\Admin\Components\Layout\LeftGrid;
@@ -39,7 +33,7 @@ class PageForm
                         LeftGrid::make()->schema([
                             Section::make([
                                 PageNameField::make(),
-                                PageSlugField::make()->hidden(fn($record) => $record?->id == 1),
+                                PageSlugField::make()->hidden(fn ($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),

@@ -13,8 +13,6 @@ use SmartCms\Kit\Admin\Forms\PageNameField;
 use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
-use SmartCms\Support\Admin\Components\Forms\NameField;
-use SmartCms\Support\Admin\Components\Forms\SlugField;
 
 class ListItems extends ListRecords
 {

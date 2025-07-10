@@ -79,7 +79,7 @@ class Settings extends SettingsPage
             Action::make('cancel')
                 ->color('gray')
                 ->label(__('kit::admin.cancel'))
-                ->url(fn() => self::getUrl()),
+                ->url(fn () => self::getUrl()),
         ];
     }
 

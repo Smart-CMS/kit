@@ -52,6 +52,7 @@ class Page extends Model
     use HasLayout;
     use HasParent;
     use HasRoute;
+
     // use HasSorting;
     use HasSeo;
     use HasSlug;

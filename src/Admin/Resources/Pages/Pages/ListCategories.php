@@ -4,19 +4,14 @@ namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
 use SmartCms\Kit\Admin\Forms\PageNameField;
 use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
-use SmartCms\Support\Admin\Components\Forms\NameField;
-use SmartCms\Support\Admin\Components\Forms\SlugField;
 
 class ListCategories extends ListRecords
 {

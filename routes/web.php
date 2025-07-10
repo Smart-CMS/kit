@@ -14,5 +14,4 @@ Route::get('/{slug?}/{second_slug?}/{third_slug?}', PageHandler::class)
     ->where('lang', '[a-zA-Z]{2}')
     ->middleware(['web', 'maintenance', 'uuid', 'lang'])
     ->name('cms.page')
-    ->multilingual()
-;
+    ->multilingual();
