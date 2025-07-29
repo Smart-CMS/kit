@@ -12,7 +12,7 @@ class PageNameField
 {
     public static function make(?string $name = 'name'): TextInput
     {
-        return NameField::make($name)->live(onBlur: true)->afterStateUpdated(function (string $state, string $operation, Set $set, Get $get) {
+        return NameField::make($name . '.' . current_lang())->live(onBlur: true)->afterStateUpdated(function (string $state, string $operation, Set $set, Get $get) {
             if ($operation == 'edit') {
                 return;
             }
