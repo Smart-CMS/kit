@@ -108,4 +108,8 @@ return [
     'suffix' => 'Suffix',
     'prefix' => 'Prefix',
     'open_url_in_new_tab' => 'Open URL in new tab',
+    'form_data_key' => 'Form Data Key',
+    'form_data_value' => 'Form Data Value',
+    'save' => 'Save',
+    'menu_section' => 'Menu Section',
 ];
