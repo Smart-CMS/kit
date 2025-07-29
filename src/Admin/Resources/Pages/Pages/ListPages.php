@@ -14,6 +14,8 @@ use Filament\Support\Enums\Width;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
+use SmartCms\Kit\Admin\Forms\PageNameField;
+use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Actions\TemplateAction;
@@ -78,14 +80,8 @@ class ListPages extends ListRecords
                 ->modalWidth(Width::TwoExtraLarge)
                 ->schema(function (Schema $form) {
                     return $form->schema([
-                        NameField::make(),
-                        SlugField::make()->required(false)->unique(config('kit.pages_table_name'), 'slug', modifyRuleUsing: function ($rule, $get, $set) {
-                            if (blank($get('slug'))) {
-                                $set('slug', \Illuminate\Support\Str::slug($get('name')[main_lang()]));
-                            }
-
-                            return $rule;
-                        }),
+                        PageNameField::make(),
+                        PageSlugField::make(),
                         Toggle::make('is_categories')->label(__('kit::admin.is_categories'))->default(false),
                     ]);
                 })->action(function ($data) {
@@ -124,4 +120,8 @@ class ListPages extends ListRecords
             return $query->where('is_root', false)->whereNull('parent_id');
         });
     }
+    // public function getMaxContentWidth(): Width
+    // {
+    //     return Width::Full;
+    // }
 }

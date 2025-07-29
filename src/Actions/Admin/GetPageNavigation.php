@@ -19,14 +19,14 @@ class GetPageNavigation
     {
         $pages = Page::query()->where('is_root', true)->get();
         $navigation = [
-            NavigationItem::make('pages')->label(__('kit::admin.pages'))->url(ListPages::getUrl())->icon('heroicon-o-newspaper')->isActiveWhen(fn () => request()->routeIs(ListPages::getRouteName())),
+            NavigationItem::make('pages')->label(__('kit::admin.pages'))->url(ListPages::getUrl())->icon('heroicon-o-newspaper')->isActiveWhen(fn() => request()->routeIs(ListPages::getRouteName())),
         ];
         foreach ($pages as $page) {
-            $navigation[] = NavigationGroup::make($page->name)->collapsed()->label($page->name)->items(array_filter([
+            $navigation[] = NavigationGroup::make($page->getTranslation('name', main_lang()))->collapsed()->label($page->getTranslation('name', main_lang()))->items(array_filter([
                 isset($page->settings['is_categories']) && $page->settings['is_categories'] ?
-                    NavigationItem::make('categories')->label(__('kit::admin.categories'))->url(ListCategories::getUrl(['record' => $page->id]))->icon('heroicon-o-newspaper')->isActiveWhen(fn () => request()->routeIs(ListCategories::getRouteName()) && request()->route('record') == $page->id) : null,
-                NavigationItem::make('items')->label(__('kit::admin.items'))->url(ListItems::getUrl(['record' => $page->id]))->icon('heroicon-o-newspaper')->isActiveWhen(fn () => request()->routeIs(ListItems::getRouteName()) && request()->route('record') == $page->id),
-                NavigationItem::make('settings')->label(__('kit::admin.settings'))->url(EditMenuSection::getUrl(['record' => $page->id]))->icon('heroicon-o-cog')->isActiveWhen(fn () => request()->routeIs(EditMenuSection::getRouteName()) && request()->route('record') == $page->id),
+                    NavigationItem::make('categories')->label(__('kit::admin.categories'))->url(ListCategories::getUrl(['record' => $page->id]))->icon('heroicon-o-newspaper')->isActiveWhen(fn() => request()->routeIs(ListCategories::getRouteName()) && request()->route('record') == $page->id) : null,
+                NavigationItem::make('items')->label(__('kit::admin.items'))->url(ListItems::getUrl(['record' => $page->id]))->icon('heroicon-o-newspaper')->isActiveWhen(fn() => request()->routeIs(ListItems::getRouteName()) && request()->route('record') == $page->id),
+                NavigationItem::make('settings')->label(__('kit::admin.settings'))->url(EditMenuSection::getUrl(['record' => $page->id]))->icon('heroicon-o-cog')->isActiveWhen(fn() => request()->routeIs(EditMenuSection::getRouteName()) && request()->route('record') == $page->id),
             ]));
         }
 

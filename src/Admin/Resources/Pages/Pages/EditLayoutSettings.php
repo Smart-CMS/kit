@@ -39,8 +39,8 @@ class EditLayoutSettings extends EditRecord
                         Select::make('layout_id')
                             ->options(Layout::all()->pluck('name', 'id'))
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn (Model $record) => $record->root_id !== null)
-                            ->required(fn (Model $record) => $record->root_id === null)
+                            ->disabled(fn(Model $record) => $record->root_id !== null)
+                            ->required(fn(Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
@@ -72,6 +72,9 @@ class EditLayoutSettings extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        if (! isset($data['value'])) {
+            return $record;
+        }
         $layout_id = $data['layout_id'] ?? $record->layout_id ?? null;
         if (! $layout_id) {
             return $record;
