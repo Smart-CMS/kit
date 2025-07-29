@@ -19,8 +19,6 @@ use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Support\Admin\Components\Actions\TemplateAction;
-use SmartCms\Support\Admin\Components\Forms\NameField;
-use SmartCms\Support\Admin\Components\Forms\SlugField;
 use SmartCms\TemplateBuilder\Models\Section;
 
 class ListPages extends ListRecords

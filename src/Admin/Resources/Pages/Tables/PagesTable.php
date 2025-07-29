@@ -21,13 +21,13 @@ class PagesTable
     {
         return $table
             ->columns([
-                NameColumn::make()->getStateUsing(fn($record) => $record->getTranslation('name', main_lang())),
+                NameColumn::make()->getStateUsing(fn ($record) => $record->getTranslation('name', main_lang())),
                 ImageColumn::make('image.source')
                     ->square()
-                    ->getStateUsing(fn($record) => validateImage(ltrim($record?->image['source'] ?? '', '/')))
+                    ->getStateUsing(fn ($record) => validateImage(ltrim($record?->image['source'] ?? '', '/')))
                     ->defaultImageUrl(no_image()['source'] ?? '')
                     ->default(no_image()['source']),
-                StatusColumn::make()->disabled(fn($record) => $record->is_system),
+                StatusColumn::make()->disabled(fn ($record) => $record->is_system),
                 SortingColumn::make(),
                 ViewsColumn::make(),
                 UpdatedAtColumn::make(),
@@ -37,7 +37,7 @@ class PagesTable
                 StatusFilter::make(),
             ])
             ->recordActions([
-                DeleteAction::make()->iconButton()->hidden(fn($record) => $record->is_system),
+                DeleteAction::make()->iconButton()->hidden(fn ($record) => $record->is_system),
                 EditAction::make()->iconButton(),
                 ViewRecord::make()->iconButton(),
             ])

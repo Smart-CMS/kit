@@ -33,7 +33,7 @@ class PageForm
                         LeftGrid::make()->schema([
                             Section::make([
                                 PageNameField::make(),
-                                PageSlugField::make()->hidden(fn($record) => $record?->id == 1),
+                                PageSlugField::make()->hidden(fn ($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
