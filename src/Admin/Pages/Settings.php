@@ -69,17 +69,17 @@ class Settings extends SettingsPage
     protected function getHeaderActions(): array
     {
         return [
-            HelpAction::make(__('kit::admin.help_settings')),
-            Action::make('save_2')
-                ->label(__('kit::admin.save'))
-                ->icon('heroicon-o-check-circle')
-                ->action(function () {
-                    $this->save();
-                }),
-            Action::make('cancel')
-                ->color('gray')
-                ->label(__('kit::admin.cancel'))
-                ->url(fn () => self::getUrl()),
+            // HelpAction::make(__('kit::admin.help_settings')),
+            // Action::make('save_2')
+            //     ->label(__('kit::admin.save'))
+            //     ->icon('heroicon-o-check-circle')
+            //     ->action(function () {
+            //         $this->save();
+            //     }),
+            // Action::make('cancel')
+            //     ->color('gray')
+            //     ->label(__('kit::admin.cancel'))
+            //     ->url(fn () => self::getUrl()),
         ];
     }
 

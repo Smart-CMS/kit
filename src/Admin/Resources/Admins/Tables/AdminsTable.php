@@ -30,11 +30,11 @@ class AdminsTable
                 //
             ])
             ->recordActions([
-                EditAction::make()->visible(fn (Admin $record): bool => $record->id !== 1),
+                // EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->authorizeIndividualRecords('delete'),
                 ]),
             ]);
     }

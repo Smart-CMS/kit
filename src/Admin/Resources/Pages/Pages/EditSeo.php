@@ -43,10 +43,16 @@ class EditSeo extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ViewRecord::make(),
-            SaveAndClose::make($this, GetPageListUrl::run($this->getRecord())),
-            SaveAction::make($this),
+            \Filament\Actions\ActionGroup::make([
+                SaveAction::make($this),
+                SaveAndClose::make($this, GetPageListUrl::run($this->getRecord())),
+                ViewRecord::make(),
+                DeleteAction::make(),
+            ])->link()->label('Actions')
+                ->icon(\Filament\Support\Icons\Heroicon::ChevronDown)
+                ->size(\Filament\Support\Enums\Size::Small)
+                ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+                ->color('primary'),
         ];
     }
 

@@ -40,6 +40,9 @@ use Spatie\Translatable\HasTranslations;
  * @property \DateTime $created_at The date and time when the model was created.
  * @property \DateTime $updated_at The date and time when the model was last updated.
  * @property \DateTime $published_at The date and time when the model was published.
+ * @property int $created_by The user who created the model.
+ * @property int $updated_by The user who updated the model.
+ * @property bool $is_index Is index page.
  * @property-read \SmartCms\TemplateBuilder\Models\Layout|null $layout The layout used by this page.
  * @property-read \SmartCms\Kit\Models\Page|null $parent The parent page.
  * @property-read \SmartCms\Kit\Models\Page|null $root The root page.
@@ -130,6 +133,10 @@ class Page extends Model
     protected static function boot()
     {
         parent::boot();
+        static::creating(function (Page $page) {
+            $page->created_by = auth()?->id();
+            $page->updated_by = auth()?->id();
+        });
         static::created(function (Page $page) {
             $template = app('s')->get('static_page_template', []);
             if ($page->root_id) {
@@ -163,6 +170,9 @@ class Page extends Model
                 $page->sorting = $maxSorting + 1;
                 $page->save();
             }
+        });
+        static::updating(function (Page $page) {
+            $page->updated_by = auth()?->id();
         });
     }
 

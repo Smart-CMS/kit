@@ -2,8 +2,10 @@
 
 namespace SmartCms\Kit;
 
+use Filament\Actions\Action;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Enums\IconPosition;
 use Filament\View\PanelsRenderHook;
 use SmartCms\Forms\FormsPlugin;
 use SmartCms\Kit\Actions\Admin\GetInboxButton;
@@ -56,7 +58,7 @@ class KitPlugin implements Plugin
                 NoIndex::class,
             ])
             ->renderHook(PanelsRenderHook::PAGE_END, GetVersionHtml::run())
-            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => '<meta name="robots" content="noindex, nofollow" />')
+            ->renderHook(PanelsRenderHook::HEAD_START, fn(): string => '<meta name="robots" content="noindex, nofollow" />')
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetInboxButton::run())
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetViewButton::run())
             ->pages([
@@ -67,6 +69,12 @@ class KitPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
+        Action::configureUsing(function (Action $action) {
+            $action->size('sm');
+            if ($action->getIcon()) {
+                $action->iconPosition(IconPosition::After)->iconSize('xs');
+            }
+        });
         // app()->setLocale(main_lang());
     }
 

@@ -5,6 +5,7 @@ namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -39,15 +40,15 @@ class EditLayoutSettings extends EditRecord
                         Select::make('layout_id')
                             ->options(Layout::all()->pluck('name', 'id'))
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn (Model $record) => $record->root_id !== null)
-                            ->required(fn (Model $record) => $record->root_id === null)
+                            ->disabled(fn(Model $record) => $record->root_id !== null)
+                            ->required(fn(Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
                                 $set('value', $layout?->value ?? []);
                             }),
                     ]),
-                    Section::make()->schema(function (Get $get) {
+                    Flex::make(function (Get $get) {
                         $layout = Layout::find($get('layout_id'));
 
                         return $layout?->schema ?? [];
@@ -63,10 +64,16 @@ class EditLayoutSettings extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ViewRecord::make(),
-            SaveAndClose::make($this, GetPageListUrl::run($this->getRecord())),
-            SaveAction::make($this),
+            \Filament\Actions\ActionGroup::make([
+                SaveAction::make($this),
+                SaveAndClose::make($this, GetPageListUrl::run($this->getRecord())),
+                ViewRecord::make(),
+                DeleteAction::make(),
+            ])->link()->label('Actions')
+                ->icon(\Filament\Support\Icons\Heroicon::ChevronDown)
+                ->size(\Filament\Support\Enums\Size::Small)
+                ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+                ->color('primary'),
         ];
     }
 

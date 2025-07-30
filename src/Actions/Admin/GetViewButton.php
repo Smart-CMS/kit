@@ -14,10 +14,11 @@ class GetViewButton
         return function (): string {
             return Blade::render('{{$action}}', [
                 'action' => Action::make('view')
+                    ->link()
                     ->label(__('filament-actions::view.single.label'))
                     ->icon('heroicon-o-eye')
-                    ->outlined()
-                    ->iconPosition(IconPosition::Before)
+                    ->iconPosition(IconPosition::After)
+                    ->iconSize('sm')
                     ->size('sm')
                     ->color('gray')
                     ->url(url('/'))

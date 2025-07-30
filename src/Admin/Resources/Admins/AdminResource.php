@@ -68,7 +68,13 @@ class AdminResource extends Resource
          * @var Admin|null $user
          */
         $user = Auth::user();
-        if (! $user || $user->id == 1 || $record->id == 1) {
+        if (! $user) {
+            return false;
+        }
+        if ($record->id == 1) {
+            return false;
+        }
+        if ($user->id != 1) {
             return false;
         }
 

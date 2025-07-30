@@ -3,6 +3,8 @@
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
@@ -11,6 +13,9 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\Size;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Actions\Admin\GetPageNavigation;
@@ -44,7 +49,7 @@ class EditMenuSection extends EditRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Hidden::make('settings.is_categories')->formatStateUsing(fn ($state) => $state ?? false),
+            Hidden::make('settings.is_categories')->formatStateUsing(fn($state) => $state ?? false),
             Section::make(__('kit::admin.categories'))->schema([
                 Select::make('settings.categories_layout_id')
                     ->label(__('kit::admin.categories_layout'))
@@ -54,7 +59,7 @@ class EditMenuSection extends EditRecord
                         ->label(__('kit::admin.section'))
                         ->options(ModelsSection::query()->pluck('name', 'id')->toArray())->required(),
                 ]),
-            ])->hidden(fn ($get) => ! $get('settings.is_categories')),
+            ])->hidden(fn($get) => ! $get('settings.is_categories')),
             Section::make(__('kit::admin.items'))->compact()->schema([
                 Select::make('settings.items_layout_id')
                     ->label(__('kit::admin.items_layout'))
@@ -77,37 +82,43 @@ class EditMenuSection extends EditRecord
     {
 
         return [
-            Action::make('delete_menu_section')->label(__('kit::admin.delete'))->icon('heroicon-o-trash')
-                ->color('danger')
-                ->disabled(function ($record) {
-                    return Page::query()->where('root_id', $this->record->id)->exists();
-                })
-                ->requiresConfirmation()
-                ->action(function ($record) {
-                    $record->delete();
-                    Notification::make()->title(__('kit::admin.success'))->success()->send();
+            ActionGroup::make([
+                Action::make('delete_menu_section')->label(__('kit::admin.delete'))->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->disabled(function ($record) {
+                        return Page::query()->where('root_id', $this->record->id)->exists();
+                    })
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->delete();
+                        Notification::make()->title(__('kit::admin.success'))->success()->send();
 
-                    return redirect(ListPages::getUrl());
-                }),
-            Action::make('transfer')->label(__('kit::admin.transfer'))->icon('heroicon-o-arrows-right-left')
-                ->color('danger')
-                ->schema(function ($form) {
-                    return $form->schema([
-                        Select::make('root_id')
-                            ->label(__('kit::admin.menu_section'))
-                            ->options(Page::query()->where('id', '!=', $this->record->id)->whereJsonContains('settings->is_categories', $this->record->settings['is_categories'])->pluck('name', 'id')->toArray())
-                            ->required(),
-                    ]);
-                })->action(function ($data) {
-                    Page::query()->where('root_id', $this->record->id)->update([
-                        'root_id' => $data['root_id'],
-                    ]);
-                    Notification::make()->title(__('kit::admin.success'))->success()->send();
-                }),
-            EditAction::make()->url(fn ($record) => EditPage::getUrl(['record' => $record->id])),
-            ViewRecord::make(),
-            SaveAndClose::make($this, ListPages::getUrl()),
-            SaveAction::make($this),
+                        return redirect(ListPages::getUrl());
+                    }),
+                Action::make('transfer')->label(__('kit::admin.transfer'))->icon('heroicon-o-arrows-right-left')
+                    ->color('danger')
+                    ->schema(function ($form) {
+                        return $form->schema([
+                            Select::make('root_id')
+                                ->label(__('kit::admin.menu_section'))
+                                ->options(Page::query()->where('id', '!=', $this->record->id)->whereJsonContains('settings->is_categories', $this->record->settings['is_categories'])->pluck('name', 'id')->toArray())
+                                ->required(),
+                        ]);
+                    })->action(function ($data) {
+                        Page::query()->where('root_id', $this->record->id)->update([
+                            'root_id' => $data['root_id'],
+                        ]);
+                        Notification::make()->title(__('kit::admin.success'))->success()->send();
+                    }),
+                EditAction::make()->url(fn($record) => EditPage::getUrl(['record' => $record->id])),
+                ViewRecord::make(),
+                SaveAndClose::make($this, ListPages::getUrl()),
+                SaveAction::make($this),
+            ])->link()->label('Actions')
+                ->icon(Heroicon::ChevronDown)
+                ->size(Size::Small)
+                ->iconPosition(IconPosition::After)
+                ->color('primary'),
         ];
     }
 

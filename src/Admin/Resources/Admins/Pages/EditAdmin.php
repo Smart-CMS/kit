@@ -4,8 +4,9 @@ namespace SmartCms\Kit\Admin\Resources\Admins\Pages;
 
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Support\Icons\Heroicon;
 use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
+use SmartCms\Support\Admin\Components\Actions\SaveAction;
+use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 
 class EditAdmin extends EditRecord
 {
@@ -14,23 +15,15 @@ class EditAdmin extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            $this->getSaveFormAction()->label(__('kit::admin.save_close'))
-                ->icon(Heroicon::OutlinedCheckBadge)
-                ->action(function () {
-                    $this->save(true, true);
-                    $this->record->touch();
-
-                    return redirect()->to(static::$resource::getUrl('index'));
-                })->formId('form'),
-            $this->getSaveFormAction()
-                ->label(__('kit::admin.save'))
-                ->icon(Heroicon::OutlinedCheckCircle)
-                ->action(function () {
-                    $this->save();
-                    $this->record->touch();
-                })
-                ->formId('form'),
+            \Filament\Actions\ActionGroup::make([
+                SaveAction::make($this),
+                SaveAndClose::make($this, AdminResource::getUrl('index')),
+                DeleteAction::make()->hidden(fn($record) => $record->id == 1),
+            ])->link()->label('Actions')
+                ->icon(\Filament\Support\Icons\Heroicon::ChevronDown)
+                ->size(\Filament\Support\Enums\Size::Small)
+                ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+                ->color('primary'),
         ];
     }
 }
