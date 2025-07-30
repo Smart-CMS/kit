@@ -1,0 +1,27 @@
+.fi-sc-actions>div {
+    flex-direction: row-reverse;
+}
+.fi-page-sub-navigation-sidebar-ctn {
+    width: calc(var(--spacing)*54);
+}
+.fi-modal-footer-actions {
+    flex-direction: row-reverse;
+}
+.mr-2 {
+    margin-right: 0.5rem;
+}
+.fi-topbar-database-notifications-btn>svg {
+    width: calc(var(--spacing)*4);
+    height: calc(var(--spacing)*4);
+}
+.fi-user-avatar {
+    width: calc(var(--spacing)*6);
+    height: calc(var(--spacing)*6);
+}
+.fi-topbar-item-icon {
+    width: calc(var(--spacing)*4);
+    height: calc(var(--spacing)*4);
+}
+.fi-section-content {
+    padding: calc(var(--spacing)*4);
+}

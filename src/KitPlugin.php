@@ -5,7 +5,9 @@ namespace SmartCms\Kit;
 use Filament\Actions\Action;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Assets\Css;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\View\PanelsRenderHook;
 use SmartCms\Forms\FormsPlugin;
 use SmartCms\Kit\Actions\Admin\GetInboxButton;
@@ -33,6 +35,9 @@ class KitPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        FilamentAsset::register([
+            Css::make('custom', public_path('kit/css/custom.css')),
+        ]);
         $panel->plugins([
             new Theme,
             TemplateBuilderPlugin::make('kit::admin.design'),

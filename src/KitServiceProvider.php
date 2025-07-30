@@ -103,6 +103,7 @@ class KitServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('smart-cms/kit')
                     ->endWith(function (InstallCommand $command) {
                         $command->call('vendor:publish', ['--tag' => 'kit-images']);
+                        $command->call('vendor:publish', ['--tag' => 'kit-css']);
                         $command->call('make:home-page');
                         if (File::exists(public_path('robots.txt'))) {
                             File::move(public_path('robots.txt'), public_path('robots.txt.backup'));
@@ -165,6 +166,9 @@ class KitServiceProvider extends PackageServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/images/' => storage_path('app/public'),
             ], 'kit-images');
+            $this->publishes([
+                __DIR__ . '/../resources/dist/custom.css' => public_path('kit/css/custom.css'),
+            ], 'kit-css');
         }
     }
 
