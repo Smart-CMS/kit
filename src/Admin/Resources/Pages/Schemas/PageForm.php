@@ -3,25 +3,19 @@
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 use SmartCms\Kit\Admin\Forms\PageNameField;
 use SmartCms\Kit\Admin\Forms\PageSlugField;
 use SmartCms\Kit\Models\Admin;
 use SmartCms\Kit\Models\Page;
-use SmartCms\Support\Admin\Components\Forms\CreatedAt;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
 use SmartCms\Support\Admin\Components\Forms\StatusField;
-use SmartCms\Support\Admin\Components\Forms\UpdatedAt;
-use SmartCms\Support\Admin\Components\Layout\Aside;
 use SmartCms\Support\Admin\Components\Layout\FormGrid;
 use SmartCms\Support\Admin\Components\Layout\LeftGrid;
 use SmartCms\Support\Admin\Components\Layout\RightGrid;
-use Filament\Schemas\Components\Text;
-use Illuminate\Support\HtmlString;
 
 class PageForm
 {
@@ -43,7 +37,7 @@ class PageForm
                         LeftGrid::make()->schema([
                             Section::make([
                                 PageNameField::make(),
-                                PageSlugField::make()->hidden(fn($record) => $record?->id == 1),
+                                PageSlugField::make()->hidden(fn ($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
@@ -55,18 +49,20 @@ class PageForm
                                 Text::make(function ($record) {
                                     $admin = Admin::query()->find($record->created_by);
                                     $created_by = $admin?->name ?? __('kit::admin.system');
+
                                     return new HtmlString('Created ' . $record->created_at->format('d.m.Y H:i') . ' - ' . $created_by);
                                 })->color('neutral'),
                                 Text::make(function ($record) {
                                     $admin = Admin::query()->find($record->updated_by);
                                     $updated_by = $admin?->name ?? __('kit::admin.system');
+
                                     return new HtmlString('Updated ' . $record->updated_at->format('d.m.Y H:i') . ' - ' . $updated_by);
                                 })->color('neutral'),
                             ])->columnSpan(1)->hiddenOn('create')->compact()->secondary(),
                             Section::make()->schema([
                                 DatePicker::make('published_at')->seconds(false)->default(now()),
-                                StatusField::make()->hidden(fn($record) => $record->is_system),
-                            ])
+                                StatusField::make()->hidden(fn ($record) => $record->is_system),
+                            ]),
                         ]),
                     ]),
                 ]

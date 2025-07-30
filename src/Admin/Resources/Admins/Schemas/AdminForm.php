@@ -3,7 +3,6 @@
 namespace SmartCms\Kit\Admin\Resources\Admins\Schemas;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use SmartCms\Support\Admin\Components\Layout\Aside;

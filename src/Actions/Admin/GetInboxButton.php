@@ -16,6 +16,7 @@ class GetInboxButton
     {
         return function (): string {
             $count = ContactForm::query()->where('status', ContactFormStatusesEnum::NEW)->count();
+
             return Blade::render('{{$action}}', [
                 'action' => Action::make('contact_form')
                     ->label(__('kit::admin.inbox'))
@@ -23,7 +24,7 @@ class GetInboxButton
                     ->badge($count)
                     ->badgeColor($count > 0 ? 'warning' : 'gray')
                     ->extraAttributes([
-                        'class' => 'mr-2'
+                        'class' => 'mr-2',
                     ])
                     ->icon('heroicon-o-envelope')
                     ->iconPosition(IconPosition::After)

@@ -7,7 +7,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use SmartCms\Kit\Models\Admin;
 use SmartCms\Support\Admin\Components\Tables\CreatedAtColumn;
 use SmartCms\Support\Admin\Components\Tables\UpdatedAtColumn;
 

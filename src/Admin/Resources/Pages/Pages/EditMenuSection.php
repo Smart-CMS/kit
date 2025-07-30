@@ -4,7 +4,6 @@ namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
@@ -49,7 +48,7 @@ class EditMenuSection extends EditRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Hidden::make('settings.is_categories')->formatStateUsing(fn($state) => $state ?? false),
+            Hidden::make('settings.is_categories')->formatStateUsing(fn ($state) => $state ?? false),
             Section::make(__('kit::admin.categories'))->schema([
                 Select::make('settings.categories_layout_id')
                     ->label(__('kit::admin.categories_layout'))
@@ -59,7 +58,7 @@ class EditMenuSection extends EditRecord
                         ->label(__('kit::admin.section'))
                         ->options(ModelsSection::query()->pluck('name', 'id')->toArray())->required(),
                 ]),
-            ])->hidden(fn($get) => ! $get('settings.is_categories')),
+            ])->hidden(fn ($get) => ! $get('settings.is_categories')),
             Section::make(__('kit::admin.items'))->compact()->schema([
                 Select::make('settings.items_layout_id')
                     ->label(__('kit::admin.items_layout'))
@@ -110,7 +109,7 @@ class EditMenuSection extends EditRecord
                         ]);
                         Notification::make()->title(__('kit::admin.success'))->success()->send();
                     }),
-                EditAction::make()->url(fn($record) => EditPage::getUrl(['record' => $record->id])),
+                EditAction::make()->url(fn ($record) => EditPage::getUrl(['record' => $record->id])),
                 ViewRecord::make(),
                 SaveAndClose::make($this, ListPages::getUrl()),
                 SaveAction::make($this),
