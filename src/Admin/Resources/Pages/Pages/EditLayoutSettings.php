@@ -43,14 +43,14 @@ class EditLayoutSettings extends EditRecord
                                     ->when($record->is_root, function ($query) {
                                         return $query->where('path', 'like', '%divisions%');
                                     })
-                                    ->when(!$record->is_root, function ($query) {
+                                    ->when(! $record->is_root, function ($query) {
                                         return $query->where('path', 'like', '%pages%');
                                     })
                                     ->pluck('name', 'id');
                             })
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn(Model $record) => $record->root_id !== null)
-                            ->required(fn(Model $record) => $record->root_id === null)
+                            ->disabled(fn (Model $record) => $record->root_id !== null)
+                            ->required(fn (Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
