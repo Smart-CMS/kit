@@ -3,6 +3,7 @@
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
@@ -37,7 +38,7 @@ class PageForm
                         LeftGrid::make()->schema([
                             Section::make([
                                 PageNameField::make(),
-                                PageSlugField::make()->hidden(fn ($record) => $record?->id == 1),
+                                PageSlugField::make()->hidden(fn($record) => $record?->id == 1),
                             ]),
                             Section::make()->schema([
                                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
@@ -61,7 +62,8 @@ class PageForm
                             ])->columnSpan(1)->hiddenOn('create')->compact()->secondary(),
                             Section::make()->schema([
                                 DatePicker::make('published_at')->seconds(false)->default(now()),
-                                StatusField::make()->hidden(fn ($record) => $record->is_system),
+                                StatusField::make()->hidden(fn($record) => $record->is_system),
+                                Toggle::make('is_index')->label(__('kit::admin.is_index'))->default(true),
                             ]),
                         ]),
                     ]),

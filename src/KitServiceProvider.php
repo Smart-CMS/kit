@@ -95,6 +95,9 @@ class KitServiceProvider extends PackageServiceProvider
                         $command->callSilently('vendor:publish', [
                             '--tag' => 'notifications-migrations',
                         ]);
+                        $command->callSilently('vendor:publish', [
+                            '--tag' => 'laravel-errors',
+                        ]);
                         $command->callSilently('notifications:table');
                     })
                     ->publishConfigFile()
@@ -111,6 +114,13 @@ class KitServiceProvider extends PackageServiceProvider
                         if (File::exists(public_path('sitemap.xml'))) {
                             File::move(public_path('sitemap.xml'), public_path('sitemap.xml.backup'));
                         }
+                        $this->createDirectory(resource_path('views/sections'));
+                        $this->createDirectory(resource_path('views/layouts'));
+                        $this->createDirectory(resource_path('views/layouts/pages'));
+                        $this->createDirectory(resource_path('views/layouts/divisions'));
+                        $command->call('make:layout', ['name' => 'header']);
+                        $command->call('make:layout', ['name' => 'footer']);
+                        $command->call('make:layout', ['name' => 'pages.home']);
                         $command->call('filament:assets');
                     });
             });
@@ -127,7 +137,7 @@ class KitServiceProvider extends PackageServiceProvider
                 /** @var \Illuminate\Routing\Route $this */
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
-                $actions = array_filter($this->getAction(), fn ($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
+                $actions = array_filter($this->getAction(), fn($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
                 FacadesRoute::addRoute(
                     $this->methods(),
                     '{lang}/' . $cleanUri,
@@ -203,6 +213,13 @@ class KitServiceProvider extends PackageServiceProvider
         foreach ($custom as $key => $values) {
             $existing = config("auth.$key", []);
             config(["auth.$key" => array_merge($existing, $values)]);
+        }
+    }
+
+    public function createDirectory($path)
+    {
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true);
         }
     }
 }

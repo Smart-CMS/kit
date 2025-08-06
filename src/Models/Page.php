@@ -73,6 +73,7 @@ class Page extends Model
         'layout_settings' => 'array',
         'image' => 'array',
         'banner' => 'array',
+        'published_at' => 'datetime',
     ];
 
     public function getBreadcrumbs(): array

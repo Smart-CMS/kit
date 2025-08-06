@@ -38,10 +38,19 @@ class EditLayoutSettings extends EditRecord
                 LeftGrid::make()->schema([
                     Section::make()->schema([
                         Select::make('layout_id')
-                            ->options(Layout::all()->pluck('name', 'id'))
+                            ->options(function (Model $record) {
+                                return Layout::query()
+                                    ->when($record->is_root, function ($query) {
+                                        return $query->where('path', 'like', '%divisions%');
+                                    })
+                                    ->when(!$record->is_root, function ($query) {
+                                        return $query->where('path', 'like', '%pages%');
+                                    })
+                                    ->pluck('name', 'id');
+                            })
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn (Model $record) => $record->root_id !== null)
-                            ->required(fn (Model $record) => $record->root_id === null)
+                            ->disabled(fn(Model $record) => $record->root_id !== null)
+                            ->required(fn(Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);

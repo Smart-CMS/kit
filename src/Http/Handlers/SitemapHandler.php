@@ -33,12 +33,12 @@ class SitemapHandler
         Context::add('current_lang', $lang);
         app('lang')->setCurrent($lang);
         $links = [];
-        foreach (Page::query()->get() as $page) {
+        foreach (Page::query()->where('is_index', true)->get() as $page) {
             $links[] = [
                 'link' => $page->route(),
                 'priority' => 0.7,
                 'changefreq' => 'weekly',
-                'lastmod' => $page->updated_at,
+                'lastmod' => $page->published_at ?? $page->created_at,
             ];
         }
 
