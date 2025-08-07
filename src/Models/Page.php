@@ -65,7 +65,7 @@ class Page extends Model
 
     protected $guarded = [];
 
-    public array $translatable = ['name'];
+    public array $translatable = ['name', 'layout_settings'];
 
     protected $casts = [
         'status' => 'boolean',

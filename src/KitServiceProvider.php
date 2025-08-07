@@ -122,6 +122,9 @@ class KitServiceProvider extends PackageServiceProvider
                         $command->call('make:layout', ['name' => 'footer']);
                         $command->call('make:layout', ['name' => 'pages.home']);
                         $command->call('filament:assets');
+                        if (File::exists(resource_path('views/welcome.blade.php'))) {
+                            File::delete(resource_path('views/welcome.blade.php'));
+                        }
                     });
             });
     }

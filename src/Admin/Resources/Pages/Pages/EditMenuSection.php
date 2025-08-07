@@ -47,22 +47,27 @@ class EditMenuSection extends EditRecord
 
     public function form(Schema $schema): Schema
     {
+        $itemsLayouts = Layout::query()->where('path', 'like', '%pages/%')->pluck('name', 'id')->toArray();
+        $categoriesLayouts = Layout::query()->where('path', 'like', '%divisions/%')->pluck('name', 'id')->toArray();
+
         return $schema->components([
-            Hidden::make('settings.is_categories')->formatStateUsing(fn ($state) => $state ?? false),
+            Hidden::make('settings.is_categories')->formatStateUsing(fn($state) => $state ?? false),
             Section::make(__('kit::admin.categories'))->schema([
                 Select::make('settings.categories_layout_id')
                     ->label(__('kit::admin.categories_layout'))
-                    ->options(Layout::query()->where('path', 'like', '%groups/categories%')->pluck('name', 'id')->toArray()),
+                    ->required()
+                    ->options($categoriesLayouts),
                 Repeater::make('settings.categories_template')->schema([
                     Select::make('section_id')
                         ->label(__('kit::admin.section'))
                         ->options(ModelsSection::query()->pluck('name', 'id')->toArray())->required(),
                 ]),
-            ])->hidden(fn ($get) => ! $get('settings.is_categories')),
+            ])->hidden(fn($get) => ! $get('settings.is_categories')),
             Section::make(__('kit::admin.items'))->compact()->schema([
                 Select::make('settings.items_layout_id')
                     ->label(__('kit::admin.items_layout'))
-                    ->options(Layout::query()->where('path', 'like', '%groups/items%')->pluck('name', 'id')->toArray()),
+                    ->required()
+                    ->options($itemsLayouts),
                 Repeater::make('settings.items_template')->schema([
                     Select::make('section_id')
                         ->label(__('kit::admin.section'))
@@ -109,7 +114,7 @@ class EditMenuSection extends EditRecord
                         ]);
                         Notification::make()->title(__('kit::admin.success'))->success()->send();
                     }),
-                EditAction::make()->url(fn ($record) => EditPage::getUrl(['record' => $record->id])),
+                EditAction::make()->url(fn($record) => EditPage::getUrl(['record' => $record->id])),
                 ViewRecord::make(),
                 SaveAndClose::make($this, ListPages::getUrl()),
                 SaveAction::make($this),

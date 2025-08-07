@@ -2,6 +2,7 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
@@ -31,6 +32,11 @@ class EditLayoutSettings extends EditRecord
         return __('kit::admin.layout_settings');
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('kit::admin.layout_settings');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema->schema([
@@ -54,12 +60,22 @@ class EditLayoutSettings extends EditRecord
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
-                                $set('value', $layout?->value ?? []);
-                            }),
+                                $set('value', $layout?->getTranslations('value') ?? []);
+                            })->suffixAction(
+                                Action::make('refresh')
+                                    ->label(__('kit::admin.refresh'))
+                                    ->icon(\Filament\Support\Icons\Heroicon::ArrowPathRoundedSquare)
+                                    ->color('primary')
+                                    ->size(\Filament\Support\Enums\Size::Small)
+                                    ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+                                    ->action(function (Set $set, Get $get) {
+                                        $layout = Layout::find($get('layout_id'));
+                                        $set('value', $layout?->getTranslations('value') ?? []);
+                                    }),
+                            ),
                     ]),
                     Flex::make(function (Get $get) {
                         $layout = Layout::find($get('layout_id'));
-
                         return $layout?->schema ?? [];
                     }),
                 ]),
@@ -112,9 +128,9 @@ class EditLayoutSettings extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $data['value'] = $this->record?->layout_settings ?? [];
+        $data['value'] = $this->record?->getTranslations('layout_settings') ?? [];
         if ($this->record?->layout && empty($data['value'])) {
-            $data['value'] = $this->record->layout?->value ?? [];
+            $data['value'] = $this->record->layout?->getTranslations('value') ?? [];
         }
 
         return $data;
