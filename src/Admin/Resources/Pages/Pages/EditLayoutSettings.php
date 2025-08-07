@@ -76,6 +76,7 @@ class EditLayoutSettings extends EditRecord
                     ]),
                     Flex::make(function (Get $get) {
                         $layout = Layout::find($get('layout_id'));
+
                         return $layout?->schema ?? [];
                     }),
                 ]),
