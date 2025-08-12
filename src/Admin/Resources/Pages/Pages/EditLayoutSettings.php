@@ -55,8 +55,8 @@ class EditLayoutSettings extends EditRecord
                                     ->pluck('name', 'id');
                             })
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn(Model $record) => $record->root_id !== null)
-                            ->required(fn(Model $record) => $record->root_id === null)
+                            ->disabled(fn (Model $record) => $record->root_id !== null)
+                            ->required(fn (Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
