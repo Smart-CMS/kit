@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route as FacadesRoute;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
@@ -49,6 +50,8 @@ class KitServiceProvider extends PackageServiceProvider
     public static string $name = 'kit';
 
     public static string $viewNamespace = 'kit';
+
+    public static ?array $viewShare = null;
 
     public function configurePackage(Package $package): void
     {
@@ -140,7 +143,7 @@ class KitServiceProvider extends PackageServiceProvider
                 /** @var \Illuminate\Routing\Route $this */
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
-                $actions = array_filter($this->getAction(), fn ($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
+                $actions = array_filter($this->getAction(), fn($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
                 FacadesRoute::addRoute(
                     $this->methods(),
                     '{lang}/' . $cleanUri,
@@ -183,6 +186,12 @@ class KitServiceProvider extends PackageServiceProvider
                 __DIR__ . '/../resources/dist/custom.css' => public_path('kit/css/custom.css'),
             ], 'kit-css');
         }
+        View::composer('*', function ($view) {
+            $vars = $this->getSharedVariables();
+            foreach ($vars as $key => $value) {
+                $view->with($key, $value);
+            }
+        });
     }
 
     protected function configureDefaults(): void
@@ -224,5 +233,20 @@ class KitServiceProvider extends PackageServiceProvider
         if (! File::isDirectory($path)) {
             File::makeDirectory($path, 0755, true);
         }
+    }
+
+    protected function getSharedVariables(): array
+    {
+        if (static::$viewShare) {
+            return static::$viewShare;
+        }
+        $data = [
+            'host' => host(),
+            'hostname' => hostname(),
+            'company_name' => company_name(),
+            'logo' => logo(),
+        ];
+        static::$viewShare = $data;
+        return $data;
     }
 }
