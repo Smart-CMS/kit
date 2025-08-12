@@ -143,7 +143,7 @@ class KitServiceProvider extends PackageServiceProvider
                 /** @var \Illuminate\Routing\Route $this */
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
-                $actions = array_filter($this->getAction(), fn($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
+                $actions = array_filter($this->getAction(), fn ($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
                 FacadesRoute::addRoute(
                     $this->methods(),
                     '{lang}/' . $cleanUri,
@@ -247,6 +247,7 @@ class KitServiceProvider extends PackageServiceProvider
             'logo' => logo(),
         ];
         static::$viewShare = $data;
+
         return $data;
     }
 }
