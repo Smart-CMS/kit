@@ -55,8 +55,8 @@ class EditLayoutSettings extends EditRecord
                                     ->pluck('name', 'id');
                             })
                             ->label(__('kit::admin.layout'))
-                            ->disabled(fn (Model $record) => $record->root_id !== null)
-                            ->required(fn (Model $record) => $record->root_id === null)
+                            ->disabled(fn(Model $record) => $record->root_id !== null)
+                            ->required(fn(Model $record) => $record->root_id === null)
                             ->reactive()
                             ->afterStateUpdated(function (Set $set, $state) {
                                 $layout = Layout::find($state);
@@ -105,22 +105,15 @@ class EditLayoutSettings extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        if (! isset($data['value'])) {
-            return $record;
-        }
-        $layout_id = $data['layout_id'] ?? $record->layout_id ?? null;
-        if (! $layout_id) {
-            return $record;
-        }
-        $layout = Layout::find($layout_id);
-        if (! $layout) {
-            return $record;
-        }
         $toUpdate = [
-            'layout_id' => $layout_id,
+            'layout_id' => $data['layout_id'] ?? $record->layout_id ?? null,
         ];
-        if ($layout->value != $data['value']) {
-            $toUpdate['layout_settings'] = $data['value'];
+        if (isset($data['value'])) {
+            $value = $data['value'];
+            $layout = Layout::find($data['layout_id']);
+            if ($layout->getTranslations('value') != $value) {
+                $toUpdate['layout_settings'] = $value;
+            }
         }
         $this->record->update($toUpdate);
 
