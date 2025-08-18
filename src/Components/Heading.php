@@ -10,7 +10,7 @@ class Heading extends Component
 
     public string $tag;
 
-    public function __construct(?object $options = null, ?string $tag = 'h2', ?string $title = null)
+    public function __construct(?array $options = null, ?string $tag = 'h2', ?string $title = null)
     {
         $this->title = $options['title'] ?? $title ?? '';
         $this->tag = $options['tag'] ?? $tag ?? 'h2';
