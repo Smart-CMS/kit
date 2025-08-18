@@ -52,7 +52,7 @@ class PageFactory extends Factory
      */
     public function active(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => true,
         ]);
     }
@@ -62,7 +62,7 @@ class PageFactory extends Factory
      */
     public function inactive(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => false,
         ]);
     }
@@ -72,7 +72,7 @@ class PageFactory extends Factory
      */
     public function published(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'published_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ]);
     }
@@ -82,7 +82,7 @@ class PageFactory extends Factory
      */
     public function unpublished(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'published_at' => null,
         ]);
     }
@@ -92,7 +92,7 @@ class PageFactory extends Factory
      */
     public function system(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_system' => true,
             'is_index' => false,
         ]);
@@ -103,7 +103,7 @@ class PageFactory extends Factory
      */
     public function root(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_root' => true,
             'parent_id' => null,
             'root_id' => null,
@@ -115,7 +115,7 @@ class PageFactory extends Factory
      */
     public function category(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'settings' => [
                 'meta_title' => $this->faker->sentence(),
                 'meta_description' => $this->faker->paragraph(),
@@ -129,7 +129,7 @@ class PageFactory extends Factory
      */
     public function withImage(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'image' => [
                 'source' => '/images/' . $this->faker->image('public/storage/images', 640, 480, null, false),
                 'alt' => $this->faker->sentence(),
@@ -142,7 +142,7 @@ class PageFactory extends Factory
      */
     public function withBanner(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'banner' => [
                 'source' => '/images/' . $this->faker->image('public/storage/images', 1200, 400, null, false),
                 'alt' => $this->faker->sentence(),
@@ -155,7 +155,7 @@ class PageFactory extends Factory
      */
     public function popular(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'views' => $this->faker->numberBetween(10000, 100000),
         ]);
     }
@@ -165,7 +165,7 @@ class PageFactory extends Factory
      */
     public function noIndex(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_index' => false,
         ]);
     }
@@ -175,7 +175,7 @@ class PageFactory extends Factory
      */
     public function withParent(Page $parent): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'parent_id' => $parent->id,
             'root_id' => $parent->root_id ?? $parent->id,
             'depth' => $parent->depth + 1,
@@ -187,7 +187,7 @@ class PageFactory extends Factory
      */
     public function asChildOf(Page $root): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'parent_id' => $root->id,
             'root_id' => $root->id,
             'depth' => 1,

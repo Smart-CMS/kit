@@ -36,15 +36,16 @@ class ImageType implements VariableTypeInterface
 
     public function getValue(mixed $value): mixed
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return $this->getDefaultValue();
         }
         $alt = $value[current_lang()] ?? $value['alt'] ?? __('Default alt');
-        if (!isset($value['source']) || !isset($value['width']) || !isset($value['height'])) {
+        if (! isset($value['source']) || ! isset($value['width']) || ! isset($value['height'])) {
             return $this->getDefaultValue();
         }
         $image = validateImage($value);
         $image['alt'] = $alt;
+
         return $image;
     }
 }
