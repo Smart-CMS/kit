@@ -1,5 +1,7 @@
 <?php
 
+use SmartCms\Kit\Models\Page;
+
 if (! function_exists('validateImage')) {
     function validateImage(mixed $image = null): string | array
     {
@@ -70,7 +72,7 @@ if (! function_exists('hostname')) {
     function hostname(): string
     {
         return once(function () {
-            return __('Hostname');
+            return Page::query()->first()->name ?? __('Hostname');
         });
     }
 }
