@@ -33,7 +33,7 @@ class EditTemplateRelated extends ManageRelatedRecords
 
     public static function getNavigationLabel(): string
     {
-        return __('kit::admin.template');
+        return __('kit::admin.sections');
     }
 
     public static function getNavigationIcon(): string | Htmlable | null
@@ -74,30 +74,6 @@ class EditTemplateRelated extends ManageRelatedRecords
                 UpdatedAtColumn::make(),
             ])
             ->filters([])
-            ->toolbarActions([
-                CreateAction::make()->label(__('kit::admin.new_section'))
-                    ->link()
-                    ->schema([
-                        Select::make('sections')
-                            ->options(ModelsSection::query()->pluck('name', 'id')->toArray())
-                            ->multiple()
-                            ->label(__('kit::admin.section'))
-                            ->required(),
-                    ])->createAnother(false)
-                    ->using(function (array $data, string $model): Model {
-                        $maxSorting = $this->getRecord()->template()->max('sorting') ?? 0;
-                        $sorting = $maxSorting + 1;
-                        foreach ($data['sections'] as $section) {
-                            $this->record->template()->create([
-                                'section_id' => (int) $section,
-                                'sorting' => $sorting,
-                            ]);
-                            $sorting++;
-                        }
-
-                        return $this->getRecord();
-                    }),
-            ])
             ->recordActions([
                 EditAction::make()->mutateRecordDataUsing(function (array $data, $record): array {
                     $data['value'] = $record->section?->value ?? [];
@@ -139,6 +115,28 @@ class EditTemplateRelated extends ManageRelatedRecords
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+                CreateAction::make()->label(__('kit::admin.new_section'))
+                    ->link()
+                    ->schema([
+                        Select::make('sections')
+                            ->options(ModelsSection::query()->pluck('name', 'id')->toArray())
+                            ->multiple()
+                            ->label(__('kit::admin.section'))
+                            ->required(),
+                    ])->createAnother(false)
+                    ->using(function (array $data, string $model): Model {
+                        $maxSorting = $this->getRecord()->template()->max('sorting') ?? 0;
+                        $sorting = $maxSorting + 1;
+                        foreach ($data['sections'] as $section) {
+                            $this->record->template()->create([
+                                'section_id' => (int) $section,
+                                'sorting' => $sorting,
+                            ]);
+                            $sorting++;
+                        }
+
+                        return $this->getRecord();
+                    }),
             ])
             ->paginated(false);
     }

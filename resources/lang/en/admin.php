@@ -117,4 +117,5 @@ return [
     'created_by' => 'Created by',
     'updated_by' => 'Updated by',
     'is_index' => 'Is Index',
+    'sections' => 'Sections',
 ];

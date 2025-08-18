@@ -103,8 +103,17 @@ class Settings extends SettingsPage
             Language::query()->whereIn('id', $data['additional_languages'] ?? [])
                 ->update([
                     'is_admin_active' => true,
+                    'is_frontend_active' => false,
                 ]);
         }
+        Language::query()->where('is_default', false)->whereNotIn('id', $data['additional_languages'] ?? [])
+            ->update([
+                'is_admin_active' => false,
+            ]);
+        Language::query()->where('is_default', false)->where('is_admin_active', false)->whereNotIn('id', $data['front_languages'] ?? [])
+            ->update([
+                'is_frontend_active' => false,
+            ]);
         if (! isset($data['front_languages']) || empty($data['front_languages'])) {
             Language::query()->where('is_frontend_active', false)
                 ->update([

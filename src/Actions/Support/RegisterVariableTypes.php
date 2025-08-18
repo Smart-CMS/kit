@@ -8,6 +8,7 @@ use SmartCms\Kit\VariableTypes\EmailsType;
 use SmartCms\Kit\VariableTypes\EmailType;
 use SmartCms\Kit\VariableTypes\HeadingType;
 use SmartCms\Kit\VariableTypes\IconType;
+use SmartCms\Kit\VariableTypes\ImageType;
 use SmartCms\Kit\VariableTypes\LinkType;
 use SmartCms\Kit\VariableTypes\MenuType;
 use SmartCms\Kit\VariableTypes\PhonesType;
@@ -41,5 +42,6 @@ class RegisterVariableTypes
         $this->registry->register(RandomItems::class);
         $this->registry->register(LinkType::class);
         $this->registry->register(IconType::class);
+        $this->registry->register(ImageType::class);
     }
 }
