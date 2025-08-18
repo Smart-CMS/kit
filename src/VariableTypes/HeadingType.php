@@ -23,7 +23,7 @@ class HeadingType implements VariableTypeInterface
 
     public function getDefaultValue(): mixed
     {
-        return (object) [
+        return [
             'tag' => 'h2',
             'title' => 'Default heading title',
         ];
@@ -55,7 +55,7 @@ class HeadingType implements VariableTypeInterface
 
     public function getValue(mixed $value): mixed
     {
-        return (object) [
+        return [
             'tag' => $value['heading_type'] ?? 'h2',
             'title' => $value['title'] ?? 'Default title',
         ];
