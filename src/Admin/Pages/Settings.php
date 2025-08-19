@@ -85,15 +85,20 @@ class Settings extends SettingsPage
 
     public function save(): void
     {
-        parent::save();
         $data = $this->form->getState();
+        if (!$data['is_multi_lang']) {
+            $data['additional_languages'] = [];
+            $data['front_languages'] = [];
+        }
+        $this->form->fill($data);
+        parent::save();
         Language::query()->where('id', $data['main_language'])
             ->update([
                 'is_default' => true,
                 'is_admin_active' => true,
                 'is_frontend_active' => true,
             ]);
-        if (! isset($data['additional_languages']) || empty($data['additional_languages'])) {
+        if (!$data['is_multi_lang']) {
             Language::query()->where('is_default', false)
                 ->update([
                     'is_admin_active' => false,
