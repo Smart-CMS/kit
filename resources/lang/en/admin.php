@@ -118,4 +118,7 @@ return [
     'updated_by' => 'Updated by',
     'is_index' => 'Is Index',
     'sections' => 'Sections',
+    'nested' => 'Nested',
+    'menu' => 'Menu',
+    'page' => 'Page',
 ];

@@ -8,6 +8,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use SmartCms\Lang\Models\Language;
 use SmartCms\Support\Admin\Components\Forms\ImageUpload;
 
@@ -21,6 +23,12 @@ class GeneralForm
                 ->required(),
             Select::make('main_language')
                 ->label(__('kit::admin.main_language'))
+                ->live()->afterStateUpdated(function (mixed $state, Set $set, Get $get) {
+                    $additionalLanguages = $get('additional_languages') ?? [];
+                    $frontLanguages = $get('front_languages') ?? [];
+                    $set('additional_languages', array_filter($additionalLanguages, fn($language) => $language !== $state));
+                    $set('front_languages', array_filter($frontLanguages, fn($language) => $language !== $state));
+                })
                 ->options(Language::query()->pluck('name', 'id')->toArray())
                 ->required(),
             Toggle::make('is_multi_lang')
@@ -28,7 +36,10 @@ class GeneralForm
                 ->required()->live(),
             Select::make('additional_languages')
                 ->label(__('kit::admin.additional_languages'))
-                ->options(Language::query()->pluck('name', 'id')->toArray())
+                ->options(function (Get $get) {
+                    $mainLanguage = $get('main_language');
+                    return Language::query()->where('id', '!=', $mainLanguage)->pluck('name', 'id')->toArray();
+                })
                 ->multiple()
                 ->live()
                 ->required()->hidden(function ($get) {
@@ -37,8 +48,10 @@ class GeneralForm
             Select::make('front_languages')
                 ->label(__('kit::admin.front_languages'))
                 ->options(function ($get) {
-                    return Language::query()->whereIn('id', $get('additional_languages') ?? [])->pluck('name', 'id')->toArray();
+                    $mainLanguage = $get('main_language');
+                    return Language::query()->whereIn('id', $get('additional_languages') ?? [])->where('id', '!=', $mainLanguage)->pluck('name', 'id')->toArray();
                 })
+                ->live()
                 ->multiple()
                 ->required()->hidden(function ($get) {
                     return ! $get('is_multi_lang');
@@ -49,7 +62,7 @@ class GeneralForm
                     ->image()
                     ->imagePreviewHeight('150')
                     ->maxSize(1024)
-                    ->getUploadedFileNameForStorageUsing(fn ($file) => 'favicon.ico'),
+                    ->getUploadedFileNameForStorageUsing(fn($file) => 'favicon.ico'),
                 ImageUpload::make('no_image', 'no_image', __('kit::admin.no_image')),
             ])->columns(2),
         ]);

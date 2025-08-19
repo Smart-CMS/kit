@@ -92,45 +92,31 @@ class Settings extends SettingsPage
         }
         $this->form->fill($data);
         parent::save();
-        Language::query()->where('id', $data['main_language'])
-            ->update([
-                'is_default' => true,
-                'is_admin_active' => true,
-                'is_frontend_active' => true,
-            ]);
-        if (! $data['is_multi_lang']) {
-            Language::query()->where('is_default', false)
-                ->update([
-                    'is_admin_active' => false,
-                    'is_frontend_active' => false,
-                ]);
-        } else {
-            Language::query()->whereIn('id', $data['additional_languages'] ?? [])
-                ->update([
-                    'is_admin_active' => true,
-                    'is_frontend_active' => false,
-                ]);
-        }
-        Language::query()->where('is_default', false)->whereNotIn('id', $data['additional_languages'] ?? [])
-            ->update([
+        Language::query()->where('id', $data['main_language'])->update([
+            'is_default' => true,
+            'is_admin_active' => true,
+            'is_frontend_active' => true,
+        ]);
+        if ($data['main_language'] != main_lang_id()) {
+            Language::query()->where('id', main_lang_id())->update([
+                'is_default' => false,
                 'is_admin_active' => false,
-            ]);
-        Language::query()->where('is_default', false)->where('is_admin_active', false)->whereNotIn('id', $data['front_languages'] ?? [])
-            ->update([
                 'is_frontend_active' => false,
             ]);
-        if (! isset($data['front_languages']) || empty($data['front_languages'])) {
-            Language::query()->where('is_frontend_active', false)
-                ->update([
-                    'is_frontend_active' => false,
-                ]);
-        } else {
-            Language::query()->whereIn('id', $data['front_languages'] ?? [])
-                ->update([
-                    'is_admin_active' => true,
-                    'is_frontend_active' => true,
-                ]);
         }
+        Language::query()->where('id', '!=', $data['main_language'])->update([
+            'is_default' => false,
+            'is_admin_active' => false,
+            'is_frontend_active' => false,
+        ]);
+        Language::query()->where('is_default', false)->whereIn('id', $data['additional_languages'] ?? [])->update([
+            'is_admin_active' => true,
+            'is_frontend_active' => false,
+        ]);
+        Language::query()->where('is_default', false)->whereIn('id', $data['front_languages'] ?? [])->update([
+            'is_admin_active' => true,
+            'is_frontend_active' => true,
+        ]);
         $favicon = $this->form->getState()['branding']['favicon'] ?? null;
         if ($favicon) {
             File::copy(Storage::disk('public')->path($favicon), public_path('favicon.ico'));

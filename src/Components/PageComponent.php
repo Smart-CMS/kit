@@ -12,7 +12,7 @@ class PageComponent extends Component
 {
     public function __construct(public Page $page)
     {
-        app('template')->set(Template::query()->orderBy('sorting')->where('entity_type', Page::class)->where('entity_id', $page->id)->get());
+        app('template')->set(Template::query()->where('status', 1)->orderBy('sorting')->where('entity_type', Page::class)->where('entity_id', $page->id)->get());
         $seo = Seo::query()->where('seoable_id', $page->id)->where('seoable_type', Page::class)->first() ?? new Seo;
         $page->seo = $seo;
         app('microdata')->add(BreadcrumbsMicrodata::run($page->getBreadcrumbs()));

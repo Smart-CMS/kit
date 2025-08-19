@@ -3,12 +3,17 @@
 namespace SmartCms\Kit\Models\Front;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use SmartCms\Kit\Casts\ImageCast;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Seo\Models\Seo;
 
 class FrontPage extends Page
 {
     public static $staticCasts = [];
+
+    protected $casts = [
+        'image' => ImageCast::class,
+    ];
 
     public static function addDynamicCast($attribute, $cast): void
     {
@@ -17,27 +22,27 @@ class FrontPage extends Page
 
     public function getCasts(): array
     {
-        return array_merge(self::$staticCasts, $this->casts);
+        return array_merge(self::$staticCasts, $this->casts, parent::getCasts());
     }
 
     public function heading(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->getSeo()->heading ?? $this?->name ?? '',
+            get: fn() => $this->getSeo()->heading ?? $this?->name ?? '',
         );
     }
 
     public function summary(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->getSeo()->summary ?? $this?->name ?? '',
+            get: fn() => $this->getSeo()->summary ?? $this?->name ?? '',
         );
     }
 
     public function content(): Attribute
     {
         return new Attribute(
-            get: fn () => str($this->getSeo()->content ?? '')->toHtmlString(),
+            get: fn() => str($this->getSeo()->content ?? '')->toHtmlString(),
         );
     }
 
@@ -87,14 +92,14 @@ class FrontPage extends Page
     public function breadcrumbs(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->getBreadcrumbs(),
+            get: fn() => $this->getBreadcrumbs(),
         );
     }
 
     public function url(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->route(),
+            get: fn() => $this->route(),
         );
     }
 }
