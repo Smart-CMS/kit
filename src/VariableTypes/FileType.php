@@ -4,9 +4,7 @@ namespace SmartCms\Kit\VariableTypes;
 
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Component;
-use Filament\Support\Icons\Heroicon;
 use SmartCms\TemplateBuilder\Support\VariableTypeInterface;
 
 class FileType implements VariableTypeInterface
@@ -46,6 +44,7 @@ class FileType implements VariableTypeInterface
         if (! $value || ! is_string($value)) {
             return $this->getDefaultValue();
         }
+
         return asset($value);
     }
 }

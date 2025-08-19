@@ -6,21 +6,21 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use SmartCms\Kit\VariableTypes\AddressType;
 use SmartCms\Kit\VariableTypes\EmailsType;
 use SmartCms\Kit\VariableTypes\EmailType;
+use SmartCms\Kit\VariableTypes\FileType;
 use SmartCms\Kit\VariableTypes\HeadingType;
 use SmartCms\Kit\VariableTypes\IconType;
 use SmartCms\Kit\VariableTypes\ImageType;
+use SmartCms\Kit\VariableTypes\LatestCategories;
+use SmartCms\Kit\VariableTypes\LatestItems;
 use SmartCms\Kit\VariableTypes\LinkType;
 use SmartCms\Kit\VariableTypes\MenuType;
 use SmartCms\Kit\VariableTypes\PhonesType;
 use SmartCms\Kit\VariableTypes\PhoneType;
 use SmartCms\Kit\VariableTypes\PopularCategories;
 use SmartCms\Kit\VariableTypes\PopularItems;
-use SmartCms\Kit\VariableTypes\LatestCategories;
-use SmartCms\Kit\VariableTypes\LatestItems;
 use SmartCms\Kit\VariableTypes\RandomCategories;
 use SmartCms\Kit\VariableTypes\RandomItems;
 use SmartCms\Kit\VariableTypes\SocialsType;
-use SmartCms\Kit\VariableTypes\FileType;
 use SmartCms\TemplateBuilder\Support\VariableTypeRegistry;
 
 class RegisterVariableTypes

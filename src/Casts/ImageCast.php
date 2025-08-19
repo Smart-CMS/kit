@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImageCast implements CastsAttributes
 {
-    public function get(Model $model, string $key, mixed $value, array $attributes): array|null
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?array
     {
         $values = is_array($value) ? $value : (filled($value) ? json_decode($value, true) : null);
         if ($values === null) {
             return no_image();
         }
+
         return validateImage($values);
     }
 

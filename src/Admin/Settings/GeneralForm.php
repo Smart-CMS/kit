@@ -26,8 +26,8 @@ class GeneralForm
                 ->live()->afterStateUpdated(function (mixed $state, Set $set, Get $get) {
                     $additionalLanguages = $get('additional_languages') ?? [];
                     $frontLanguages = $get('front_languages') ?? [];
-                    $set('additional_languages', array_filter($additionalLanguages, fn($language) => $language !== $state));
-                    $set('front_languages', array_filter($frontLanguages, fn($language) => $language !== $state));
+                    $set('additional_languages', array_filter($additionalLanguages, fn ($language) => $language !== $state));
+                    $set('front_languages', array_filter($frontLanguages, fn ($language) => $language !== $state));
                 })
                 ->options(Language::query()->pluck('name', 'id')->toArray())
                 ->required(),
@@ -38,6 +38,7 @@ class GeneralForm
                 ->label(__('kit::admin.additional_languages'))
                 ->options(function (Get $get) {
                     $mainLanguage = $get('main_language');
+
                     return Language::query()->where('id', '!=', $mainLanguage)->pluck('name', 'id')->toArray();
                 })
                 ->multiple()
@@ -49,6 +50,7 @@ class GeneralForm
                 ->label(__('kit::admin.front_languages'))
                 ->options(function ($get) {
                     $mainLanguage = $get('main_language');
+
                     return Language::query()->whereIn('id', $get('additional_languages') ?? [])->where('id', '!=', $mainLanguage)->pluck('name', 'id')->toArray();
                 })
                 ->live()
@@ -62,7 +64,7 @@ class GeneralForm
                     ->image()
                     ->imagePreviewHeight('150')
                     ->maxSize(1024)
-                    ->getUploadedFileNameForStorageUsing(fn($file) => 'favicon.ico'),
+                    ->getUploadedFileNameForStorageUsing(fn ($file) => 'favicon.ico'),
                 ImageUpload::make('no_image', 'no_image', __('kit::admin.no_image')),
             ])->columns(2),
         ]);
