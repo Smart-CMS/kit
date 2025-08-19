@@ -86,7 +86,7 @@ class Settings extends SettingsPage
     public function save(): void
     {
         $data = $this->form->getState();
-        if (!$data['is_multi_lang']) {
+        if (! $data['is_multi_lang']) {
             $data['additional_languages'] = [];
             $data['front_languages'] = [];
         }
@@ -98,7 +98,7 @@ class Settings extends SettingsPage
                 'is_admin_active' => true,
                 'is_frontend_active' => true,
             ]);
-        if (!$data['is_multi_lang']) {
+        if (! $data['is_multi_lang']) {
             Language::query()->where('is_default', false)
                 ->update([
                     'is_admin_active' => false,
