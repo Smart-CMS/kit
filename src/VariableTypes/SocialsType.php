@@ -37,7 +37,7 @@ class SocialsType implements VariableTypeInterface
 
     public function getSchema(string $name): Field | Component
     {
-        return Select::make($name)->options(collect(app('s')->get('branding.socials', []))->pluck('name'));
+        return Select::make($name)->options(collect(app('s')->get('branding.socials', []))->pluck('name'))->multiple();
     }
 
     public function getValue(mixed $value): mixed
