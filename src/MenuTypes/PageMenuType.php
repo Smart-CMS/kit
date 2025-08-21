@@ -25,7 +25,7 @@ class PageMenuType implements MenuTypeInterface
             ->options(Page::query()->where('depth', '<', 3)->pluck('name', 'id'));
     }
 
-    public function getLinkFromItem(mixed $item): string|array
+    public function getLinkFromItem(mixed $item): string | array
     {
         return Page::find($item['url'] ?? 0)?->route() ?? url('/');
     }
