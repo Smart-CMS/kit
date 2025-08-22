@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use SmartCms\Kit\Models\Page;
 
 if (! function_exists('validateImage')) {
@@ -83,16 +82,17 @@ if (! function_exists('language_routes')) {
     {
         $routes = [];
         $currentLocale = app()->getLocale();
-        $currentPath   = url()->current();
+        $currentPath = url()->current();
 
         foreach (app('lang')->frontLanguages() as $lang) {
             $path = $currentPath;
             if ($lang->slug === $currentLocale) {
                 $routes[] = [
-                    'name'  => $lang->name,
-                    'code'  => $lang->slug,
+                    'name' => $lang->name,
+                    'code' => $lang->slug,
                     'route' => $path,
                 ];
+
                 continue;
             }
             if ($lang->slug === main_lang()) {
@@ -100,16 +100,16 @@ if (! function_exists('language_routes')) {
                 $path = rtrim($path, '/');
             } else {
                 $parts = parse_url($currentPath);
-                $base  = $parts['scheme'] . '://' . $parts['host'];
+                $base = $parts['scheme'] . '://' . $parts['host'];
                 $purePath = preg_replace('#^/?' . $currentLocale . '/#', '', ltrim($parts['path'] ?? '', '/'));
-                $newPath  = $lang->slug . '/' . $purePath;
+                $newPath = $lang->slug . '/' . $purePath;
 
                 $path = $base . '/' . $newPath;
             }
 
             $routes[] = [
-                'name'  => $lang->name,
-                'code'  => $lang->slug,
+                'name' => $lang->name,
+                'code' => $lang->slug,
                 'route' => $path,
             ];
         }
