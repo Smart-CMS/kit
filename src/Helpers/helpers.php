@@ -101,6 +101,9 @@ if (! function_exists('language_routes')) {
             } else {
                 $parts = parse_url($currentPath);
                 $base = $parts['scheme'] . '://' . $parts['host'];
+                if (isset($parts['port'])) {
+                    $base .= ':' . $parts['port'];
+                }
                 $purePath = preg_replace('#^' . $currentLocale . '/?#', '', ltrim($parts['path'] ?? '', '/'));
                 $newPath = $lang->slug . '/' . $purePath;
 
