@@ -82,7 +82,7 @@ class Profile extends EditProfile
                     TextInput::make('old_password')
                         ->label('Current Password')
                         ->password()
-                        ->required(fn($get) => filled($get('password')))
+                        ->required(fn ($get) => filled($get('password')))
                         ->dehydrated(false) // Do not save to DB
                         ->rule(function () {
                             return function ($attribute, $value, $fail) {
