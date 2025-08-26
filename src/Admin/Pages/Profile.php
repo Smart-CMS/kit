@@ -82,7 +82,7 @@ class Profile extends EditProfile
                     TextInput::make('old_password')
                         ->label('Current Password')
                         ->password()
-                        ->required(fn ($get) => filled($get('password')))
+                        ->required(fn($get) => filled($get('password')))
                         ->dehydrated(false) // Do not save to DB
                         ->rule(function () {
                             return function ($attribute, $value, $fail) {
@@ -99,17 +99,17 @@ class Profile extends EditProfile
                     $this->getPasswordConfirmationFormComponent(),
                 ])->columns(1),
                 Tab::make(__('kit::admin.notifications'))->schema([
-                    Section::make(__('kit::admin.mail_notifications'))->schema($this->getNotificationsSchema())->columns(2),
-                    Section::make(__('kit::admin.telegram_notifications'))->schema($this->getNotificationsSchema())->columns(2),
+                    Section::make(__('kit::admin.mail_notifications'))->schema($this->getNotificationsSchema('mail'))->columns(2),
+                    Section::make(__('kit::admin.telegram_notifications'))->schema($this->getNotificationsSchema('telegram'))->columns(2),
                 ])->columns(1),
             ]),
         ]);
     }
 
-    public function getNotificationsSchema(): array
+    public function getNotificationsSchema($channel): array
     {
-        return collect(config('kit.notifications'))->map(function ($value, $key) {
-            return Toggle::make("notifications.{$key}")->label(__($value))->default(true);
+        return collect(config('kit.notifications'))->map(function ($value, $key) use ($channel) {
+            return Toggle::make("notifications.{$channel}.{$key}")->label(__($value))->default(true);
         })->toArray();
     }
 }
