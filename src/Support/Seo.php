@@ -49,7 +49,7 @@ class Seo
     public function image(?string $value = null): string | static
     {
         if ($value === null) {
-            return $this->image ?? '';
+            return $this->image ?? logo()['source'] ?? no_image()['source'];
         }
         $this->image = $value;
 
