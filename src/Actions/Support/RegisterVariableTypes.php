@@ -21,6 +21,7 @@ use SmartCms\Kit\VariableTypes\PopularItems;
 use SmartCms\Kit\VariableTypes\RandomCategories;
 use SmartCms\Kit\VariableTypes\RandomItems;
 use SmartCms\Kit\VariableTypes\SocialsType;
+use SmartCms\Kit\VariableTypes\FormType;
 use SmartCms\TemplateBuilder\Support\VariableTypeRegistry;
 
 class RegisterVariableTypes
@@ -49,5 +50,6 @@ class RegisterVariableTypes
         $this->registry->register(IconType::class);
         $this->registry->register(ImageType::class);
         $this->registry->register(FileType::class);
+        $this->registry->register(FormType::class);
     }
 }
