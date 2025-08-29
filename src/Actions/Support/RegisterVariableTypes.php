@@ -7,6 +7,7 @@ use SmartCms\Kit\VariableTypes\AddressType;
 use SmartCms\Kit\VariableTypes\EmailsType;
 use SmartCms\Kit\VariableTypes\EmailType;
 use SmartCms\Kit\VariableTypes\FileType;
+use SmartCms\Kit\VariableTypes\FormType;
 use SmartCms\Kit\VariableTypes\HeadingType;
 use SmartCms\Kit\VariableTypes\IconType;
 use SmartCms\Kit\VariableTypes\ImageType;
@@ -21,7 +22,6 @@ use SmartCms\Kit\VariableTypes\PopularItems;
 use SmartCms\Kit\VariableTypes\RandomCategories;
 use SmartCms\Kit\VariableTypes\RandomItems;
 use SmartCms\Kit\VariableTypes\SocialsType;
-use SmartCms\Kit\VariableTypes\FormType;
 use SmartCms\TemplateBuilder\Support\VariableTypeRegistry;
 
 class RegisterVariableTypes

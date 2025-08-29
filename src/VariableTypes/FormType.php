@@ -4,14 +4,8 @@ namespace SmartCms\Kit\VariableTypes;
 
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Component;
-use Filament\Schemas\Components\Flex;
-use Filament\Schemas\Components\Group;
-use Filament\Schemas\Components\Utilities\Get;
 use SmartCms\Forms\Models\Form;
-use SmartCms\Menu\MenuRegistry;
 use SmartCms\TemplateBuilder\Support\VariableTypeInterface;
 
 class FormType implements VariableTypeInterface
