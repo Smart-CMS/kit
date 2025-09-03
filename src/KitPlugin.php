@@ -21,6 +21,8 @@ use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Admin\Widgets\HealthCheck;
 use SmartCms\Kit\Http\Middlewares\NoIndex;
+use SmartCms\Kit\Models\Admin;
+use SmartCms\Kit\Models\Page;
 use SmartCms\Menu\MenuPlugin;
 use SmartCms\PanelTranslate\PanelTranslatePlugin;
 use SmartCms\TemplateBuilder\TemplateBuilderPlugin;
@@ -35,6 +37,13 @@ class KitPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        $resources = [];
+        if (!$panel->getModelResource(Page::class)) {
+            $resources[] = PageResource::class;
+        }
+        if (!$panel->getModelResource(Admin::class)) {
+            $resources[] = AdminResource::class;
+        }
         FilamentAsset::register([
             Css::make('custom', public_path('kit/css/custom.css')),
         ]);
@@ -52,10 +61,7 @@ class KitPlugin implements Plugin
             ->brandName(app('s')->get('company_name', 'SmartCms'))
             ->spa()
             ->databaseNotifications()
-            ->resources([
-                AdminResource::class,
-                PageResource::class,
-            ])
+            ->resources($resources)
             ->widgets([
                 HealthCheck::class,
             ])
@@ -63,7 +69,7 @@ class KitPlugin implements Plugin
                 NoIndex::class,
             ])
             ->renderHook(PanelsRenderHook::PAGE_END, GetVersionHtml::run())
-            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => '<meta name="robots" content="noindex, nofollow" />')
+            ->renderHook(PanelsRenderHook::HEAD_START, fn(): string => '<meta name="robots" content="noindex, nofollow" />')
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetInboxButton::run())
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetViewButton::run())
             ->pages([
@@ -80,7 +86,6 @@ class KitPlugin implements Plugin
                 $action->iconPosition(IconPosition::After)->iconSize('xs');
             }
         });
-        // app()->setLocale(main_lang());
     }
 
     public static function make(): static
