@@ -38,10 +38,10 @@ class KitPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $resources = [];
-        if (!$panel->getModelResource(Page::class)) {
+        if (! $panel->getModelResource(Page::class)) {
             $resources[] = PageResource::class;
         }
-        if (!$panel->getModelResource(Admin::class)) {
+        if (! $panel->getModelResource(Admin::class)) {
             $resources[] = AdminResource::class;
         }
         FilamentAsset::register([
@@ -69,7 +69,7 @@ class KitPlugin implements Plugin
                 NoIndex::class,
             ])
             ->renderHook(PanelsRenderHook::PAGE_END, GetVersionHtml::run())
-            ->renderHook(PanelsRenderHook::HEAD_START, fn(): string => '<meta name="robots" content="noindex, nofollow" />')
+            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => '<meta name="robots" content="noindex, nofollow" />')
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetInboxButton::run())
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetViewButton::run())
             ->pages([
