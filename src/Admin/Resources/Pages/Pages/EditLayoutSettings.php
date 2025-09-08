@@ -14,10 +14,10 @@ use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Actions\Admin\GetPageListUrl;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
+use SmartCms\Kit\Admin\Resources\Pages\Schemas\PageSummary;
 use SmartCms\Support\Admin\Components\Actions\SaveAction;
 use SmartCms\Support\Admin\Components\Actions\SaveAndClose;
 use SmartCms\Support\Admin\Components\Actions\ViewRecord;
-use SmartCms\Support\Admin\Components\Layout\Aside;
 use SmartCms\Support\Admin\Components\Layout\FormGrid;
 use SmartCms\Support\Admin\Components\Layout\LeftGrid;
 use SmartCms\Support\Admin\Components\Layout\RightGrid;
@@ -29,7 +29,7 @@ class EditLayoutSettings extends EditRecord
 
     public function getTitle(): string
     {
-        return __('kit::admin.layout_settings');
+        return __('kit::admin.edit_page') . ' ' . $this->record->name;
     }
 
     public static function getNavigationLabel(): string
@@ -42,47 +42,13 @@ class EditLayoutSettings extends EditRecord
         return $schema->schema([
             FormGrid::make()->schema([
                 LeftGrid::make()->schema([
-                    Section::make()->schema([
-                        Select::make('layout_id')
-                            ->options(function (Model $record) {
-                                return Layout::query()
-                                    ->when($record->is_root, function ($query) {
-                                        return $query->where('path', 'like', '%divisions%');
-                                    })
-                                    ->when(! $record->is_root, function ($query) {
-                                        return $query->where('path', 'like', '%pages%');
-                                    })
-                                    ->pluck('name', 'id');
-                            })
-                            ->label(__('kit::admin.layout'))
-                            ->disabled(fn (Model $record) => $record->root_id !== null)
-                            ->required(fn (Model $record) => $record->root_id === null)
-                            ->reactive()
-                            ->afterStateUpdated(function (Set $set, $state) {
-                                $layout = Layout::find($state);
-                                $set('value', $layout?->getTranslations('value') ?? []);
-                            })->suffixAction(
-                                Action::make('refresh')
-                                    ->label(__('kit::admin.refresh'))
-                                    ->icon(\Filament\Support\Icons\Heroicon::ArrowPathRoundedSquare)
-                                    ->color('primary')
-                                    ->size(\Filament\Support\Enums\Size::Small)
-                                    ->iconPosition(\Filament\Support\Enums\IconPosition::After)
-                                    ->action(function (Set $set, Get $get) {
-                                        $layout = Layout::find($get('layout_id'));
-                                        $set('value', $layout?->getTranslations('value') ?? []);
-                                    }),
-                            ),
-                    ]),
                     Flex::make(function (Get $get) {
                         $layout = Layout::find($get('layout_id'));
 
                         return $layout?->schema ?? [];
                     }),
                 ]),
-                RightGrid::make()->schema([
-                    Aside::make(false),
-                ]),
+                RightGrid::make()->schema(PageSummary::make()),
             ]),
         ]);
     }

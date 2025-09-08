@@ -41,6 +41,11 @@ class EditTemplateRelated extends ManageRelatedRecords
         return 'heroicon-m-light-bulb';
     }
 
+    public function getTitle(): string
+    {
+        return __('kit::admin.edit_page') . ' ' . $this->record->name;
+    }
+
     public static function getNavigationBadge(): ?string
     {
         $pageId = request()->route('record', 0);

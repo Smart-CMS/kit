@@ -18,6 +18,7 @@ use Livewire\Livewire;
 use SmartCms\Forms\Models\ContactForm;
 use SmartCms\Kit\Actions\Support\BindConfig;
 use SmartCms\Kit\Actions\Support\RegisterVariableTypes;
+use SmartCms\Kit\Commands\ActivatePages;
 use SmartCms\Kit\Commands\CreateLanguages;
 use SmartCms\Kit\Commands\MakeAdmin;
 use SmartCms\Kit\Commands\MakeHomePage;
@@ -62,6 +63,7 @@ class KitServiceProvider extends PackageServiceProvider
                 Update::class,
                 MakeHomePage::class,
                 CreateLanguages::class,
+                ActivatePages::class,
             ])
             ->hasConfigFile()
             ->hasMigrations([
@@ -146,7 +148,7 @@ class KitServiceProvider extends PackageServiceProvider
                 /** @var \Illuminate\Routing\Route $this */
                 $uri = $this->uri();
                 $cleanUri = ltrim($uri, '/');
-                $actions = array_filter($this->getAction(), fn ($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
+                $actions = array_filter($this->getAction(), fn($key) => $key != 'as', ARRAY_FILTER_USE_KEY);
                 FacadesRoute::addRoute(
                     $this->methods(),
                     '{lang}/' . $cleanUri,

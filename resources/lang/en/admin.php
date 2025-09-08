@@ -121,4 +121,10 @@ return [
     'nested' => 'Nested',
     'menu' => 'Menu',
     'page' => 'Page',
+    'active' => 'Active',
+    'draft' => 'Draft',
+    'scheduled' => 'Scheduled',
+    'edit_page' => 'Edit page',
+    'published' => 'Published',
+    'show_info' => 'Show info'
 ];

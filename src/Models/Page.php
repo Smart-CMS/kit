@@ -5,6 +5,7 @@ namespace SmartCms\Kit\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
+use SmartCms\Kit\Casts\PageStatusCast;
 use SmartCms\Kit\Components\PageComponent;
 use SmartCms\Seo\Traits\HasSeo;
 use SmartCms\Support\Traits\HasBreadcrumbs;
@@ -57,7 +58,6 @@ class Page extends Model
     use HasRoute;
 
     // use HasSorting;
-    use HasSeo;
     use HasSlug;
     use HasStatus;
     use HasTemplate;
@@ -65,15 +65,30 @@ class Page extends Model
 
     protected $guarded = [];
 
-    public array $translatable = ['name', 'layout_settings'];
+    public array $translatable = [
+        'name',
+        'layout_settings',
+        'title',
+        'heading',
+        'summary',
+        'content',
+        'description',
+        'keywords',
+    ];
 
     protected $casts = [
-        'status' => 'boolean',
+        'status' => PageStatusCast::class,
         'settings' => 'array',
         'layout_settings' => 'array',
         'image' => 'array',
         'banner' => 'array',
         'published_at' => 'datetime',
+        'title' => 'array',
+        'heading' => 'array',
+        'summary' => 'array',
+        'content' => 'array',
+        'description' => 'array',
+        'keywords' => 'array',
     ];
 
     public function getBreadcrumbs(): array

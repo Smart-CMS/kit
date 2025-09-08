@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schedule;
+use SmartCms\Kit\Commands\ActivatePages;
 use SmartCms\Kit\Http\Handlers\PageHandler;
 use SmartCms\Kit\Http\Handlers\RobotsHandler;
 use SmartCms\Kit\Http\Handlers\SitemapHandler;
@@ -15,3 +17,5 @@ Route::get('/{slug?}/{second_slug?}/{third_slug?}', PageHandler::class)
     ->middleware(['web', 'maintenance', 'uuid', 'lang'])
     ->name('cms.page')
     ->multilingual();
+
+Schedule::command(ActivatePages::class)->everyMinute();

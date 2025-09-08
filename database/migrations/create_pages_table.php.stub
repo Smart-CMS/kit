@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->json('name');
             $table->string('slug', 191)->unique()->index();
-            $table->boolean('status')->default(true);
+            $table->string('status')->default('published');
             $table->unsignedInteger('sorting')->default(0);
             $table->string('image')->nullable();
             $table->string('banner')->nullable();
@@ -28,6 +28,12 @@ return new class extends Migration
             $table->boolean('is_system')->default(false);
             $table->boolean('is_root')->default(false);
             $table->timestamp('published_at')->nullable();
+
+            $table->json('title')->nullable();
+            $table->json('heading')->nullable();
+            $table->json('summary')->nullable();
+            $table->json('content')->nullable();
+            $table->json('description')->nullable();
 
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

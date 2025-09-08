@@ -7,16 +7,20 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Assets\Css;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\Width;
 use Filament\Support\Facades\FilamentAsset;
+use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use SmartCms\Forms\FormsPlugin;
 use SmartCms\Kit\Actions\Admin\GetInboxButton;
 use SmartCms\Kit\Actions\Admin\GetVersionHtml;
 use SmartCms\Kit\Actions\Admin\GetViewButton;
+use SmartCms\Kit\Admin\Clusters\Design\DesignCluster;
 use SmartCms\Kit\Admin\Pages\Dashboard;
 use SmartCms\Kit\Admin\Pages\Login;
 use SmartCms\Kit\Admin\Pages\Profile;
 use SmartCms\Kit\Admin\Pages\Settings;
+use SmartCms\Kit\Admin\Pages\TranslatesPage;
 use SmartCms\Kit\Admin\Resources\Admins\AdminResource;
 use SmartCms\Kit\Admin\Resources\Pages\PageResource;
 use SmartCms\Kit\Admin\Widgets\HealthCheck;
@@ -49,17 +53,18 @@ class KitPlugin implements Plugin
         ]);
         $panel->plugins([
             new Theme,
-            TemplateBuilderPlugin::make('kit::admin.design'),
-            PanelTranslatePlugin::make('kit::admin.system'),
-            MenuPlugin::make('kit::admin.design'),
+            TemplateBuilderPlugin::make(null, DesignCluster::class),
+            MenuPlugin::make(null, DesignCluster::class),
             FormsPlugin::make(),
         ])
+            ->discoverClusters(in: __DIR__ . '/Admin/Clusters', for: 'SmartCms\Kit\Admin\Clusters')
             ->profile(Profile::class, isSimple: false)
             ->login(Login::class)
             ->authGuard('admin')
             ->topNavigation()
             ->brandName(app('s')->get('company_name', 'SmartCms'))
             ->spa()
+            ->unsavedChangesAlerts()
             ->databaseNotifications()
             ->resources($resources)
             ->widgets([
@@ -72,10 +77,17 @@ class KitPlugin implements Plugin
             ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => '<meta name="robots" content="noindex, nofollow" />')
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetInboxButton::run())
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetViewButton::run())
+            ->breadcrumbs(false)
+            ->maxContentWidth(Width::Full)
             ->pages([
                 Dashboard::class,
                 Settings::class,
+                TranslatesPage::class,
             ]);
+
+        Table::configureUsing(function (Table $table) {
+            $table->defaultSort('updated_at', 'desc');
+        });
     }
 
     public function boot(Panel $panel): void

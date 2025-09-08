@@ -9,6 +9,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use SmartCms\Kit\Admin\Clusters\System\SystemCluster;
 use SmartCms\Kit\Admin\Settings\BrandingForm;
 use SmartCms\Kit\Admin\Settings\CompanyInfoForm;
 use SmartCms\Kit\Admin\Settings\GeneralForm;
@@ -28,9 +29,9 @@ class Settings extends SettingsPage
 {
     protected static ?int $navigationSort = 100;
 
-    public static function getNavigationGroup(): string | UnitEnum | null
+    public static function getCluster(): ?string
     {
-        return __('kit::admin.system');
+        return SystemCluster::class;
     }
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::Cog6Tooth;

@@ -25,3 +25,39 @@
 .fi-section-content {
     padding: calc(var(--spacing)*4);
 }
+
+fi-sidebar-item {
+    padding: 0.1rem;
+}
+
+fi-sidebar-item-button {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.fi-page.fi-resource-list-records-page.fi-resource-static-pages nav[role="tablist"] {
+    display: none;
+}
+
+.fi-page-sub-navigation-sidebar-ctn {
+    width: 13rem !important;
+}
+
+.fi-sidebar-nav {
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.-m-4-i {
+    margin-left: .5rem !important;
+}
+
+.fi-sidebar-nav-groups {
+    row-gap: 0.3rem !important;
+}
+
+.fi-tabs[role="tablist"] {
+    margin: 0;
+}
+fi-page-sub-navigation-sidebar-ctn {
+    max-width: 14rem !important;
+}

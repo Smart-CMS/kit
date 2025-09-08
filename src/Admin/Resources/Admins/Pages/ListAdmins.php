@@ -14,7 +14,7 @@ class ListAdmins extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()->modal(),
             // ->visible(fn(): bool => Auth::user()->id == 1),
         ];
     }

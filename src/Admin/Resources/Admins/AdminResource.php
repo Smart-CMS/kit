@@ -9,6 +9,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use SmartCms\Kit\Admin\Clusters\System\SystemCluster;
 use SmartCms\Kit\Admin\Resources\Admins\Pages\CreateAdmin;
 use SmartCms\Kit\Admin\Resources\Admins\Pages\EditAdmin;
 use SmartCms\Kit\Admin\Resources\Admins\Pages\ListAdmins;
@@ -20,11 +21,13 @@ class AdminResource extends Resource
 {
     protected static ?string $model = Admin::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?int $navigationSort = 1;
 
-    public static function getNavigationGroup(): ?string
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedUserCircle;
+
+    public static function getCluster(): ?string
     {
-        return __('kit::admin.system');
+        return SystemCluster::class;
     }
 
     public static function form(Schema $schema): Schema
@@ -48,7 +51,6 @@ class AdminResource extends Resource
     {
         return [
             'index' => ListAdmins::route('/'),
-            'create' => CreateAdmin::route('/create'),
             'edit' => EditAdmin::route('/{record}/edit'),
         ];
     }

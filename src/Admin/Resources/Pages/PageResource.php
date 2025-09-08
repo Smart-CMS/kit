@@ -2,9 +2,11 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages;
 
+use BackedEnum;
 use Filament\Resources\Pages\Page as PagesPage;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Admin\Resources\Pages\Pages\CreatePage;
@@ -23,6 +25,10 @@ use SmartCms\Kit\Models\Page;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
+
+    protected static ?int $navigationSort = -1;
+
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedRocketLaunch;
 
     public static function form(Schema $schema): Schema
     {
@@ -50,7 +56,7 @@ class PageResource extends Resource
             'items' => ListItems::route('/list/{record}/items'),
             'categories' => ListCategories::route('/list/{record}/categories'),
             'template' => EditTemplateRelated::route('/{record}/template'),
-            'seo' => EditSeo::route('/{record}/seo'),
+            // 'seo' => EditSeo::route('/{record}/seo'),
             'menu' => PagesEditMenuSection::route('/{record}/menu'),
             'layout' => EditLayoutSettings::route('/{record}/layout'),
         ];
@@ -58,17 +64,15 @@ class PageResource extends Resource
 
     public static function getRecordSubNavigation(PagesPage $page): array
     {
-        // $additional = [];
-        // if (MenuSection::query()->where('parent_id', $page->record->id)->exists()) {
-        //     $additional[] = EditMenuSection::class;
-        // }
-        return $page->generateNavigationItems([
+        $subNavigation = [
             EditPage::class,
             EditTemplateRelated::class,
-            EditSeo::class,
-            EditLayoutSettings::class,
-            // ...$additional,
-        ]);
+        ];
+        $schema = $page->record?->layout?->schema ?? [];
+        if (count($schema) > 0) {
+            $subNavigation[] = EditLayoutSettings::class;
+        }
+        return $page->generateNavigationItems($subNavigation);
     }
 
     /**

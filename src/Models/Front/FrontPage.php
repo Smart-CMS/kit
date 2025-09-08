@@ -2,9 +2,11 @@
 
 namespace SmartCms\Kit\Models\Front;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use SmartCms\Kit\Casts\ImageCast;
 use SmartCms\Kit\Models\Page;
+use SmartCms\Kit\Support\Contracts\PageStatus;
 use SmartCms\Seo\Models\Seo;
 
 class FrontPage extends Page
@@ -14,6 +16,13 @@ class FrontPage extends Page
     protected $casts = [
         'image' => ImageCast::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('published_only', function (Builder $builder) {
+            $builder->where('status', PageStatus::Published->value);
+        });
+    }
 
     public static function addDynamicCast($attribute, $cast): void
     {
@@ -25,33 +34,28 @@ class FrontPage extends Page
         return array_merge(self::$staticCasts, $this->casts, parent::getCasts());
     }
 
-    public function heading(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->getSeo()->heading ?? $this?->name ?? '',
-        );
-    }
+    // public function heading(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn() => $this->heading ?? $this?->name ?? '',
+    //     );
+    // }
 
-    public function summary(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->getSeo()->summary ?? $this?->name ?? '',
-        );
-    }
+    // public function summary(): Attribute
+    // {
+    //     dd($this);
+    //     return new Attribute(
+    //         get: fn() => $this->summary ?? $this?->name ?? '',
+    //     );
+    // }
 
-    public function content(): Attribute
-    {
-        return new Attribute(
-            get: fn () => str($this->getSeo()->content ?? '')->toHtmlString(),
-        );
-    }
-
-    public function getSeo(): Seo
-    {
-        $seo = $this->seo ?? Seo::query()->where('seoable_id', $this->id)->where('seoable_type', Page::class)->first() ?? new Seo;
-
-        return $seo;
-    }
+    // public function content(): Attribute
+    // {
+    //     dd($this->getTranslation('content', config('app.locale')));
+    //     return new Attribute(
+    //         get: fn() => str($this->content ?? '')->toHtmlString(),
+    //     );
+    // }
 
     public function categories(): Attribute
     {
@@ -92,14 +96,14 @@ class FrontPage extends Page
     public function breadcrumbs(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->getBreadcrumbs(),
+            get: fn() => $this->getBreadcrumbs(),
         );
     }
 
     public function url(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->route(),
+            get: fn() => $this->route(),
         );
     }
 }
