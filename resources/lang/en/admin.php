@@ -126,5 +126,5 @@ return [
     'scheduled' => 'Scheduled',
     'edit_page' => 'Edit page',
     'published' => 'Published',
-    'show_info' => 'Show info'
+    'show_info' => 'Show info',
 ];

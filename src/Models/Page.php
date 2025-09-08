@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use SmartCms\Kit\Casts\PageStatusCast;
 use SmartCms\Kit\Components\PageComponent;
-use SmartCms\Seo\Traits\HasSeo;
 use SmartCms\Support\Traits\HasBreadcrumbs;
 use SmartCms\Support\Traits\HasParent;
 use SmartCms\Support\Traits\HasRoute;

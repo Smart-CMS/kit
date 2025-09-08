@@ -28,7 +28,6 @@ use SmartCms\Kit\Http\Middlewares\NoIndex;
 use SmartCms\Kit\Models\Admin;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Menu\MenuPlugin;
-use SmartCms\PanelTranslate\PanelTranslatePlugin;
 use SmartCms\TemplateBuilder\TemplateBuilderPlugin;
 use SmartCms\Theme\Theme;
 

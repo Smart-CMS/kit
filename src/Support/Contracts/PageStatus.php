@@ -5,7 +5,7 @@ namespace SmartCms\Kit\Support\Contracts;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum PageStatus: string implements HasLabel, HasColor
+enum PageStatus: string implements HasColor, HasLabel
 {
     case Draft = 'draft';
     case Published = 'published';
@@ -20,7 +20,7 @@ enum PageStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string|array|null
+    public function getColor(): string | array | null
     {
         return match ($this) {
             self::Draft => 'gray',

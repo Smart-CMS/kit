@@ -10,7 +10,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use SmartCms\Kit\Admin\Clusters\System\SystemCluster;
-use SmartCms\Kit\Admin\Resources\Admins\Pages\CreateAdmin;
 use SmartCms\Kit\Admin\Resources\Admins\Pages\EditAdmin;
 use SmartCms\Kit\Admin\Resources\Admins\Pages\ListAdmins;
 use SmartCms\Kit\Admin\Resources\Admins\Schemas\AdminForm;

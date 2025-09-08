@@ -18,6 +18,7 @@ class PageStatusCast implements CastsAttributes
         if (isset($attributes['id']) && $attributes['id'] == 1) {
             return PageStatus::Published->value;
         }
+
         return $value instanceof PageStatus ? $value->value : $value;
     }
 }

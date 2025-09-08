@@ -2,7 +2,6 @@
 
 namespace SmartCms\Kit\Admin\Resources\Pages\Schemas;
 
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -10,7 +9,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
 use SmartCms\Kit\Support\Contracts\PageStatus;
@@ -22,9 +20,11 @@ class PageSummary extends Page
     public static function make(): array
     {
         $imagePath = '';
+
         return [
             Section::make('Status')->icon(function (Get $get) {
                 $status = $get('status');
+
                 return match ($status) {
                     'draft' => Heroicon::OutlinedSun,
                     'scheduled' => Heroicon::OutlinedCalendarDays,
@@ -37,7 +37,7 @@ class PageSummary extends Page
                             return $record->id == 1;
                         })
                         ->options(PageStatus::class)->default('active')->reactive(),
-                    DateTimePicker::make('published_at')->reactive()->seconds(false)->default(now())->hidden(fn($get) => $get('status')?->value != 'scheduled'),
+                    DateTimePicker::make('published_at')->reactive()->seconds(false)->default(now())->hidden(fn ($get) => $get('status')?->value != 'scheduled'),
                 ]),
             Section::make()->compact()->schema([
                 ImageUpload::make('image', $imagePath, __('kit::admin.image')),
@@ -55,17 +55,18 @@ class PageSummary extends Page
                             })
                             ->pluck('name', 'id');
                     })
-                    ->label(__('kit::admin.layout'))
+                    ->label(__('kit::admin.layout')),
             ])->columns(1),
             Section::make(__('kit::admin.indexation'))->icon(function (Get $get) {
                 $index = $get('is_index') ?? true;
+
                 return match ($index) {
                     true => Heroicon::OutlinedMagnifyingGlass,
                     default => Heroicon::OutlinedMagnifyingGlassMinus
                 };
             })->compact()->schema([
                 Toggle::make('is_index')->label(__('kit::admin.is_index'))->hiddenLabel()->default(true)->reactive(),
-            ])
+            ]),
         ];
     }
 }

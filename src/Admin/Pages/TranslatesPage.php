@@ -8,6 +8,7 @@ use SmartCms\PanelTranslate\TranslatesPage as PanelTranslateTranslatesPage;
 class TranslatesPage extends PanelTranslateTranslatesPage
 {
     protected static ?int $navigationSort = 2;
+
     public static function getCluster(): ?string
     {
         return SystemCluster::class;

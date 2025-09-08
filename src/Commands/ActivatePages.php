@@ -20,7 +20,7 @@ class ActivatePages extends Command
             ->whereNotNull('published_at')
             ->where('published_at', '<=', $now)
             ->update([
-                'status' => PageStatus::Published->value
+                'status' => PageStatus::Published->value,
             ]);
     }
 }

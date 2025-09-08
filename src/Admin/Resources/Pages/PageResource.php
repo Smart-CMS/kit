@@ -72,6 +72,7 @@ class PageResource extends Resource
         if (count($schema) > 0) {
             $subNavigation[] = EditLayoutSettings::class;
         }
+
         return $page->generateNavigationItems($subNavigation);
     }
 

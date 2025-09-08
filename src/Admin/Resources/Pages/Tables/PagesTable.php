@@ -13,7 +13,6 @@ use SmartCms\Support\Admin\Components\Filters\StatusFilter;
 use SmartCms\Support\Admin\Components\Tables\CreatedAtColumn;
 use SmartCms\Support\Admin\Components\Tables\NameColumn;
 use SmartCms\Support\Admin\Components\Tables\SortingColumn;
-use SmartCms\Support\Admin\Components\Tables\StatusColumn;
 use SmartCms\Support\Admin\Components\Tables\UpdatedAtColumn;
 use SmartCms\Support\Admin\Components\Tables\ViewsColumn;
 
@@ -23,10 +22,10 @@ class PagesTable
     {
         return $table
             ->columns([
-                NameColumn::make()->getStateUsing(fn($record) => $record->getTranslation('name', main_lang())),
+                NameColumn::make()->getStateUsing(fn ($record) => $record->getTranslation('name', main_lang())),
                 ImageColumn::make('image.source')
                     ->square()
-                    ->getStateUsing(fn($record) => validateImage(ltrim($record?->image['source'] ?? '', '/')))
+                    ->getStateUsing(fn ($record) => validateImage(ltrim($record?->image['source'] ?? '', '/')))
                     ->defaultImageUrl(no_image()['source'] ?? '')
                     ->default(no_image()['source']),
                 TextColumn::make('status')->badge()->color(function (mixed $state) {

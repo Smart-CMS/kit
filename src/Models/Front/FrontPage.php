@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use SmartCms\Kit\Casts\ImageCast;
 use SmartCms\Kit\Models\Page;
 use SmartCms\Kit\Support\Contracts\PageStatus;
-use SmartCms\Seo\Models\Seo;
 
 class FrontPage extends Page
 {
@@ -96,14 +95,14 @@ class FrontPage extends Page
     public function breadcrumbs(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->getBreadcrumbs(),
+            get: fn () => $this->getBreadcrumbs(),
         );
     }
 
     public function url(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->route(),
+            get: fn () => $this->route(),
         );
     }
 }

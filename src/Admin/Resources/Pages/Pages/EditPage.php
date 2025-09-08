@@ -5,12 +5,9 @@ namespace SmartCms\Kit\Admin\Resources\Pages\Pages;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Group;
-use Filament\Schemas\Components\Text;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\Size;
 use Filament\Support\Icons\Heroicon;
@@ -46,15 +43,17 @@ class EditPage extends EditRecord
                         TextEntry::make('created_at')->icon(Heroicon::OutlinedClock)->date(),
                         TextEntry::make('created_by')->icon(Heroicon::UserCircle)->formatStateUsing(function ($state) {
                             $admin = Admin::query()->find($state);
+
                             return $admin?->name ?? __('kit::admin.system');
                         }),
                         TextEntry::make('updated_at')->icon(Heroicon::OutlinedClock)->date(),
                         TextEntry::make('updated_by')->icon(Heroicon::OutlinedUserCircle)->formatStateUsing(function ($state) {
                             $admin = Admin::query()->find($state);
+
                             return $admin?->name ?? __('kit::admin.system');
                         }),
                     ])->columns(2),
-                ])
+                ]),
             ])->link()->label('Actions')
                 ->icon(Heroicon::ChevronDown)
                 ->size(Size::Small)
