@@ -12,7 +12,6 @@ use Filament\Notifications\NotificationsServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
-use SmartCms\Kit\Tests\TestPanelProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -27,7 +26,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'SmartCms\\Kit\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'SmartCms\\Kit\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -64,7 +63,8 @@ class TestCase extends Orchestra
 
         // Mock the 's' service that's used in KitPlugin
         $app->singleton('s', function () {
-            return new class {
+            return new class
+            {
                 public function get($key, $default = null)
                 {
                     return $default;
@@ -74,7 +74,7 @@ class TestCase extends Orchestra
 
         // Mock the 'lang' service that's used in helpers
         $app->singleton('lang', function () {
-            return new Languages();
+            return new Languages;
         });
     }
 }
