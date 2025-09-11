@@ -30,8 +30,6 @@ class UpdateService implements UpdateServiceInterface
     public function getCurrentVersion(): string
     {
         try {
-            return '0.01';
-
             return InstalledVersions::getPrettyVersion($this->packageName) ?? 'unknown';
         } catch (\Exception $e) {
             Log::warning('Failed to get current version', ['error' => $e->getMessage()]);
