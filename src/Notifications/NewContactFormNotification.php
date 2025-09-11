@@ -68,7 +68,7 @@ class NewContactFormNotification extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        $title = __("kit::admin.form") . ' ' . $this->form->prefix . ' ' . __('kit::admin.was_sent');
+        $title = __('kit::admin.form') . ' ' . $this->form->prefix . ' ' . __('kit::admin.was_sent');
         $notification = NotificationsNotification::make()->title($title)->success()->toDatabase();
         $notifiable->notifyNow($notification);
 
