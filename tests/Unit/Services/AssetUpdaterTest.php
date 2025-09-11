@@ -3,7 +3,7 @@
 use SmartCms\Kit\Services\AssetUpdater;
 
 beforeEach(function () {
-    $this->assetUpdater = new AssetUpdater();
+    $this->assetUpdater = new AssetUpdater;
 });
 
 it('can check npm availability', function () {

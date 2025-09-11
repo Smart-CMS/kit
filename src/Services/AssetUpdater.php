@@ -15,31 +15,31 @@ class AssetUpdater
 
         try {
             // Check if package.json exists
-            if (!file_exists(base_path('package.json'))) {
+            if (! file_exists(base_path('package.json'))) {
                 return [
                     'success' => false,
                     'message' => 'No package.json found. This project does not appear to use npm.',
-                    'output' => []
+                    'output' => [],
                 ];
             }
 
             $this->addOutput('Starting frontend assets update...');
 
             // Step 1: npm ci (clean install)
-            if (!$this->runNpmCi()) {
+            if (! $this->runNpmCi()) {
                 return [
                     'success' => false,
                     'message' => 'Failed to install npm dependencies',
-                    'output' => $this->output
+                    'output' => $this->output,
                 ];
             }
 
             // Step 2: npm run build
-            if (!$this->runNpmBuild()) {
+            if (! $this->runNpmBuild()) {
                 return [
                     'success' => false,
                     'message' => 'Failed to build frontend assets',
-                    'output' => $this->output
+                    'output' => $this->output,
                 ];
             }
 
@@ -49,7 +49,7 @@ class AssetUpdater
             return [
                 'success' => true,
                 'message' => 'Frontend assets updated successfully',
-                'output' => $this->output
+                'output' => $this->output,
             ];
         } catch (\Exception $e) {
             $this->addOutput('❌ Asset update failed: ' . $e->getMessage());
@@ -58,7 +58,7 @@ class AssetUpdater
             return [
                 'success' => false,
                 'message' => 'Asset update failed: ' . $e->getMessage(),
-                'output' => $this->output
+                'output' => $this->output,
             ];
         }
     }
@@ -75,13 +75,15 @@ class AssetUpdater
             $this->addOutput(trim($buffer));
         });
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             $this->addOutput('❌ npm ci failed!');
             $this->addOutput('Error: ' . $process->getErrorOutput());
+
             return false;
         }
 
         $this->addOutput('✅ npm dependencies installed successfully');
+
         return true;
     }
 
@@ -97,13 +99,15 @@ class AssetUpdater
             $this->addOutput(trim($buffer));
         });
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             $this->addOutput('❌ npm run build failed!');
             $this->addOutput('Error: ' . $process->getErrorOutput());
+
             return false;
         }
 
         $this->addOutput('✅ Frontend assets built successfully');
+
         return true;
     }
 
@@ -119,20 +123,20 @@ class AssetUpdater
                 return [
                     'available' => true,
                     'version' => trim($process->getOutput()),
-                    'message' => 'npm is available'
+                    'message' => 'npm is available',
                 ];
             } else {
                 return [
                     'available' => false,
                     'version' => null,
-                    'message' => 'npm command failed'
+                    'message' => 'npm command failed',
                 ];
             }
         } catch (\Exception $e) {
             return [
                 'available' => false,
                 'version' => null,
-                'message' => 'npm not found: ' . $e->getMessage()
+                'message' => 'npm not found: ' . $e->getMessage(),
             ];
         }
     }
@@ -143,29 +147,29 @@ class AssetUpdater
 
         // Check if npm is available
         $npmCheck = $this->checkNpmAvailability();
-        if (!$npmCheck['available']) {
+        if (! $npmCheck['available']) {
             $issues[] = 'npm is not available: ' . $npmCheck['message'];
         }
 
         // Check if package.json exists
-        if (!file_exists(base_path('package.json'))) {
+        if (! file_exists(base_path('package.json'))) {
             $issues[] = 'package.json not found in project root';
         }
 
         // Check if node_modules directory is writable
         $nodeModulesPath = base_path('node_modules');
-        if (file_exists($nodeModulesPath) && !is_writable($nodeModulesPath)) {
+        if (file_exists($nodeModulesPath) && ! is_writable($nodeModulesPath)) {
             $issues[] = 'node_modules directory is not writable';
         }
 
         // Check if public directory is writable (for built assets)
-        if (!is_writable(public_path())) {
+        if (! is_writable(public_path())) {
             $issues[] = 'public directory is not writable';
         }
 
         return [
             'valid' => empty($issues),
-            'issues' => $issues
+            'issues' => $issues,
         ];
     }
 
@@ -174,7 +178,7 @@ class AssetUpdater
         if (trim($message)) {
             $this->output[] = [
                 'timestamp' => now()->toISOString(),
-                'message' => $message
+                'message' => $message,
             ];
         }
     }
@@ -187,7 +191,7 @@ class AssetUpdater
     public function getNpmEnv(): ?array
     {
         $npmPath = $this->findExecutable('npm');
-        if (!$npmPath) {
+        if (! $npmPath) {
             return null;
         }
         // Update command with full path
@@ -196,9 +200,10 @@ class AssetUpdater
         $homeDir = getenv('HOME') ?: '/tmp';
         $npmConfigCache = storage_path('npm-cache');
 
-        if (!file_exists($npmConfigCache)) {
+        if (! file_exists($npmConfigCache)) {
             mkdir($npmConfigCache, 0755, true);
         }
+
         return [
             'PATH' => dirname($npmPath) . ':' . getenv('PATH'),
             'HOME' => $homeDir,

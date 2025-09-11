@@ -14,7 +14,6 @@ use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use SmartCms\Kit\Admin\Clusters\System\SystemCluster;
 use SmartCms\Kit\Contracts\UpdateCheckerInterface;
 use SmartCms\Kit\Contracts\UpdateServiceInterface;
@@ -56,14 +55,14 @@ class UpdatePage extends Page
                         ->schema([
                             TextEntry::make('current_version')
                                 ->label(__('kit::admin.installed_version'))
-                                ->state(fn() => $this->getCurrentVersion())
+                                ->state(fn () => $this->getCurrentVersion())
                                 ->size(TextSize::Large)
                                 ->weight('bold'),
 
                             TextEntry::make('last_checked')
                                 ->label(__('kit::admin.last_checked'))
-                                ->state(fn() => $this->getLastChecked() ?? __('kit::admin.never'))
-                                ->visible(fn() => $this->getLastChecked() !== null),
+                                ->state(fn () => $this->getLastChecked() ?? __('kit::admin.never'))
+                                ->visible(fn () => $this->getLastChecked() !== null),
                         ]),
                 ]),
 
@@ -75,11 +74,11 @@ class UpdatePage extends Page
                         ->schema([
                             TextEntry::make('latest_version')
                                 ->label(__('kit::admin.latest_version'))
-                                ->state(fn() => $this->getLatestVersion() ?? __('kit::admin.unknown'))
+                                ->state(fn () => $this->getLatestVersion() ?? __('kit::admin.unknown'))
                                 ->size(TextSize::Large)
                                 ->weight('bold')
                                 ->color($this->hasUpdatesAvailable() ? 'primary' : 'success')
-                                ->visible(fn() => $this->hasUpdatesAvailable()),
+                                ->visible(fn () => $this->hasUpdatesAvailable()),
 
                             TextEntry::make('release_date')
                                 ->label(__('kit::admin.release_date'))
@@ -91,14 +90,14 @@ class UpdatePage extends Page
 
                                     return null;
                                 })
-                                ->visible(fn() => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['published_at'])),
+                                ->visible(fn () => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['published_at'])),
                         ])
-                        ->visible(fn() => $this->hasUpdatesAvailable()),
+                        ->visible(fn () => $this->hasUpdatesAvailable()),
 
                     TextEntry::make('up_to_date_message')
                         ->label('')
                         ->state(__('kit::admin.system_up_to_date_message'))
-                        ->visible(fn() => ! $this->hasUpdatesAvailable()),
+                        ->visible(fn () => ! $this->hasUpdatesAvailable()),
 
                     TextEntry::make('release_notes')
                         ->label(__('kit::admin.release_notes'))
@@ -111,7 +110,7 @@ class UpdatePage extends Page
                             return null;
                         })
                         ->markdown()
-                        ->visible(fn() => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['body'])),
+                        ->visible(fn () => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['body'])),
                 ]),
 
             Section::make(__('kit::admin.update_settings'))
@@ -146,12 +145,14 @@ class UpdatePage extends Page
                 ->icon(Heroicon::CommandLine)
                 ->action('updateAssets')
                 ->color('gray')
-                ->disabled(fn() => !$this->canUpdateAssets())
+                ->disabled(fn () => ! $this->canUpdateAssets())
                 ->tooltip(function () {
-                    if (!$this->canUpdateAssets()) {
+                    if (! $this->canUpdateAssets()) {
                         $issues = $this->getAssetValidationIssues();
+
                         return __('kit::admin.asset_update_disabled') . ': ' . implode(', ', $issues);
                     }
+
                     return null;
                 })
                 ->requiresConfirmation()
@@ -170,7 +171,7 @@ class UpdatePage extends Page
                 ->icon(Heroicon::CloudArrowDown)
                 ->action('updateNow')
                 ->color('primary')
-                ->visible(fn() => $this->hasUpdatesAvailable())
+                ->visible(fn () => $this->hasUpdatesAvailable())
                 ->requiresConfirmation()
                 ->modalHeading(__('kit::admin.confirm_update'))
                 ->modalDescription(__('kit::admin.confirm_update_description'))
@@ -252,16 +253,17 @@ class UpdatePage extends Page
     public function updateAssets(): void
     {
         try {
-            $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater();
+            $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater;
 
             // Validate environment before starting
             $validation = $assetUpdater->validateAssetEnvironment();
-            if (!$validation['valid']) {
+            if (! $validation['valid']) {
                 Notification::make()
                     ->title(__('kit::admin.asset_update_validation_failed'))
                     ->body(implode("\n", $validation['issues']))
                     ->danger()
                     ->send();
+
                 return;
             }
 
@@ -338,8 +340,9 @@ class UpdatePage extends Page
     public function canUpdateAssets(): bool
     {
         return Cache::remember('can_update_assets', 300, function () {
-            $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater();
+            $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater;
             $validation = $assetUpdater->validateAssetEnvironment();
+
             return $validation['valid'];
         });
         // $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater();
@@ -349,8 +352,9 @@ class UpdatePage extends Page
 
     public function getAssetValidationIssues(): array
     {
-        $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater();
+        $assetUpdater = new \SmartCms\Kit\Services\AssetUpdater;
         $validation = $assetUpdater->validateAssetEnvironment();
+
         return $validation['issues'];
     }
 }
