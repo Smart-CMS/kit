@@ -17,7 +17,7 @@ class GetInboxButton
         return function (): string {
             $count = ContactForm::query()->where('status', ContactFormStatusesEnum::NEW)->count();
 
-            return Blade::render('{{$action}}', [
+            return Blade::render('<div wire:poll.10s>{{$action}}</div>', [
                 'action' => Action::make('contact_form')
                     ->label(__('kit::admin.inbox'))
                     ->link()

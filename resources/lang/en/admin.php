@@ -171,4 +171,7 @@ return [
     'asset_update_completed_message' => 'Frontend assets have been successfully updated.',
     'asset_update_failed' => 'Asset Update Failed',
     'asset_update_disabled' => 'Asset update is not available',
+
+    'form' => 'Form',
+    'was_sent' => 'was sent',
 ];
