@@ -15,14 +15,14 @@ class UpdateErrorHandler
         Log::error('Composer update failed', [
             'error_type' => $errorType,
             'exit_code' => $exitCode,
-            'error_output' => $errorOutput
+            'error_output' => $errorOutput,
         ]);
 
         return [
             'type' => $errorType,
             'message' => $userMessage,
             'troubleshooting' => $troubleshooting,
-            'technical_details' => $errorOutput
+            'technical_details' => $errorOutput,
         ];
     }
 
@@ -34,14 +34,14 @@ class UpdateErrorHandler
 
         Log::warning('GitHub API error handled', [
             'error_type' => $errorType,
-            'message' => $e->getMessage()
+            'message' => $e->getMessage(),
         ]);
 
         return [
             'type' => $errorType,
             'message' => $userMessage,
             'troubleshooting' => $troubleshooting,
-            'technical_details' => $e->getMessage()
+            'technical_details' => $e->getMessage(),
         ];
     }
 
@@ -51,31 +51,31 @@ class UpdateErrorHandler
             'dependency_conflict' => [
                 'Your requirements could not be resolved',
                 'Conclusion: don\'t install',
-                'conflicting requirements'
+                'conflicting requirements',
             ],
             'permission_denied' => [
                 'Permission denied',
                 'cannot create directory',
-                'failed to open stream: Permission denied'
+                'failed to open stream: Permission denied',
             ],
             'network_error' => [
                 'Could not fetch',
                 'curl error',
                 'Connection timed out',
-                'Failed to download'
+                'Failed to download',
             ],
             'memory_limit' => [
                 'Fatal error: Allowed memory size',
-                'out of memory'
+                'out of memory',
             ],
             'composer_not_found' => [
                 'composer: command not found',
-                'composer is not recognized'
+                'composer is not recognized',
             ],
             'lock_file_error' => [
                 'composer.lock is not up to date',
-                'Hash mismatch'
-            ]
+                'Hash mismatch',
+            ],
         ];
 
         foreach ($patterns as $type => $keywords) {
@@ -158,49 +158,49 @@ class UpdateErrorHandler
                     'Run "composer update --dry-run" to see detailed conflict information',
                     'Check if any packages have been manually modified',
                     'Consider updating conflicting packages individually',
-                    'Review composer.json for version constraints that might be too strict'
+                    'Review composer.json for version constraints that might be too strict',
                 ];
             case 'permission_denied':
                 return [
                     'Ensure the web server user has write permissions to the project directory',
                     'Check ownership of files and directories (should match web server user)',
                     'Run "chmod -R 755" on the project directory if needed',
-                    'Consider running the update as the correct user via command line'
+                    'Consider running the update as the correct user via command line',
                 ];
             case 'network_error':
                 return [
                     'Check your internet connection',
                     'Verify that your server can access external websites',
                     'Check if there are any firewall restrictions',
-                    'Try running the update manually via command line'
+                    'Try running the update manually via command line',
                 ];
             case 'memory_limit':
                 return [
                     'Increase PHP memory_limit in php.ini (recommended: 512M or higher)',
                     'Run the update via command line which typically has higher memory limits',
                     'Consider using "composer update --no-dev" to reduce memory usage',
-                    'Close other applications to free up system memory'
+                    'Close other applications to free up system memory',
                 ];
             case 'composer_not_found':
                 return [
                     'Install Composer from https://getcomposer.org/',
                     'Ensure Composer is in your system PATH',
                     'Try running "which composer" to verify installation',
-                    'Consider using the full path to composer executable'
+                    'Consider using the full path to composer executable',
                 ];
             case 'lock_file_error':
                 return [
                     'Run "composer install" to sync the lock file',
                     'Delete composer.lock and run "composer update" to regenerate it',
                     'Ensure composer.json and composer.lock are both committed to version control',
-                    'Check if composer.json was modified without updating the lock file'
+                    'Check if composer.json was modified without updating the lock file',
                 ];
             default:
                 return [
                     'Check the technical details for specific error information',
                     'Try running the update manually via command line for more detailed output',
                     'Ensure all system requirements are met',
-                    'Contact support if the issue persists'
+                    'Contact support if the issue persists',
                 ];
         }
     }
@@ -213,42 +213,42 @@ class UpdateErrorHandler
                     'Wait for the rate limit to reset (usually within an hour)',
                     'Consider configuring a GitHub personal access token for higher limits',
                     'Reduce the frequency of update checks in configuration',
-                    'Use manual update checking instead of automatic checks'
+                    'Use manual update checking instead of automatic checks',
                 ];
             case 'connection_error':
                 return [
                     'Check your internet connection',
                     'Verify DNS resolution is working',
                     'Check if GitHub.com is accessible from your server',
-                    'Review firewall and proxy settings'
+                    'Review firewall and proxy settings',
                 ];
             case 'repository_not_found':
                 return [
                     'Verify the repository name in kit.php configuration',
                     'Ensure the repository exists and is public',
                     'Check for typos in the repository path',
-                    'Confirm the repository has releases published'
+                    'Confirm the repository has releases published',
                 ];
             case 'access_denied':
                 return [
                     'Wait if this is due to rate limiting',
                     'Check if the repository is public',
                     'Verify repository permissions if using authentication',
-                    'Try again later as this might be temporary'
+                    'Try again later as this might be temporary',
                 ];
             case 'service_unavailable':
                 return [
                     'Wait and try again later',
                     'Check GitHub status at https://www.githubstatus.com/',
                     'Use manual update checking if automatic checks fail',
-                    'Consider increasing timeout settings'
+                    'Consider increasing timeout settings',
                 ];
             default:
                 return [
                     'Check the technical details for specific error information',
                     'Verify GitHub repository configuration',
                     'Try manual update checking',
-                    'Contact support if the issue persists'
+                    'Contact support if the issue persists',
                 ];
         }
     }

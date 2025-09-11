@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use SmartCms\Kit\Services\UpdateService;
 
 beforeEach(function () {
-    $this->updateService = new UpdateService();
+    $this->updateService = new UpdateService;
     Cache::flush();
 });
 
@@ -23,7 +22,7 @@ it('can fetch latest version from github', function () {
             'tag_name' => 'v1.2.3',
             'name' => 'Version 1.2.3',
             'body' => 'Release notes...',
-        ], 200)
+        ], 200),
     ]);
 
     $version = $this->updateService->getLatestVersion();
@@ -33,7 +32,7 @@ it('can fetch latest version from github', function () {
 
 it('returns null when github api fails', function () {
     Http::fake([
-        'api.github.com/repos/smart-cms/kit/releases/latest' => Http::response([], 404)
+        'api.github.com/repos/smart-cms/kit/releases/latest' => Http::response([], 404),
     ]);
 
     $version = $this->updateService->getLatestVersion();
@@ -48,7 +47,7 @@ it('can get version info for specific version', function () {
             'name' => 'Version 1.2.3',
             'body' => 'Release notes for version 1.2.3',
             'published_at' => '2024-01-15T10:00:00Z',
-        ], 200)
+        ], 200),
     ]);
 
     $info = $this->updateService->getVersionInfo('v1.2.3');
@@ -62,7 +61,7 @@ it('can detect when updates are available', function () {
     Http::fake([
         'api.github.com/repos/smart-cms/kit/releases/latest' => Http::response([
             'tag_name' => 'v999.0.0', // Much higher version
-        ], 200)
+        ], 200),
     ]);
 
     $hasUpdates = $this->updateService->hasUpdatesAvailable();
@@ -74,7 +73,7 @@ it('can detect when no updates are available', function () {
     Http::fake([
         'api.github.com/repos/smart-cms/kit/releases/latest' => Http::response([
             'tag_name' => 'v0.0.1', // Much lower version
-        ], 200)
+        ], 200),
     ]);
 
     $hasUpdates = $this->updateService->hasUpdatesAvailable();
@@ -92,7 +91,7 @@ it('can get complete update details', function () {
             'name' => 'Version 999.0.0',
             'body' => 'Major update with new features',
             'published_at' => '2024-01-15T10:00:00Z',
-        ], 200)
+        ], 200),
     ]);
 
     $details = $this->updateService->getUpdateDetails();
@@ -109,7 +108,7 @@ it('caches github api responses', function () {
     Http::fake([
         'api.github.com/repos/smart-cms/kit/releases/latest' => Http::response([
             'tag_name' => 'v1.2.3',
-        ], 200)
+        ], 200),
     ]);
 
     // First call
@@ -125,8 +124,10 @@ it('caches github api responses', function () {
 });
 
 it('normalizes versions correctly', function () {
-    $service = new class extends UpdateService {
-        public function testNormalizeVersion(string $version): string {
+    $service = new class extends UpdateService
+    {
+        public function testNormalizeVersion(string $version): string
+        {
             return $this->normalizeVersion($version);
         }
     };

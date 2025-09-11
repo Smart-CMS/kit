@@ -3,7 +3,7 @@
 use SmartCms\Kit\Services\UpdateExecutor;
 
 beforeEach(function () {
-    $this->updateExecutor = new UpdateExecutor();
+    $this->updateExecutor = new UpdateExecutor;
 });
 
 it('can check composer availability', function () {
@@ -40,14 +40,14 @@ it('detects git repository as potential issue', function () {
     $gitDir = base_path('.git');
     $gitExists = is_dir($gitDir);
 
-    if (!$gitExists) {
+    if (! $gitExists) {
         mkdir($gitDir);
     }
 
     $result = $this->updateExecutor->validateUpdateEnvironment();
 
     // Clean up
-    if (!$gitExists && is_dir($gitDir)) {
+    if (! $gitExists && is_dir($gitDir)) {
         rmdir($gitDir);
     }
 
@@ -56,6 +56,7 @@ it('detects git repository as potential issue', function () {
     foreach ($result['issues'] as $issue) {
         if (strpos($issue, 'Git repository') !== false) {
             $hasGitWarning = true;
+
             break;
         }
     }

@@ -16,7 +16,6 @@ use SmartCms\Kit\Actions\Admin\GetInboxButton;
 use SmartCms\Kit\Actions\Admin\GetVersionHtml;
 use SmartCms\Kit\Actions\Admin\GetViewButton;
 use SmartCms\Kit\Admin\Clusters\Design\DesignCluster;
-use SmartCms\Kit\Admin\Clusters\System\Pages\UpdatePage;
 use SmartCms\Kit\Admin\Pages\Dashboard;
 use SmartCms\Kit\Admin\Pages\Login;
 use SmartCms\Kit\Admin\Pages\Profile;
@@ -74,7 +73,7 @@ class KitPlugin implements Plugin
                 NoIndex::class,
             ])
             ->renderHook(PanelsRenderHook::PAGE_END, GetVersionHtml::run())
-            ->renderHook(PanelsRenderHook::HEAD_START, fn(): string => '<meta name="robots" content="noindex, nofollow" />')
+            ->renderHook(PanelsRenderHook::HEAD_START, fn (): string => '<meta name="robots" content="noindex, nofollow" />')
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetInboxButton::run())
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, GetViewButton::run())
             ->breadcrumbs(false)

@@ -160,5 +160,5 @@ return [
     'update_completed' => 'Update Completed',
     'update_completed_message' => 'The system has been successfully updated to the latest version.',
     'never' => 'Never',
-    'unknown' => 'Unknown'
+    'unknown' => 'Unknown',
 ];

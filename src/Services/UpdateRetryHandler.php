@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Log;
 class UpdateRetryHandler
 {
     protected int $maxRetries;
+
     protected int $baseDelay;
+
     protected string $cachePrefix;
 
     public function __construct(int $maxRetries = 3, int $baseDelay = 1000)
@@ -38,7 +40,7 @@ class UpdateRetryHandler
 
                 Log::warning("Operation failed, attempt {$attempt}/{$this->maxRetries}", [
                     'operation_id' => $operationId,
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ]);
 
                 // Store retry count
@@ -54,7 +56,7 @@ class UpdateRetryHandler
         // All retries failed
         Log::error("Operation failed after {$this->maxRetries} attempts", [
             'operation_id' => $operationId,
-            'final_error' => $lastException->getMessage()
+            'final_error' => $lastException->getMessage(),
         ]);
 
         throw $lastException;
@@ -67,7 +69,7 @@ class UpdateRetryHandler
             'rate limit',
             'permission denied',
             'composer not found',
-            'dependency conflict'
+            'dependency conflict',
         ];
 
         $errorMessage = strtolower($e->getMessage());
@@ -80,6 +82,7 @@ class UpdateRetryHandler
 
         // Check if we've exceeded retry limits for this operation
         $retryCount = $this->getRetryCount($operationId);
+
         return $retryCount < $this->maxRetries;
     }
 
@@ -117,6 +120,7 @@ class UpdateRetryHandler
         }
 
         $delay = $this->calculateDelay($retryCount + 1);
+
         return now()->addMilliseconds($delay);
     }
 
@@ -124,7 +128,7 @@ class UpdateRetryHandler
     {
         $nextRetryTime = $this->getNextRetryTime($operationId);
 
-        if (!$nextRetryTime) {
+        if (! $nextRetryTime) {
             return false;
         }
 

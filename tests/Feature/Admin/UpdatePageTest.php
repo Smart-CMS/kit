@@ -55,8 +55,8 @@ it('shows update available section when updates exist', function () {
         'release_info' => [
             'tag_name' => 'v1.1.0',
             'body' => 'New features and bug fixes',
-            'published_at' => '2024-01-15T10:00:00Z'
-        ]
+            'published_at' => '2024-01-15T10:00:00Z',
+        ],
     ];
 
     $mockUpdateChecker = Mockery::mock(UpdateCheckerInterface::class);
@@ -77,7 +77,7 @@ it('shows up to date section when no updates exist', function () {
     $updateDetails = [
         'current_version' => '1.0.0',
         'latest_version' => '1.0.0',
-        'has_updates' => false
+        'has_updates' => false,
     ];
 
     $mockUpdateChecker = Mockery::mock(UpdateCheckerInterface::class);
@@ -113,7 +113,7 @@ it('can trigger manual update check', function () {
 
     $this->actingAs($this->admin, 'admin')
         ->post(UpdatePage::getUrl(), [
-            'action' => 'checkForUpdates'
+            'action' => 'checkForUpdates',
         ])
         ->assertSuccessful();
 });

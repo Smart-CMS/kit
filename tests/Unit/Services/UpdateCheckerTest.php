@@ -53,7 +53,7 @@ it('can store and retrieve update notifications', function () {
         'current_version' => '1.0.0',
         'latest_version' => '1.1.0',
         'has_updates' => true,
-        'release_info' => ['tag_name' => 'v1.1.0']
+        'release_info' => ['tag_name' => 'v1.1.0'],
     ];
 
     $this->updateChecker->storeUpdateNotification($updateInfo);
@@ -67,7 +67,7 @@ it('can clear update notifications', function () {
     $updateInfo = [
         'current_version' => '1.0.0',
         'latest_version' => '1.1.0',
-        'has_updates' => true
+        'has_updates' => true,
     ];
 
     $this->updateChecker->storeUpdateNotification($updateInfo);
@@ -84,7 +84,7 @@ it('checks for updates on login when updates are available', function () {
         'current_version' => '1.0.0',
         'latest_version' => '1.1.0',
         'has_updates' => true,
-        'release_info' => ['tag_name' => 'v1.1.0']
+        'release_info' => ['tag_name' => 'v1.1.0'],
     ];
 
     $this->mockUpdateService
@@ -108,7 +108,7 @@ it('clears notifications when no updates are available', function () {
     $updateDetails = [
         'current_version' => '1.0.0',
         'latest_version' => '1.0.0',
-        'has_updates' => false
+        'has_updates' => false,
     ];
 
     $this->mockUpdateService

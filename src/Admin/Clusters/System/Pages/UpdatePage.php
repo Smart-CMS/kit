@@ -10,11 +10,9 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\Size;
 use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use SmartCms\Kit\Admin\Clusters\System\SystemCluster;
 use SmartCms\Kit\Contracts\UpdateCheckerInterface;
@@ -57,14 +55,14 @@ class UpdatePage extends Page
                         ->schema([
                             TextEntry::make('current_version')
                                 ->label(__('kit::admin.installed_version'))
-                                ->state(fn() => $this->getCurrentVersion())
+                                ->state(fn () => $this->getCurrentVersion())
                                 ->size(TextSize::Large)
                                 ->weight('bold'),
 
                             TextEntry::make('last_checked')
                                 ->label(__('kit::admin.last_checked'))
-                                ->state(fn() => $this->getLastChecked() ?? __('kit::admin.never'))
-                                ->visible(fn() => $this->getLastChecked() !== null),
+                                ->state(fn () => $this->getLastChecked() ?? __('kit::admin.never'))
+                                ->visible(fn () => $this->getLastChecked() !== null),
                         ]),
                 ]),
 
@@ -76,11 +74,11 @@ class UpdatePage extends Page
                         ->schema([
                             TextEntry::make('latest_version')
                                 ->label(__('kit::admin.latest_version'))
-                                ->state(fn() => $this->getLatestVersion() ?? __('kit::admin.unknown'))
+                                ->state(fn () => $this->getLatestVersion() ?? __('kit::admin.unknown'))
                                 ->size(TextSize::Large)
                                 ->weight('bold')
                                 ->color($this->hasUpdatesAvailable() ? 'primary' : 'success')
-                                ->visible(fn() => $this->hasUpdatesAvailable()),
+                                ->visible(fn () => $this->hasUpdatesAvailable()),
 
                             TextEntry::make('release_date')
                                 ->label(__('kit::admin.release_date'))
@@ -89,16 +87,17 @@ class UpdatePage extends Page
                                     if ($releaseInfo && isset($releaseInfo['published_at'])) {
                                         return \Carbon\Carbon::parse($releaseInfo['published_at'])->format('M j, Y');
                                     }
+
                                     return null;
                                 })
-                                ->visible(fn() => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['published_at'])),
+                                ->visible(fn () => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['published_at'])),
                         ])
-                        ->visible(fn() => $this->hasUpdatesAvailable()),
+                        ->visible(fn () => $this->hasUpdatesAvailable()),
 
                     TextEntry::make('up_to_date_message')
                         ->label('')
                         ->state(__('kit::admin.system_up_to_date_message'))
-                        ->visible(fn() => !$this->hasUpdatesAvailable()),
+                        ->visible(fn () => ! $this->hasUpdatesAvailable()),
 
                     TextEntry::make('release_notes')
                         ->label(__('kit::admin.release_notes'))
@@ -107,10 +106,11 @@ class UpdatePage extends Page
                             if ($releaseInfo && isset($releaseInfo['body'])) {
                                 return \Illuminate\Support\Str::limit($releaseInfo['body'], 500);
                             }
+
                             return null;
                         })
                         ->markdown()
-                        ->visible(fn() => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['body'])),
+                        ->visible(fn () => $this->hasUpdatesAvailable() && $this->getReleaseInfo() && isset($this->getReleaseInfo()['body'])),
                 ]),
 
             Section::make(__('kit::admin.update_settings'))
@@ -151,7 +151,7 @@ class UpdatePage extends Page
                 ->icon(Heroicon::CloudArrowDown)
                 ->action('updateNow')
                 ->color('primary')
-                ->visible(fn() => $this->hasUpdatesAvailable())
+                ->visible(fn () => $this->hasUpdatesAvailable())
                 ->requiresConfirmation()
                 ->modalHeading(__('kit::admin.confirm_update'))
                 ->modalDescription(__('kit::admin.confirm_update_description'))
@@ -181,16 +181,17 @@ class UpdatePage extends Page
     public function updateNow(): void
     {
         try {
-            $updateExecutor = new \SmartCms\Kit\Services\UpdateExecutor();
+            $updateExecutor = new \SmartCms\Kit\Services\UpdateExecutor;
 
             // Validate environment before starting
             $validation = $updateExecutor->validateUpdateEnvironment();
-            if (!$validation['valid']) {
+            if (! $validation['valid']) {
                 Notification::make()
                     ->title(__('kit::admin.update_validation_failed'))
                     ->body(implode("\n", $validation['issues']))
                     ->danger()
                     ->send();
+
                 return;
             }
             // Execute the update
@@ -214,7 +215,7 @@ class UpdatePage extends Page
                     ->danger();
 
                 // Add troubleshooting information if available
-                if (!empty($result['troubleshooting'])) {
+                if (! empty($result['troubleshooting'])) {
                     $troubleshootingText = implode("\n• ", $result['troubleshooting']);
                     $notification->body($result['message'] . "\n\nTroubleshooting:\n• " . $troubleshootingText);
                 }
@@ -233,37 +234,42 @@ class UpdatePage extends Page
     public function getCurrentVersion(): string
     {
         $updateService = app(UpdateServiceInterface::class);
+
         return $updateService->getCurrentVersion();
     }
 
     public function getUpdateDetails(): ?array
     {
         $updateChecker = app(UpdateCheckerInterface::class);
+
         return $updateChecker->getUpdateNotifications();
     }
 
     public function hasUpdatesAvailable(): bool
     {
         $details = $this->getUpdateDetails();
+
         return $details && ($details['has_updates'] ?? false);
     }
 
     public function getLatestVersion(): ?string
     {
         $details = $this->getUpdateDetails();
+
         return $details['latest_version'] ?? null;
     }
 
     public function getReleaseInfo(): ?array
     {
         $details = $this->getUpdateDetails();
+
         return $details['release_info'] ?? null;
     }
 
     public function getLastChecked(): ?string
     {
         $details = $this->getUpdateDetails();
-        if (!$details || !isset($details['checked_at'])) {
+        if (! $details || ! isset($details['checked_at'])) {
             return null;
         }
 

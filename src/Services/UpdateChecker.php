@@ -10,7 +10,9 @@ use SmartCms\Kit\Contracts\UpdateServiceInterface;
 class UpdateChecker implements UpdateCheckerInterface
 {
     protected UpdateServiceInterface $updateService;
+
     protected string $cacheKey = 'kit_update_notifications';
+
     protected int $cacheDuration;
 
     public function __construct(UpdateServiceInterface $updateService)
@@ -21,15 +23,15 @@ class UpdateChecker implements UpdateCheckerInterface
 
     public function checkOnLogin(): void
     {
-        if (!$this->shouldCheck()) {
+        if (! $this->shouldCheck()) {
             return;
         }
 
         try {
-            $retryHandler = new UpdateRetryHandler();
+            $retryHandler = new UpdateRetryHandler;
 
             $updateDetails = $retryHandler->executeWithRetry(
-                fn() => $this->updateService->getUpdateDetails(),
+                fn () => $this->updateService->getUpdateDetails(),
                 'github_update_check'
             );
 
@@ -38,7 +40,7 @@ class UpdateChecker implements UpdateCheckerInterface
 
                 Log::info('Update available', [
                     'current_version' => $updateDetails['current_version'],
-                    'latest_version' => $updateDetails['latest_version']
+                    'latest_version' => $updateDetails['latest_version'],
                 ]);
             } else {
                 // Clear notifications if no updates are available
@@ -50,7 +52,7 @@ class UpdateChecker implements UpdateCheckerInterface
 
             Log::warning('Failed to check for updates on login', [
                 'error' => $e->getMessage(),
-                'error_type' => $errorDetails['type']
+                'error_type' => $errorDetails['type'],
             ]);
 
             // Store error information for display if needed
@@ -63,7 +65,7 @@ class UpdateChecker implements UpdateCheckerInterface
     public function shouldCheck(): bool
     {
         // Check if updates are enabled in configuration
-        if (!config('kit.updates.enabled', true)) {
+        if (! config('kit.updates.enabled', true)) {
             return false;
         }
 
@@ -82,7 +84,8 @@ class UpdateChecker implements UpdateCheckerInterface
         // For 'daily' frequency, check if we haven't checked today
         if ($frequency === 'daily') {
             $lastCheck = Cache::get('kit_last_update_check');
-            return !$lastCheck || now()->diffInDays($lastCheck) >= 1;
+
+            return ! $lastCheck || now()->diffInDays($lastCheck) >= 1;
         }
 
         return false;

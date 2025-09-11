@@ -12,8 +12,11 @@ use SmartCms\Kit\Contracts\UpdateServiceInterface;
 class UpdateService implements UpdateServiceInterface
 {
     protected string $packageName;
+
     protected string $githubRepository;
+
     protected int $cacheDuration;
+
     protected int $timeout;
 
     public function __construct()
@@ -28,9 +31,11 @@ class UpdateService implements UpdateServiceInterface
     {
         try {
             return '0.01';
+
             return InstalledVersions::getPrettyVersion($this->packageName) ?? 'unknown';
         } catch (\Exception $e) {
             Log::warning('Failed to get current version', ['error' => $e->getMessage()]);
+
             return 'unknown';
         }
     }
@@ -45,6 +50,7 @@ class UpdateService implements UpdateServiceInterface
 
                 if ($response && $response->successful()) {
                     $release = $response->json();
+
                     return $release['tag_name'] ?? null;
                 }
             } catch (\Exception $e) {
@@ -75,7 +81,7 @@ class UpdateService implements UpdateServiceInterface
             } catch (\Exception $e) {
                 Log::warning('Failed to fetch version info from GitHub', [
                     'version' => $version,
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ]);
             }
 
@@ -88,9 +94,10 @@ class UpdateService implements UpdateServiceInterface
         $current = $this->getCurrentVersion();
         $latest = $this->getLatestVersion();
 
-        if (!$latest || $current === 'unknown') {
+        if (! $latest || $current === 'unknown') {
             return false;
         }
+
         return version_compare($this->normalizeVersion($current), $this->normalizeVersion($latest), '<');
     }
 
@@ -99,7 +106,7 @@ class UpdateService implements UpdateServiceInterface
         $current = $this->getCurrentVersion();
         $latest = $this->getLatestVersion();
 
-        if (!$latest) {
+        if (! $latest) {
             return null;
         }
 
@@ -141,21 +148,23 @@ class UpdateService implements UpdateServiceInterface
                     $resetTime = $rateLimitReset ? date('Y-m-d H:i:s', $rateLimitReset) : 'unknown';
                     Log::warning('GitHub API rate limit exceeded', [
                         'url' => $url,
-                        'reset_time' => $resetTime
+                        'reset_time' => $resetTime,
                     ]);
+
                     throw new \Exception("GitHub API rate limit exceeded. Resets at: {$resetTime}");
                 }
             }
 
             // Check for other HTTP errors
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 Log::warning('GitHub API returned error status', [
                     'url' => $url,
                     'status' => $response->status(),
-                    'body' => $response->body()
+                    'body' => $response->body(),
                 ]);
 
                 $errorMessage = $this->getGithubErrorMessage($response);
+
                 throw new \Exception($errorMessage);
             }
 
@@ -163,14 +172,16 @@ class UpdateService implements UpdateServiceInterface
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
             Log::warning('GitHub API connection failed', [
                 'url' => $url,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             throw new \Exception('Unable to connect to GitHub API. Please check your internet connection.');
         } catch (\Illuminate\Http\Client\RequestException $e) {
             Log::warning('GitHub API request failed', [
                 'url' => $url,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             throw new \Exception('GitHub API request failed: ' . $e->getMessage());
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'rate limit') !== false) {
@@ -179,8 +190,9 @@ class UpdateService implements UpdateServiceInterface
 
             Log::warning('GitHub API call failed', [
                 'url' => $url,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             throw new \Exception('Failed to fetch update information from GitHub: ' . $e->getMessage());
         }
     }
@@ -201,6 +213,7 @@ class UpdateService implements UpdateServiceInterface
             default:
                 $body = $response->json();
                 $message = $body['message'] ?? 'Unknown error';
+
                 return "GitHub API error ({$status}): {$message}";
         }
     }

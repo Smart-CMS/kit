@@ -9,6 +9,7 @@ use Symfony\Component\Process\Process;
 class UpdateExecutor
 {
     protected array $output = [];
+
     protected bool $isRunning = false;
 
     public function executeUpdate(): array
@@ -17,7 +18,7 @@ class UpdateExecutor
             return [
                 'success' => false,
                 'message' => 'Update is already in progress',
-                'output' => []
+                'output' => [],
             ];
         }
 
@@ -41,7 +42,7 @@ class UpdateExecutor
                 return [
                     'success' => true,
                     'message' => 'Update completed successfully',
-                    'output' => $this->output
+                    'output' => $this->output,
                 ];
             } else {
                 $this->addOutput('❌ Update failed with exit code: ' . $exitCode);
@@ -50,7 +51,7 @@ class UpdateExecutor
                 return [
                     'success' => false,
                     'message' => 'Update failed',
-                    'output' => $this->output
+                    'output' => $this->output,
                 ];
             }
         } catch (\Exception $e) {
@@ -60,14 +61,14 @@ class UpdateExecutor
 
             Log::error('Update failed via admin panel', [
                 'error' => $e->getMessage(),
-                'error_type' => $errorDetails['type']
+                'error_type' => $errorDetails['type'],
             ]);
 
             return [
                 'success' => false,
                 'message' => $errorDetails['message'],
                 'troubleshooting' => $errorDetails['troubleshooting'],
-                'output' => $this->output
+                'output' => $this->output,
             ];
         } finally {
             $this->isRunning = false;
@@ -106,20 +107,20 @@ class UpdateExecutor
                 return [
                     'available' => true,
                     'version' => trim($process->getOutput()),
-                    'message' => 'Composer is available'
+                    'message' => 'Composer is available',
                 ];
             } else {
                 return [
                     'available' => false,
                     'version' => null,
-                    'message' => 'Composer command failed: ' . $process->getErrorOutput()
+                    'message' => 'Composer command failed: ' . $process->getErrorOutput(),
                 ];
             }
         } catch (\Exception $e) {
             return [
                 'available' => false,
                 'version' => null,
-                'message' => 'Composer not found: ' . $e->getMessage()
+                'message' => 'Composer not found: ' . $e->getMessage(),
             ];
         }
     }
@@ -130,7 +131,7 @@ class UpdateExecutor
 
         // Check if Composer is available
         $composerCheck = $this->checkComposerAvailability();
-        if (!$composerCheck['available']) {
+        if (! $composerCheck['available']) {
             $issues[] = 'Composer is not available: ' . $composerCheck['message'];
         }
 
@@ -142,7 +143,7 @@ class UpdateExecutor
         ];
 
         foreach ($paths as $path) {
-            if (file_exists($path) && !is_writable($path)) {
+            if (file_exists($path) && ! is_writable($path)) {
                 $issues[] = "Path is not writable: {$path}";
             }
         }
@@ -154,7 +155,7 @@ class UpdateExecutor
 
         return [
             'valid' => empty($issues),
-            'issues' => $issues
+            'issues' => $issues,
         ];
     }
 
@@ -162,7 +163,7 @@ class UpdateExecutor
     {
         $this->output[] = [
             'timestamp' => now()->toISOString(),
-            'message' => $message
+            'message' => $message,
         ];
     }
 

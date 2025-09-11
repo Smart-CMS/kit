@@ -42,20 +42,23 @@ class Update extends Command
                 [
                     $currentVersion,
                     $latestVersion ?? 'Unknown',
-                    $this->updateService->hasUpdatesAvailable() ? 'Update Available' : 'Up to Date'
-                ]
+                    $this->updateService->hasUpdatesAvailable() ? 'Update Available' : 'Up to Date',
+                ],
             ]);
 
             if ($this->updateService->hasUpdatesAvailable()) {
                 $this->warn('An update is available. Run "php artisan scms:update" to install it.');
+
                 return self::SUCCESS;
             }
 
             $this->info('Your system is up to date.');
+
             return self::SUCCESS;
         } catch (\Exception $e) {
             $this->error('Failed to check for updates: ' . $e->getMessage());
             Log::error('Update check failed', ['error' => $e->getMessage()]);
+
             return self::FAILURE;
         }
     }
@@ -65,27 +68,28 @@ class Update extends Command
         $this->info('Starting Smart CMS Kit update...');
 
         // Check if updates are available (unless forced)
-        if (!$this->option('force')) {
+        if (! $this->option('force')) {
             try {
-                if (!$this->updateService->hasUpdatesAvailable()) {
+                if (! $this->updateService->hasUpdatesAvailable()) {
                     $this->info('No updates available. Use --force to update anyway.');
+
                     return self::SUCCESS;
                 }
             } catch (\Exception $e) {
                 $this->warn('Could not check for updates: ' . $e->getMessage());
-                if (!$this->confirm('Continue with update anyway?')) {
+                if (! $this->confirm('Continue with update anyway?')) {
                     return self::FAILURE;
                 }
             }
         }
 
         // Step 1: Update Composer packages
-        if (!$this->updateComposerPackages()) {
+        if (! $this->updateComposerPackages()) {
             return self::FAILURE;
         }
 
         // Step 2: Run migrations
-        if (!$this->runMigrations()) {
+        if (! $this->runMigrations()) {
             return self::FAILURE;
         }
 
@@ -112,11 +116,11 @@ class Update extends Command
         $composerHome = storage_path('composer');
         $composerCache = storage_path('composer/cache');
 
-        if (!file_exists($composerHome)) {
+        if (! file_exists($composerHome)) {
             mkdir($composerHome, 0755, true);
         }
 
-        if (!file_exists($composerCache)) {
+        if (! file_exists($composerCache)) {
             mkdir($composerCache, 0755, true);
         }
 
@@ -154,7 +158,7 @@ class Update extends Command
         $progressBar->finish();
         $this->newLine();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             $this->error('❌ Composer update failed!');
 
             $errorDetails = \SmartCms\Kit\Services\UpdateErrorHandler::handleComposerError(
@@ -164,7 +168,7 @@ class Update extends Command
 
             $this->error($errorDetails['message']);
 
-            if (!empty($errorDetails['troubleshooting'])) {
+            if (! empty($errorDetails['troubleshooting'])) {
                 $this->warn('💡 Troubleshooting suggestions:');
                 foreach ($errorDetails['troubleshooting'] as $suggestion) {
                     $this->line("  • {$suggestion}");
@@ -180,6 +184,7 @@ class Update extends Command
         }
 
         $this->info('✅ Composer packages updated successfully');
+
         return true;
     }
 
@@ -190,10 +195,12 @@ class Update extends Command
         try {
             $this->call('migrate', ['--force' => true]);
             $this->info('✅ Database migrations completed');
+
             return true;
         } catch (\Exception $e) {
             $this->error('❌ Migration failed: ' . $e->getMessage());
             Log::error('Migration failed during update', ['error' => $e->getMessage()]);
+
             return false;
         }
     }

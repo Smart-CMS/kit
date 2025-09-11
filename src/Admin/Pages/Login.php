@@ -10,7 +10,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
 class Login extends PagesLogin
