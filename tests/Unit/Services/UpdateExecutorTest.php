@@ -11,7 +11,7 @@ it('can check composer availability', function () {
 
     expect($result)->toBeArray();
     expect($result)->toHaveKeys(['available', 'version', 'message']);
-    expect($result['available'])->toBeBoolean();
+    expect($result['available'])->toBeBool();
 });
 
 it('validates update environment', function () {
@@ -19,7 +19,7 @@ it('validates update environment', function () {
 
     expect($result)->toBeArray();
     expect($result)->toHaveKeys(['valid', 'issues']);
-    expect($result['valid'])->toBeBoolean();
+    expect($result['valid'])->toBeBool();
     expect($result['issues'])->toBeArray();
 });
 

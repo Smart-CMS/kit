@@ -11,7 +11,7 @@ it('can check npm availability', function () {
 
     expect($result)->toBeArray();
     expect($result)->toHaveKeys(['available', 'version', 'message']);
-    expect($result['available'])->toBeBoolean();
+    expect($result['available'])->toBeBool();
 });
 
 it('validates asset environment', function () {
@@ -19,7 +19,7 @@ it('validates asset environment', function () {
 
     expect($result)->toBeArray();
     expect($result)->toHaveKeys(['valid', 'issues']);
-    expect($result['valid'])->toBeBoolean();
+    expect($result['valid'])->toBeBool();
     expect($result['issues'])->toBeArray();
 });
 
@@ -42,5 +42,5 @@ it('handles npm not found gracefully', function () {
     $result = $this->assetUpdater->checkNpmAvailability();
 
     expect($result['message'])->toBeString();
-    expect($result['available'])->toBeBoolean();
+    expect($result['available'])->toBeBool();
 });

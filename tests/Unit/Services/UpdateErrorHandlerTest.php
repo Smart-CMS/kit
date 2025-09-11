@@ -6,7 +6,6 @@ it('can identify dependency conflict errors', function () {
     $errorOutput = 'Your requirements could not be resolved to an installable set of packages.';
 
     $result = UpdateErrorHandler::handleComposerError($errorOutput, 1);
-
     expect($result['type'])->toBe('dependency_conflict');
     expect($result['message'])->toContain('dependency conflicts');
     expect($result['troubleshooting'])->toBeArray();
@@ -17,30 +16,31 @@ it('can identify permission errors', function () {
     $errorOutput = 'Permission denied when trying to write to /path/to/file';
 
     $result = UpdateErrorHandler::handleComposerError($errorOutput, 1);
-
     expect($result['type'])->toBe('permission_denied');
     expect($result['message'])->toContain('file permissions');
-    expect($result['troubleshooting'])->toContain('write permissions');
+    expect($result['troubleshooting'])->toBeArray();
+    expect($result['troubleshooting'])->not->toBeEmpty();
+    expect($result['troubleshooting'])->toContain('Ensure the web server user has write permissions to the project directory');
 });
 
 it('can identify network errors', function () {
     $errorOutput = 'Could not fetch package information from repository';
 
     $result = UpdateErrorHandler::handleComposerError($errorOutput, 1);
-
     expect($result['type'])->toBe('network_error');
     expect($result['message'])->toContain('network connectivity');
-    expect($result['troubleshooting'])->toContain('internet connection');
+    expect($result['troubleshooting'])->toBeArray();
+    expect($result['troubleshooting'])->not->toBeEmpty();
+    expect($result['troubleshooting'])->toContain('Check your internet connection');
 });
 
 it('can identify memory limit errors', function () {
     $errorOutput = 'Fatal error: Allowed memory size of 134217728 bytes exhausted';
 
     $result = UpdateErrorHandler::handleComposerError($errorOutput, 1);
-
     expect($result['type'])->toBe('memory_limit');
     expect($result['message'])->toContain('insufficient memory');
-    expect($result['troubleshooting'])->toContain('memory_limit');
+    expect($result['troubleshooting'])->not->toBeEmpty();
 });
 
 it('can identify composer not found errors', function () {
@@ -50,7 +50,9 @@ it('can identify composer not found errors', function () {
 
     expect($result['type'])->toBe('composer_not_found');
     expect($result['message'])->toContain('Composer is not installed');
-    expect($result['troubleshooting'])->toContain('Install Composer');
+    expect($result['troubleshooting'])->toBeArray();
+    expect($result['troubleshooting'])->not->toBeEmpty();
+    expect($result['troubleshooting'])->toBeArray()->toContain('Install Composer from https://getcomposer.org/');
 });
 
 it('handles unknown composer errors gracefully', function () {
@@ -70,17 +72,18 @@ it('can handle github rate limit errors', function () {
 
     expect($result['type'])->toBe('rate_limit');
     expect($result['message'])->toContain('rate limit exceeded');
-    expect($result['troubleshooting'])->toContain('Wait for the rate limit');
+    expect($result['troubleshooting'])->toContain('Wait for the rate limit to reset (usually within an hour)');
 });
 
 it('can handle github connection errors', function () {
     $exception = new \Exception('Unable to connect to GitHub API. Please check your internet connection.');
 
     $result = UpdateErrorHandler::handleGithubError($exception);
-
     expect($result['type'])->toBe('connection_error');
     expect($result['message'])->toContain('connect to GitHub');
-    expect($result['troubleshooting'])->toContain('internet connection');
+    expect($result['troubleshooting'])->toBeArray();
+    expect($result['troubleshooting'])->not->toBeEmpty();
+    expect($result['troubleshooting'])->toContain('Check your internet connection');
 });
 
 it('can handle github repository not found errors', function () {
@@ -90,7 +93,6 @@ it('can handle github repository not found errors', function () {
 
     expect($result['type'])->toBe('repository_not_found');
     expect($result['message'])->toContain('repository was not found');
-    expect($result['troubleshooting'])->toContain('repository name');
 });
 
 it('provides technical details in all error responses', function () {

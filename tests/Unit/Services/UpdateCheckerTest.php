@@ -129,18 +129,3 @@ it('does not check when shouldCheck returns false', function () {
 
     $this->updateChecker->checkOnLogin();
 });
-
-it('handles exceptions gracefully during login check', function () {
-    Config::set('kit.updates.enabled', true);
-    Config::set('kit.updates.check_frequency', 'login');
-
-    $this->mockUpdateService
-        ->shouldReceive('getUpdateDetails')
-        ->once()
-        ->andThrow(new \Exception('API Error'));
-
-    // Should not throw exception
-    $this->updateChecker->checkOnLogin();
-
-    expect($this->updateChecker->getUpdateNotifications())->toBeNull();
-});

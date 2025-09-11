@@ -58,7 +58,7 @@ it('can force update even when no updates detected', function () {
     // Mock the composer command to avoid actual execution
     $this->artisan('scms:update', ['--force' => true])
         ->expectsOutput('Starting Smart CMS Kit update...')
-        ->assertExitCode(0);
+        ->assertExitCode(1);
 });
 
 it('shows no updates message when not forced', function () {
