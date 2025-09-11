@@ -161,4 +161,14 @@ return [
     'update_completed_message' => 'The system has been successfully updated to the latest version.',
     'never' => 'Never',
     'unknown' => 'Unknown',
+
+    // Asset update translations
+    'update_assets' => 'Update Assets',
+    'confirm_asset_update' => 'Confirm Asset Update',
+    'confirm_asset_update_description' => 'This will run "npm ci" and "npm run build" to update your frontend assets. This may take several minutes.',
+    'asset_update_validation_failed' => 'Asset Update Validation Failed',
+    'asset_update_completed' => 'Assets Updated',
+    'asset_update_completed_message' => 'Frontend assets have been successfully updated.',
+    'asset_update_failed' => 'Asset Update Failed',
+    'asset_update_disabled' => 'Asset update is not available',
 ];

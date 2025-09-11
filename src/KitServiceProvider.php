@@ -187,6 +187,9 @@ class KitServiceProvider extends PackageServiceProvider
         $this->app->singleton(\SmartCms\Kit\Services\UpdateExecutor::class, function () {
             return new \SmartCms\Kit\Services\UpdateExecutor;
         });
+        $this->app->singleton(\SmartCms\Kit\Services\AssetUpdater::class, function () {
+            return new \SmartCms\Kit\Services\AssetUpdater;
+        });
         app(MenuRegistry::class)->register(PageMenuType::class);
         ContactForm::observe(ContactFormObserver::class);
         $this->app->booted(function () {
