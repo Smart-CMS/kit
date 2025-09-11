@@ -44,7 +44,7 @@ class Login extends PagesLogin
                 'data.username' => __('filament-panels::auth/pages/login.messages.failed'),
             ]);
         }
-        // $this->checkVersion();
+        $this->checkForUpdates();
         $user = Filament::auth()->user();
 
         if (
@@ -74,27 +74,13 @@ class Login extends PagesLogin
             ]);
     }
 
-    protected function checkVersion()
+    protected function checkForUpdates(): void
     {
-        $url = 'https://api.github.com/repos/SmartCms/kit/releases/latest';
-
         try {
-            $response = Http::timeout(5)->get($url);
+            $updateChecker = app(\SmartCms\Kit\Contracts\UpdateCheckerInterface::class);
+            $updateChecker->checkOnLogin();
         } catch (\Exception $e) {
-            return;
-        }
-        if ($response->successful()) {
-            $release = $response->json();
-            $version = $release['tag_name'];
-            // if ($version > _settings('version', 0)) {
-            //     setting([
-            //         sconfig('version') => $version,
-            //     ]);
-            //     AdminNotification::make()
-            //         ->title('New version of Smart CMS is available. Please update your system.')
-            //         ->info()
-            //         ->sendToAll();
-            // }
+            // Silently fail - update checking should not interrupt login
         }
     }
 }

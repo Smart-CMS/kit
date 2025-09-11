@@ -176,6 +176,17 @@ class KitServiceProvider extends PackageServiceProvider
             return new AssetManager;
         });
         $this->app->alias(AssetManager::class, 'assets');
+        $this->app->singleton(\SmartCms\Kit\Contracts\UpdateServiceInterface::class, function () {
+            return new \SmartCms\Kit\Services\UpdateService;
+        });
+        $this->app->singleton(\SmartCms\Kit\Contracts\UpdateCheckerInterface::class, function () {
+            return new \SmartCms\Kit\Services\UpdateChecker(
+                $this->app->make(\SmartCms\Kit\Contracts\UpdateServiceInterface::class)
+            );
+        });
+        $this->app->singleton(\SmartCms\Kit\Services\UpdateExecutor::class, function () {
+            return new \SmartCms\Kit\Services\UpdateExecutor();
+        });
         app(MenuRegistry::class)->register(PageMenuType::class);
         ContactForm::observe(ContactFormObserver::class);
         $this->app->booted(function () {
