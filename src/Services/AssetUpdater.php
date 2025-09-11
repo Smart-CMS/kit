@@ -188,11 +188,11 @@ class AssetUpdater
         return $this->output;
     }
 
-    public function getNpmEnv(): ?array
+    public function getNpmEnv(): array
     {
         $npmPath = $this->findExecutable('npm');
         if (! $npmPath) {
-            return null;
+            return [];
         }
         // Update command with full path
         $command[0] = $npmPath;
@@ -218,10 +218,79 @@ class AssetUpdater
 
     private function findExecutable(string $executable): ?string
     {
+        $homeDir = getenv('HOME') ?: '/home/' . get_current_user();
+
         $paths = [
             '/usr/local/bin/' . $executable,
             '/opt/homebrew/bin/' . $executable,
             '/usr/bin/' . $executable,
+            '/bin/npm',
+
+            // Snap packages (Ubuntu/other distros)
+            '/snap/bin/npm',
+            '/snap/node/current/bin/npm',
+            '/var/lib/snapd/snap/bin/npm',
+
+            // Flatpak
+            '/var/lib/flatpak/exports/bin/npm',
+            $homeDir . '/.local/share/flatpak/exports/bin/npm',
+
+            // AppImage locations
+            $homeDir . '/Applications/npm',
+            '/opt/npm',
+
+            // Distribution-specific paths
+
+            // Debian/Ubuntu
+            '/usr/share/nodejs/npm/bin/npm',
+            '/usr/lib/nodejs/npm/bin/npm',
+
+            // CentOS/RHEL/Fedora
+            '/usr/local/lib/nodejs/npm/bin/npm',
+            '/opt/rh/rh-nodejs*/root/usr/bin/npm', // Red Hat Software Collections
+
+            // SUSE
+            '/usr/local/nodejs/bin/npm',
+
+            // Arch Linux
+            '/usr/share/nodejs/npm/bin/npm',
+
+            // Node Version Managers
+
+            // NVM (Node Version Manager)
+            $homeDir . '/.nvm/versions/node/*/bin/npm',
+            $homeDir . '/.nvm/current/bin/npm',
+
+            // N (Node version manager)
+            '/usr/local/n/versions/node/*/bin/npm',
+            $homeDir . '/n/bin/npm',
+
+            // FNM (Fast Node Manager)
+            $homeDir . '/.fnm/node-versions/*/installation/bin/npm',
+            $homeDir . '/.local/share/fnm/node-versions/*/installation/bin/npm',
+
+            // Volta
+            $homeDir . '/.volta/bin/npm',
+            $homeDir . '/.volta/tools/image/node/*/bin/npm',
+
+            // ASDF
+            $homeDir . '/.asdf/installs/nodejs/*/bin/npm',
+            $homeDir . '/.asdf/shims/npm',
+
+            // Manual installations
+            '/opt/node/bin/npm',
+            '/opt/nodejs/bin/npm',
+            $homeDir . '/node/bin/npm',
+            $homeDir . '/nodejs/bin/npm',
+            $homeDir . '/.local/bin/npm',
+
+            // Docker/Container common mounts
+            '/usr/src/app/node_modules/.bin/npm',
+            '/app/node_modules/.bin/npm',
+
+            // CI/CD specific paths
+            '/github/workspace/node_modules/.bin/npm', // GitHub Actions
+            '/builds/node_modules/.bin/npm', // GitLab CI
         ];
 
         // Also try NVM paths if available
