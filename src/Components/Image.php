@@ -20,7 +20,7 @@ class Image extends Component
             $options = [];
         }
         $src = validateImage($options['source']);
-        if (!is_string($src)) {
+        if (! is_string($src)) {
             $src = $options['source'];
         }
         if (is_null($src)) {
