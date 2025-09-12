@@ -19,7 +19,14 @@ class Image extends Component
         if (! is_array($options)) {
             $options = [];
         }
-        $this->src = validateImage($options['source']);
+        $src = validateImage($options['source']);
+        if (!is_string($src)) {
+            $src = $options['source'];
+        }
+        if (is_null($src)) {
+            $src = no_image()['source'] ?? '';
+        }
+        $this->src = $src;
         $this->alt = $options[current_lang()] ?? $options['alt'] ?? $this->src;
         $this->width = $options['width'] ?? 0;
         $this->height = $options['height'] ?? 0;
